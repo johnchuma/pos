@@ -1,15 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:pos/utils/colors.dart';
 import 'package:pos/widgets/heading2_text.dart';
 import 'package:pos/widgets/muted_text.dart';
 
 Widget businessItem(business){
   return Padding(
-                         padding: const EdgeInsets.only(bottom: 20),
+                         padding: const EdgeInsets.only(bottom: 10),
                          child: ClipRRect(
                             borderRadius: BorderRadius.circular(20),
                             child: Container(
-                              color: Colors.white,
+                              color: backgroundColor2,
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 0,vertical: 0),
                                 child: Column(

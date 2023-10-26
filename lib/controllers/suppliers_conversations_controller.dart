@@ -25,7 +25,7 @@ class SuppliersConversationsController extends GetxController{
           try {
           
                for (var message in business.messages.value) {
-             if(businessController.selectedBusiness.value.id != message.from ){
+             if(businessController.selectedBusiness.value?.id != message.from ){
                  await firestore
                   .collection("private_messages").doc(message.id).update({
                     "readBy":2
@@ -39,7 +39,7 @@ class SuppliersConversationsController extends GetxController{
         }
         Stream<List<Business>> getSuppliersConvesations() {
           return firestore
-              .collection("suppliers").where("businessId",isEqualTo: businessController.selectedBusiness.value.id).orderBy("createdAt",descending: true)
+              .collection("suppliers").where("businessId",isEqualTo: businessController.selectedBusiness.value?.id).orderBy("createdAt",descending: true)
               .snapshots() 
               .asyncMap((QuerySnapshot querySnapshot) async {
                   List<Business> businesses = [];
@@ -47,14 +47,15 @@ class SuppliersConversationsController extends GetxController{
                   DocumentSnapshot businessSnapshot = await firestore.collection("businesses").doc(element["supplierId"]).get();
                   Business business = Business.fromDocumentSnapshot(businessSnapshot);
                   var ids = [];
-                  ids.add(businessController.selectedBusiness.value.id);
+                  ids.add(businessController.selectedBusiness.value?.id);
                   ids.add(element["supplierId"]);
                   ids.sort();
                     Stream<List<Message>> getMessages (){
                       return firestore
                     .collection("private_messages")
                     .where("chatMembers", isEqualTo: ids)
-                    .where("from", isNotEqualTo: businessController.selectedBusiness.value.id)
+                    .where("from", isNotEqualTo: businessController.selectedBusiness.value?.id)
+                    .where("referenceId",isEqualTo: "")
                     .where("readBy", isEqualTo: 1)
                     .snapshots().map((QuerySnapshot messagesSnapshot)  {
                       List<Message> messages = [];

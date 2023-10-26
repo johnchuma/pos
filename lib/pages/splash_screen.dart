@@ -10,16 +10,19 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
-      
-      body: Container(
-        height: double.infinity,
-        width: double.infinity,
-        decoration: BoxDecoration(gradient: LinearGradient(colors: [primaryColor,primaryColor2])),
-        child:Center(child: Container(child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-      heading2(text: "Powered POS",fontSize: 45,color: Colors.white)
-    ],),),) ,),);
+      backgroundColor: backgroundColor,
+      body: Center(child: Container(child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+                  //  ClipOval(
+                  //         child: Container(
+                  //             height: 100,
+                  //             width: 100,
+                  //             child: Image.asset("assets/icons/1024.png")),
+                  //       ),
+                    
+      heading2(text: "Trade Point",fontSize: 45,color: Colors.white)
+    ],),),),);
   }
 }

@@ -19,18 +19,17 @@ class BusinessController extends GetxController{
           Rx<List<Business>> staffBusinessesReceiver = Rx<List<Business>>([]);
         List<Business> get staffBusinesses => staffBusinessesReceiver.value;
         AppController appController= Get.find<AppController>();
-        Rx<Business> selectedBusiness = Rx<Business>(Business());
+        Rx<Business?> selectedBusiness = Rx<Business?>(null);
         Rx<Business> selectedSender = Rx<Business>(Business());
-
         AuthController authController = Get.find<AuthController>();
         Rx<Register?> selectedRegister = Rx<Register?>(null);
         Rx<String> role = Rx<String>("reseller");
         Rx<String> category = Rx<String>("");
-
+        Rx<bool> noAccess= Rx<bool>(false);
 
         Stream<List<Business>> getBusinesses() {
           return firestore
-              .collection("businesses").where("userId",isEqualTo: authController.user?.email)
+              .collection("businesses").where("userId",isEqualTo: authController.user?.email).orderBy("createdAt",descending: true)
               .snapshots()
               .asyncMap((QuerySnapshot querySnapshot) async{
                List<Business> businesses = [];
@@ -49,9 +48,8 @@ class BusinessController extends GetxController{
         }
 
         Future<List<Register>> getStaffRegisters() async{
-          print("Hello");
          QuerySnapshot querySnapshot =await firestore
-              .collection("staffRegisters").where("staffId",isEqualTo: authController.user?.email).where("businessId",isEqualTo: selectedBusiness.value.id)
+              .collection("staffRegisters").where("staffId",isEqualTo: authController.user?.email).where("businessId",isEqualTo: selectedBusiness.value?.id)
               .get();
                 List<Register> registers = [];
                   for (var element in querySnapshot.docs) {
@@ -67,20 +65,31 @@ class BusinessController extends GetxController{
       for (var history in historyList) {
         days = days + int.parse((history.amount/10000).toString());
       }
-      Business requiredBusiness = business??selectedBusiness.value; 
+      Business requiredBusiness = business??selectedBusiness.value!; 
       DateTime firstTime =  requiredBusiness.createdAt.toDate();
       Duration difference  = firstTime.add(Duration(days: days+30)).difference(DateTime.now()); 
       return difference.inDays;
     }
      Future<StaffRegister?> getStaffRegister() async{
+  List<Register> registers =    await getStaffRegisters();
+
+       if(registers.isEmpty){
+        if(selectedRegister.value == null){
+              selectedRegister.value = registers.first;
+          }
+        }
          QuerySnapshot querySnapshot =await firestore
               .collection("staffRegisters").where("staffId",isEqualTo: authController.user?.email).where("registerId",isEqualTo: selectedRegister.value?.id)
               .get();
-              StaffRegister? staffRegister ;
+              StaffRegister? staffRegister;
                 if(querySnapshot.docs.isNotEmpty){
                   staffRegister = StaffRegister.fromDocumentSnapshot(querySnapshot.docs.first);
                 }
             return staffRegister;   
+        }
+         Future<Business> getBusiness(id)async{
+                  DocumentSnapshot documentSnapshot = await firestore.collection("businesses").doc(id).get();
+             return Business.fromDocumentSnapshot(documentSnapshot);
         }
 
           Stream<List<Business>> getStaffBusinesses() {
@@ -140,7 +149,7 @@ class BusinessController extends GetxController{
       }
        Future<void> updateBusiness ({data}) async{
           try {
-           await  firestore.collection("businesses").doc(selectedBusiness.value.id).update(data);
+           await  firestore.collection("businesses").doc(selectedBusiness.value?.id).update(data);
           } catch (e) {
           }
       }

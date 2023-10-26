@@ -51,7 +51,7 @@ class _ClientsPageState extends State<ClientsPage> {
         children: [
          back(),
          SizedBox(width: 20,),
-          heading2(text: "Powered POS clients"),
+          heading2(text: "Trade Point clients"),
         ],
       ) 
       ,),
@@ -67,11 +67,11 @@ class _ClientsPageState extends State<ClientsPage> {
                 init: ClientsController(),
                  builder: (find) {
                    return Column(children:find.clients.map((client) => Padding(
-                     padding: const EdgeInsets.only(bottom: 15),
+                     padding: const EdgeInsets.only(bottom: 10),
                      child: ClipRRect(
                         borderRadius: BorderRadius.circular(15),
                         child: Container(
-                          color: Colors.white,
+                          color: mutedBackground,
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 20),
                             child: Column(
@@ -112,20 +112,14 @@ class _ClientsPageState extends State<ClientsPage> {
                                               child:clientId == client.id ? Column(
                                                 children: [
                                                   const SizedBox(height: 10,),                      
-                                                  expandedItem(title:"Chat with client", iconData:Icons.table_restaurant, onClick:  (){ 
+                                                  expandedItem(title:"Chat with client", iconData:Icons.chat_bubble, onClick:  (){ 
                                                      find.selectedClient.value = client;
                                                     Get.to(()=>PrivateChatRoom()); 
                                                   }),
                                                 
                                                   
                                                
-                                                   expandedItem(title:"Remove worker", iconData:Icons.delete, onClick:  (){
-                                                      confirmDelete(context,onClick: (){
-                                                        find.deleteClient(client.id);
-                                                      },onSuccess: (){
-                                                        successNotification("Client is removed successfully");
-                                                      });
-                                                  },elevation: 0),                                                                          
+                                                                                                                           
                                                 ],
                                               ):Container(),
                                             )

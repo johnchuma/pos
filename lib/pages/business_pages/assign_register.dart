@@ -34,7 +34,7 @@ TextEditingController passwordController = TextEditingController();
           child: ClipRRect(
             borderRadius: const BorderRadius.only(topRight: Radius.circular(20),topLeft: Radius.circular(20)),
             child: Container(
-              color: Colors.white,
+              color: mutedBackground,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
@@ -45,7 +45,7 @@ TextEditingController passwordController = TextEditingController();
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [ClipRRect(
                       borderRadius: BorderRadius.circular(10),
-                      child: Container(width: 80,height: 5,color: primaryColor.withOpacity(0.2),))],),
+                      child: Container(width: 80,height: 5,color: backgroundColor,))],),
                   const SizedBox(height: 20,),
                   heading2(text: "Assign registers to a staff member"),
                   const SizedBox(height: 10,),
@@ -83,7 +83,7 @@ TextEditingController passwordController = TextEditingController();
         
                   heading2(text: "Give permissions",fontSize: 14),
                   SizedBox(height: 10,),
-                  Wrap(children: ["Sell product","Manage products","View reports","Manage stuff","Create orders","Manage suppliers","Manage registers"].map((permission) => 
+                  Wrap(children: ["Sell products","Manage products","Manage orders", "View reports","Manage staffs","Manage suppliers","Manage registers","Check in & out","View sales reports","View settings"].map((permission) => 
                   GestureDetector(
                     onTap: (){
                     

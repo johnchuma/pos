@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 import 'package:pos/controllers/register_controller.dart';
 import 'package:pos/controllers/staff_register_controller.dart';
 import 'package:pos/controllers/stock_controller.dart';
-import 'package:pos/controllers/supplier_order_controller.dart';
+import 'package:pos/controllers/retailer_order_controller.dart';
 import 'package:pos/controllers/worker_controller.dart';
 import 'package:pos/models/staff_registers.dart';
 import 'package:pos/pages/business_pages/add_order_to_stock.dart';
@@ -30,7 +30,7 @@ class ConfirmReceivedOrder extends StatefulWidget {
 class _ConfirmReceivedOrderState extends State<ConfirmReceivedOrder> {  
 
 TextEditingController passwordController = TextEditingController();
-  SupplierOrderController find = Get.find<SupplierOrderController>();
+  RetailerOrderController find = Get.find<RetailerOrderController>();
   bool show = false;
   bool loading = false;
   @override
@@ -39,7 +39,7 @@ TextEditingController passwordController = TextEditingController();
           child: ClipRRect(
             borderRadius: const BorderRadius.only(topRight: Radius.circular(15),topLeft: Radius.circular(15)),
             child: Container(
-              color: Colors.white,
+              color: mutedBackground,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
@@ -51,7 +51,7 @@ TextEditingController passwordController = TextEditingController();
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [ClipRRect(
                       borderRadius: BorderRadius.circular(15),
-                      child: Container(width: 80,height: 5,color: primaryColor.withOpacity(0.2),))],),
+                      child: Container(width: 80,height: 5,color: backgroundColor,))],),
                   const SizedBox(height: 20,),
                   heading2(text: "Confirm order delivery",textAlign:TextAlign.start ),
                   const SizedBox(height: 10,),
@@ -78,7 +78,7 @@ TextEditingController passwordController = TextEditingController();
                   ClipRRect(
                     borderRadius: BorderRadius.circular(15),
                     child: Container(
-                      color: Colors.red.withOpacity(0.1),
+                      color: Colors.red.withOpacity(0.5),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 20),
                         child: Column(
@@ -114,9 +114,9 @@ TextEditingController passwordController = TextEditingController();
                                     }
                                    
                                   },
-                                  child: Icon(Icons.remove,)),
+                                  child: Icon(Icons.remove,color:mutedColor,)),
                                 SizedBox(width: 20,),
-                                heading2(text: find.selectedProductOrder.value!.amount,color: primaryColor),
+                                heading2(text: find.selectedProductOrder.value!.amount,color: textColor),
                                 SizedBox(width: 20,),
                                 GestureDetector(
                                   onTap: (){
@@ -125,7 +125,7 @@ TextEditingController passwordController = TextEditingController();
                                      find.selectedProductOrder.value!.amount.value = amount +1;
                                     });
                                   },
-                                  child: Icon(Icons.add,))
+                                  child: Icon(Icons.add,color:mutedColor,))
                               
                                                   
                                                 ],),

@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pos/controllers/business_controller.dart';
-import 'package:pos/controllers/supplier_order_controller.dart';
+import 'package:pos/controllers/retailer_order_controller.dart';
 import 'package:pos/controllers/product_controller.dart';
 import 'package:pos/controllers/sales_controller.dart';
 import 'package:pos/models/product.dart';
@@ -32,27 +32,27 @@ class _PickProductsToOrderState extends State<PickProductsToOrder> {
   @override
   void initState() {
     Get.put(ProductController());
-    Get.put(SupplierOrderController());
+    Get.put(RetailerOrderController());
 
     super.initState();
   }
   @override
   Widget build(BuildContext context) {
     BusinessController businessController = Get.find<BusinessController>();
-    SupplierOrderController supplierOrderController = Get.find<SupplierOrderController>();
+    RetailerOrderController retailerOrderController = Get.find<RetailerOrderController>();
 
     return  Scaffold(
       backgroundColor: backgroundColor,
       floatingActionButton: Obx(
-        ()=> supplierOrderController.searchKeyword.value.isEmpty || supplierOrderController.onCartSupplierOrders.value.length == 0 ?Container(): FloatingActionButton(
+        ()=> retailerOrderController.searchKeyword.value.isEmpty || retailerOrderController.onCartSupplierOrders.value.length == 0 ?Container(): FloatingActionButton(
           backgroundColor: Colors.transparent,
           onPressed:(){
-          supplierOrderController.searchKeyword.value = "";
+          retailerOrderController.searchKeyword.value = "";
         },child: ClipRRect(
           borderRadius: BorderRadius.circular(20),
           child: Container(decoration: BoxDecoration(gradient: LinearGradient(colors: [primaryColor,primaryColor2])),child: Padding(
             padding: const EdgeInsets.all(16),
-            child: Badge(child: Icon(Icons.shopping_bag),label: Text(supplierOrderController.onCartSupplierOrders.value.length.toString(),style: TextStyle(color: Colors.white,fontSize: 8),)),
+            child: Badge(child: Icon(Icons.shopping_bag),label: Text(retailerOrderController.onCartSupplierOrders.value.length.toString(),style: TextStyle(color: Colors.white,fontSize: 8),)),
           ),),
         ),),
       ),
@@ -76,25 +76,27 @@ class _PickProductsToOrderState extends State<PickProductsToOrder> {
            ClipRRect(
             borderRadius: BorderRadius.circular(15),
              child: Container(
-              color: Colors.black.withOpacity(0.04),
+              color:mutedBackground,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: TextFormField(
                   cursorColor: primaryColor,
+                  
                   onChanged: (value){
-                    supplierOrderController.searchKeyword.value =value;
+                    retailerOrderController.searchKeyword.value =value;
                   },
-                  decoration: const InputDecoration(
-                  icon: Icon(Icons.search,color: Colors.black26,),
+                  decoration:  InputDecoration(
+                  icon: Icon(Icons.search,color: mutedColor),
                   border: InputBorder.none,
+                  hintStyle: TextStyle(color: mutedColor,fontSize: 15),
                   hintText: "Search for products"),
-                style: const TextStyle(fontSize: 13)),
+                style:  TextStyle(fontSize: 15,color: textColor)),
               )),
            ),
              
              
-                 GetX<SupplierOrderController>(
-                init: SupplierOrderController(),
+                 GetX<RetailerOrderController>(
+                init: RetailerOrderController(),
                  builder: (find) {
                    return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -193,7 +195,7 @@ class _PickProductsToOrderState extends State<PickProductsToOrder> {
                              child: ClipRRect(
                                 borderRadius: BorderRadius.circular(15),
                                 child: Container(
-                                  color: Colors.white,
+                                  color: mutedBackground,
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 20),
                                     child: Column(
@@ -236,7 +238,7 @@ class _PickProductsToOrderState extends State<PickProductsToOrder> {
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
                                                   const SizedBox(height: 20,),                      
-                                                  heading2(text: "Product order amount",fontSize: 12,color: primaryColor),
+                                                  heading2(text: "Product order amount",fontSize: 12,color: textColor),
                                                   const SizedBox(height: 20,),                      
 
                                                            Row(children: [
@@ -250,7 +252,7 @@ class _PickProductsToOrderState extends State<PickProductsToOrder> {
                         },
                         child: ClipOval(
                           child: Container(
-                            color: Colors.red.withOpacity(0.3),
+                            color: mutedColor,
                             child: Padding(
                               padding: const EdgeInsets.all(3),
                               child: Icon(Icons.remove,color: Colors.black,size: 30,),
@@ -268,7 +270,7 @@ class _PickProductsToOrderState extends State<PickProductsToOrder> {
                         },
                          child: ClipOval(
                           child: Container(
-                            color: Colors.green.withOpacity(0.3),
+                            color: mutedColor,
                             child: Padding(
                               padding: const EdgeInsets.all(3),
                               child: Icon(Icons.add,color: Colors.black,size: 30,),

@@ -14,7 +14,7 @@ class ClientsController extends GetxController{
         Rx<List<Client>> clientsReceiver = Rx<List<Client>>([]);
         List<Client> get clients => clientsReceiver.value;
        
-        Rx<Client> selectedClient = Rx<Client>(Client());
+        Rx<Client?> selectedClient = Rx<Client?>(null);
       
         Stream<List<Client>> getClients() {
           return firestore

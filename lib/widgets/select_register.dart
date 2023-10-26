@@ -19,6 +19,7 @@ selectRegister(context,BusinessController find,{alwaysShow}){
              if(alwaysShow??registers.length >1){
               Get.defaultDialog(
                 title: "",
+                backgroundColor: mutedBackground,
                 titlePadding: EdgeInsets.all(0),
                 barrierDismissible: false,
                 contentPadding: EdgeInsets.symmetric(horizontal: 20),
@@ -35,7 +36,7 @@ selectRegister(context,BusinessController find,{alwaysShow}){
                  if(appController.isMainDashboardSelected.value)   Row(children: [
                     Obx(
                       ()=> Checkbox(
-                     
+            
                       activeColor: primaryColor,
                         value:find.selectedRegister.value ==null?true:false, onChanged: (value){   
                         find.selectedRegister.value = null;

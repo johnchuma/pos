@@ -36,7 +36,9 @@ class _ManagePasswordState extends State<ManagePassword> {
       future:authController.findMyInfo() ,
       builder: (context,snapshot) {
         if(snapshot.connectionState == ConnectionState.waiting){
-          return Scaffold(body: Center(child: CircularProgressIndicator(color: textColor),),);
+          return Scaffold(
+            backgroundColor: backgroundColor,
+            body: Center(child: CircularProgressIndicator(color: textColor),),);
         }
         Client client = snapshot.requireData;
         passwordController.text = client.password;

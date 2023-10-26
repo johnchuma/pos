@@ -45,6 +45,10 @@ class StockController extends GetxController{
      Future<void> addStock (amount, buyingPrice, sellingPrice)async{
           try {
             var id = Timestamp.now().toDate().toString();
+            await productController.updateProduct(productController.selectedProduct.value.id, {
+               "buyingPrice": double.parse(buyingPrice),
+               "sellingPrice": double.parse(sellingPrice),
+            });
            await  firestore.collection("stocks").doc(id).set({
               "id":id,
               "amount":double.parse(amount),

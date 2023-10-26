@@ -8,7 +8,7 @@ TextEditingController? textEditingController,initialValue, TextInputType? textIn
     child: ClipRRect(
       borderRadius: BorderRadius.circular(15),
       child: Container(
-              color: color??Colors.white,
+              color: color??mutedBackground,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 14),
                 child: TextFormField(
@@ -17,6 +17,7 @@ TextEditingController? textEditingController,initialValue, TextInputType? textIn
                   cursorColor: primaryColor,
                   onChanged: onChanged??(value){},
                   keyboardType: textInputType?? TextInputType.text,
+                  style: TextStyle(color: textColor),
                   maxLines: lines??1,
                   validator: validator??(value){
                         if(value == ""){
@@ -26,8 +27,9 @@ TextEditingController? textEditingController,initialValue, TextInputType? textIn
                   },
                   controller: textEditingController,
                   decoration: InputDecoration(
-                    hintStyle: const TextStyle(fontSize: 15),
+                    hintStyle:  TextStyle(fontSize: 15,color: mutedColor),
                     suffixIcon: suffixIcon??Container(width: 0,),
+                    
                     border: InputBorder.none,hintText: hint),),
               )),
     ),

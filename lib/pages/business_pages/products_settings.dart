@@ -81,7 +81,7 @@ class _ProductsSettingsState extends State<ProductsSettings> {
                                 SizedBox(height: 10,),
                                 ClipRRect(
                                             borderRadius: BorderRadius.circular(10),
-                                            child: Container(width: 80,height: 5,color: primaryColor.withOpacity(0.2),)),
+                                            child: Container(width: 80,height: 5,color: backgroundColor,)),
                                 SizedBox(height: 20,),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -146,7 +146,7 @@ class _ProductsSettingsState extends State<ProductsSettings> {
                                             SizedBox(height: 10,),
                                             ClipRRect(
                                                         borderRadius: BorderRadius.circular(10),
-                                                        child: Container(width: 80,height: 5,color: primaryColor.withOpacity(0.2),)),
+                                                        child: Container(width: 80,height: 5,color: backgroundColor,)),
                                             SizedBox(height: 20,),
                                             Column(
                                               crossAxisAlignment: CrossAxisAlignment.start,

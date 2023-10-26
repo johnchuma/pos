@@ -7,6 +7,7 @@ import 'package:pos/controllers/app_controller.dart';
 import 'package:pos/controllers/auth_controller.dart';
 import 'package:pos/controllers/business_controller.dart';
 import 'package:pos/pages/add_business.dart';
+import 'package:pos/pages/admin/unapproved_product_requests.dart';
 import 'package:pos/pages/business_page.dart';
 import 'package:pos/pages/business_pages/payment_page.dart';
 import 'package:pos/pages/changeLanguage.dart';
@@ -98,8 +99,11 @@ AppController appController = Get.find<AppController>();
                     Get.to(()=> ManagePassword());
                 } ),
 
-               if(appController.isAdmin.value)  menuItem(icon:"assets/staff.png",title: translatedText("Powered POS Clients", "Wateja wa P owered POS"),onTap: (){
+               if(appController.isAdmin.value)  menuItem(icon:"assets/staff.png",title: translatedText("Trade Point Clients", "Wateja wa P owered POS"),onTap: (){
                     Get.to(()=> ClientsPage());
+                } ),
+                if(appController.isAdmin.value)  menuItem(icon:"assets/order.png",title: translatedText("Products requests", "Maulizo ya bidhaa"),onTap: (){
+                    Get.to(()=> UnapprovedProductsRequests());
                 } ),
             
              

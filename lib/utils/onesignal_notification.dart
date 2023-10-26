@@ -16,7 +16,7 @@ Future sendNotification({
         data: {
           "app_id": "b7029800-f6e6-4ce5-a312-438e0d2ea029",
           "include_player_ids": [status?.userId],
-          "headings": {"en": "Welcome to the Powered POS"},
+          "headings": {"en": "Welcome to the Trade Point"},
           "contents": {"en": "We are excited to have you onboard"},
         });
   } on DioError catch (e) {

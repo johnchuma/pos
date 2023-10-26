@@ -73,7 +73,7 @@ class _SaleProductsState extends State<SaleProducts> {
            ClipRRect(
             borderRadius: BorderRadius.circular(15),
              child: Container(
-              color: Colors.black.withOpacity(0.04),
+              color: mutedBackground,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: TextFormField(
@@ -81,11 +81,13 @@ class _SaleProductsState extends State<SaleProducts> {
                   onChanged: (value){
                     productController.searchKeyword.value = value;
                   },
+                
                   decoration:  InputDecoration(
-                  icon: Icon(Icons.search,color: Colors.black26,),
+                  icon: Icon(Icons.search,color: mutedColor,),
                   border: InputBorder.none,
+                 hintStyle: TextStyle(color: mutedColor),
                   hintText: translatedText("Search products here", "Tafuta bidhaa hapa")),
-                style: const TextStyle(fontSize: 13)),
+                style:  TextStyle(fontSize: 13,color: mutedColor)),
               )),
            ),
              
@@ -105,7 +107,7 @@ class _SaleProductsState extends State<SaleProducts> {
                           ClipRRect(
                               borderRadius: BorderRadius.circular(15),
                                child: Container(
-                                decoration: BoxDecoration(gradient: LinearGradient(colors: [primaryColor,primaryColor2])),
+                               color: mutedBackground,
                                 child: Padding(
                                  padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 20),
                                  child: Column(
@@ -187,7 +189,7 @@ class _SaleProductsState extends State<SaleProducts> {
                                             ),
                                             SizedBox(height: 20,),
                      
-                                            customButton(text:translatedText("Sell", "Uza bidhaa"),color: Colors.yellow[800], loading:loading, onClick: (){
+                                            customButton(text:translatedText("Sell", "Uza bidhaa"), loading:loading, onClick: (){
                                               setState(() {
                                                 loading = true;
                                               });
@@ -214,7 +216,7 @@ class _SaleProductsState extends State<SaleProducts> {
                          child: ClipRRect(
                             borderRadius: BorderRadius.circular(15),
                             child: Container(
-                              color: Colors.white,
+                              color: mutedBackground,
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 20),
                                 child: Column(
@@ -266,9 +268,7 @@ class _SaleProductsState extends State<SaleProducts> {
                                                           find.selectedProduct.value = product;
                                                          Get.bottomSheet(AddToCart());
                                                       }),
-                                                       expandedItem(title:"Product summary",iconData: Icons.info_outline,onClick:  (){
-                                                          Get.to(()=>const ProductStock());
-                                                      },elevation: 0),                                                                             
+                                                                                                                                  
                                                     ],
                                                   ):Container(),
                                                 )

@@ -18,7 +18,7 @@ class SupplierController extends GetxController{
       
         Stream<List<Supplier>> getSuppliers() {
           return firestore
-              .collection("suppliers").where("businessId",isEqualTo: businessController.selectedBusiness.value.id)
+              .collection("suppliers").where("businessId",isEqualTo: businessController.selectedBusiness.value?.id)
               .snapshots()
               .asyncMap((QuerySnapshot querySnapshot) async{
                List<Supplier> suppliers = [];
@@ -36,7 +36,7 @@ class SupplierController extends GetxController{
      
       Future<List<Supplier>> findMySuppliers() async{
        QuerySnapshot querySnapshot =await    firestore
-              .collection("suppliers").where("businessId",isEqualTo: businessController.selectedBusiness.value.id)
+              .collection("suppliers").where("businessId",isEqualTo: businessController.selectedBusiness.value?.id)
               .get();
          List<Supplier> suppliers = [];
                   for (var element in querySnapshot.docs) {
@@ -55,7 +55,7 @@ class SupplierController extends GetxController{
            await  firestore.collection("suppliers").doc(id).set({
               "id":id,
               "supplierId":supplierId,
-              "businessId":businessController.selectedBusiness.value.id,
+              "businessId":businessController.selectedBusiness.value?.id,
               "createdAt":Timestamp.now()
             });
           } catch (e) {

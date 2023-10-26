@@ -25,7 +25,7 @@ class NotificationController extends GetxController{
       Stream<List<Message>> getMessages (){
                       return firestore
                     .collection("private_messages")
-                    .where("to", isEqualTo: businessController.selectedBusiness.value.id)
+                    .where("to", isEqualTo: businessController.selectedBusiness.value?.id)
                     .where("readBy", isEqualTo: 1)
                     .snapshots().map((QuerySnapshot messagesSnapshot)  {
                       List<Message> messages = [];
@@ -36,8 +36,25 @@ class NotificationController extends GetxController{
                       return messages;
                     });
                       
-                      } 
-                    
+                } 
+
+             Stream<List<Message>> getUnreadOrderMessages (orderId){
+                      return firestore
+                    .collection("private_messages")
+                    .where("referenceId",isEqualTo:orderId)
+                    .where("to", isEqualTo: businessController.selectedBusiness.value?.id)
+                    .where("readBy", isEqualTo: 1)
+                    .snapshots().map((QuerySnapshot messagesSnapshot)  {
+                      List<Message> messages = [];
+                       for (var doc in messagesSnapshot.docs) {
+                        Message message = Message.fromDocumentSnapshot(doc);
+                        messages.add(message);
+                      }
+                      return messages;
+                    });
+                      
+                } 
+                     
 
         @override
   void onInit() {

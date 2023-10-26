@@ -4,9 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pos/controllers/app_controller.dart';
 import 'package:pos/controllers/auth_controller.dart';
+import 'package:pos/controllers/business_controller.dart';
+import 'package:pos/controllers/businesses_chat_controller.dart';
 import 'package:pos/controllers/clients_controller.dart';
 import 'package:pos/controllers/private_chat_controller.dart';
-import 'package:pos/controllers/supplier_client_chat_controller.dart';
+import 'package:pos/controllers/order_chat_controller.dart';
+import 'package:pos/controllers/supplier_controller.dart';
 import 'package:pos/models/client.dart';
 import 'package:pos/models/message_model.dart';
 import 'package:pos/utils/colors.dart';
@@ -18,7 +21,7 @@ import 'package:pos/widgets/muted_text.dart';
 
 class OrderChatPage extends StatefulWidget {
   
-   OrderChatPage({super.key});
+   const OrderChatPage({super.key});
 
   @override
   State<OrderChatPage> createState() => _OrderChatPageState();
@@ -29,8 +32,10 @@ class _OrderChatPageState extends State<OrderChatPage> {
   TextEditingController messageController = TextEditingController();
   AuthController authController  = Get.find<AuthController>();
   ClientsController clientController  = Get.find<ClientsController>();
-
+ 
+  BusinessController businessController = Get.find<BusinessController>();
   AppController appController = Get.find<AppController>();
+  
   int index = 0;
   @override
   Widget build(BuildContext context) {
@@ -49,14 +54,16 @@ class _OrderChatPageState extends State<OrderChatPage> {
            Row(
             children: [
               back(),
-              SizedBox(width: 20,),
-              heading2(text: "Order chat room")
+              const SizedBox(width: 20,),
+              avatar(size: 35,image: businessController.selectedSender.value.image),
+              SizedBox(width: 10,),
+              heading2(text: businessController.selectedSender.value.name)
             ],
           )
           ],),
         ),
-        body: GetX<SupplierClientChatController>(
-          init: SupplierClientChatController(),
+        body: GetX<OrderChatController>(
+          init: OrderChatController(),
           builder: (find) {
             return SizedBox(
               height: MediaQuery.of(context).size.height,
@@ -67,6 +74,7 @@ class _OrderChatPageState extends State<OrderChatPage> {
                   Column(
                    crossAxisAlignment: CrossAxisAlignment.start,
                     children:  [
+                     
                       Expanded(
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -101,6 +109,8 @@ class _OrderChatPageState extends State<OrderChatPage> {
                       }),
                       maxLines: 4,
                       minLines: 1,
+                      style: TextStyle(color: textColor),
+                     
                       decoration:  InputDecoration(
                         hintStyle: TextStyle(color: mutedColor),
                         suffixIcon: GestureDetector(
@@ -123,7 +133,7 @@ class _OrderChatPageState extends State<OrderChatPage> {
                                 )),
                               )),
                             ),
-                        border: InputBorder.none,hintText: "Type your message here..."),),
+                        border: InputBorder.none,hintText: "Type your message here...")),
                   )),
                    )
                 ],

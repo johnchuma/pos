@@ -15,7 +15,7 @@ class AttendanceController extends GetxController{
         BusinessController businessController = Get.find<BusinessController>();
         Stream<List<Attendance>> getAttendances() {
           return firestore
-              .collection("attendances").where("businessId",isEqualTo: businessController.selectedBusiness.value.id).orderBy("createdAt",descending: true)
+              .collection("attendances").where("businessId",isEqualTo: businessController.selectedBusiness.value?.id).orderBy("createdAt",descending: true)
               .snapshots()
               .asyncMap((QuerySnapshot querySnapshot) async{
                List<Attendance> attendances = [];
@@ -34,7 +34,7 @@ class AttendanceController extends GetxController{
            await  firestore.collection("attendances").doc(id).set({
               "id":id,
               "staffId":authController.auth.currentUser?.email,
-              "businessId":businessController.selectedBusiness.value.id,
+              "businessId":businessController.selectedBusiness.value?.id,
               "checkInTime":Timestamp.now(),
               "checkOutTime":null,
               "createdAt":Timestamp.now()

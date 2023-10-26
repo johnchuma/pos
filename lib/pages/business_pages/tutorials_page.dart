@@ -66,7 +66,7 @@ class _TutorialsPageState extends State<TutorialsPage> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
                       child: Container(
-                        color: Colors.white,
+                        color: mutedBackground,
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                           

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pos/utils/colors.dart';
 import 'package:pos/widgets/heading2_text.dart';
 import 'package:pos/widgets/muted_text.dart';
 
@@ -7,6 +8,7 @@ import 'package:pos/widgets/muted_text.dart';
         Get.defaultDialog(
           title: "",
           titlePadding: EdgeInsets.all(0),
+          backgroundColor: mutedBackground,
           
           contentPadding: EdgeInsets.symmetric(horizontal: 20),
           radius: 15,

@@ -77,7 +77,7 @@ class _StaffSalesMainState extends State<StaffSalesMain> {
                                   Get.bottomSheet(SingleChildScrollView(
                                     child: ClipRRect(
                                       borderRadius: const BorderRadius.only(topRight: Radius.circular(15),topLeft: Radius.circular(15)),
-                                      child: Container(color: Colors.white,child: Padding(
+                                      child: Container(color: mutedBackground,child: Padding(
                                         padding: const EdgeInsets.symmetric(horizontal: 20),
                                         child: Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -87,9 +87,9 @@ class _StaffSalesMainState extends State<StaffSalesMain> {
                                           mainAxisAlignment: MainAxisAlignment.center,
                                           children: [ClipRRect(
                                             borderRadius: BorderRadius.circular(15),
-                                            child: Container(width: 80,height: 5,color: primaryColor.withOpacity(0.2),))],),
+                                            child: Container(width: 80,height: 5,color: backgroundColor,))],),
                                                                          SizedBox(height: 20,),
-                                                                         heading2(text: "Filter sales reports by date range",color: primaryColor)
+                                                                         heading2(text: "Filter sales reports by date range",color: textColor)
                                         , 
                                          const SizedBox(height: 20,),
                                         

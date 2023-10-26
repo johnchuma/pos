@@ -6,6 +6,7 @@ import 'package:pos/controllers/business_controller.dart';
 import 'package:pos/controllers/product_controller.dart';
 import 'package:pos/controllers/product_sales_controller.dart';
 import 'package:pos/pages/business_pages/add_product.dart';
+import 'package:pos/pages/business_pages/edit_pages/edit_product.dart';
 import 'package:pos/pages/business_pages/product_sales_main.dart';
 import 'package:pos/pages/business_pages/product_stock.dart';
 import 'package:pos/utils/colors.dart';
@@ -13,6 +14,7 @@ import 'package:pos/utils/delete_confirmation.dart';
 import 'package:pos/utils/format_date.dart';
 import 'package:pos/utils/notifications.dart';
 import 'package:pos/widgets/back.dart';
+import 'package:pos/widgets/bottomsheet_template.dart';
 import 'package:pos/widgets/custom_button.dart';
 import 'package:pos/widgets/expanded_item.dart';
 import 'package:pos/widgets/heading2_text.dart';
@@ -97,7 +99,7 @@ class _ProductsPageState extends State<ProductsPage> {
                      child: ClipRRect(
                         borderRadius: BorderRadius.circular(15),
                         child: Container(
-                          color: Colors.white,
+                          color: mutedBackground,
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 20),
                             child: Column(
@@ -137,8 +139,69 @@ class _ProductsPageState extends State<ProductsPage> {
                                               duration: const Duration(milliseconds: 200),
                                               child: productId == product.id ? Column(
                                                 children: [
-                                                  const SizedBox(height: 10,),                      
-                                                  expandedItem(title:translatedText("Product stock", "Mzigo wa bidhaa"), iconData:Icons.storage,onClick:  (){
+                                                  const SizedBox(height: 10,),            
+                                                   expandedItem(title:translatedText("Change visibility", "Bidilisha uonekanaji"), iconData:Icons.remove_red_eye,onClick:  (){
+                                                            Get.bottomSheet(SingleChildScrollView(
+                                                              child: ClipRRect(
+                                                              borderRadius: const BorderRadius.only(topRight: Radius.circular(15),topLeft: Radius.circular(15)),
+                                                              child: Container(
+                                                                color: mutedBackground,
+                                                                child: Padding(
+                                                                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                                                                  child: Column(
+                                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                                    children: [
+                                                                    const SizedBox(height: 10,),
+                                                                    Row(
+                                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                                      children: [ClipRRect(
+                                                                        borderRadius: BorderRadius.circular(15),
+                                                                        child: Container(width: 80,height: 5,color: backgroundColor,))],),
+                                                                    SizedBox(height: 20,),
+                                                                    heading2(text: "Change visibility"),
+                                                                    Obx(
+                                                                     ()=>Row(
+                                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                      children: [
+                                                                        mutedText(text: "Make product public"),
+                                                                        Switch(value: product.isPublic.value,activeColor: primaryColor, onChanged: (value){
+                                                                          product.isPublic.value = value;
+                    
+                                                                          find.updateProduct(product.id, {"isPublic":value});
+                                                                        })
+                                                                      ],),
+                                                                    ),
+                                                                                                                    SizedBox(height: 20,),
+                                                                  ],),
+                                                                ),),
+                                                              ),
+                                                            ));
+                                                  }),     
+                                                   expandedItem(title:translatedText("Product features", "Sifa za bidhaa"), iconData:Icons.list,onClick:  (){
+                                                      find.selectedProduct.value = product;
+                                                      Get.bottomSheet(bottomSheetTemplate(widget: Container(child: Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        children: [
+                                                        heading2(text: "Product features"),
+                                                        SizedBox(height: 20,),
+                                                        Column(
+                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                            children:product.properties.map((item) =>Padding(
+                                                              padding: const EdgeInsets.only(bottom: 10),
+                                                              child: ClipRRect(
+                                                                borderRadius: BorderRadius.circular(15),
+                                                                child: Container(
+                                                                color: backgroundColor,
+                                                                width: double.infinity,
+                                                                child: Padding(
+                                                                padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 15),
+                                                                child: paragraph(text: "${item["title"]}:  ${item["value"]}" ),
+                                                                                )),
+                                                              ),
+                                                            )).toList(),),
+                                                      ],),)));
+                                                  }),     
+                                                  expandedItem(title:translatedText("Product stock", "Mzigo wa bidhaa"), iconData:Icons.add_box,onClick:  (){
                                                       find.selectedProduct.value = product;
                                                       Get.to(()=>const ProductStock());
                                                   }),
@@ -146,6 +209,11 @@ class _ProductsPageState extends State<ProductsPage> {
                                                       productSaleController.selectedProduct.value = product;
                                                       Get.to(()=>const ProductsSalesMain());
                                                   },elevation: 0),  
+
+                                                  expandedItem(title:translatedText("Edit product details", "Badili taarifa"), iconData:Icons.edit,onClick:  (){
+                                                      find.selectedProduct.value = product;
+                                                      Get.to(()=> EditProduct());
+                                                  }),
                                                    expandedItem(title:translatedText("Delete product","Futa bidhaa"),iconData: Icons.cancel,onClick:  (){
                                                       confirmDelete(context,onClick: (){
                                                         find.deleteProduct(product.id);

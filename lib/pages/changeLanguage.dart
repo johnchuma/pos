@@ -33,7 +33,7 @@ AuthController authController = Get.find<AuthController>();
                 child: AnimatedSize(
                   duration: Duration(seconds: 3),
                   child: Container(
-                    color: Colors.white,
+                    color: mutedBackground,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: Column(
@@ -44,7 +44,7 @@ AuthController authController = Get.find<AuthController>();
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [ClipRRect(
                             borderRadius: BorderRadius.circular(15),
-                            child: Container(width: 80,height: 5,color: primaryColor.withOpacity(0.2),))],),
+                            child: Container(width: 80,height: 5,color: backgroundColor,))],),
                 
                 
                         const SizedBox(height: 20,),

@@ -72,7 +72,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
                        child: ClipRRect(
                           borderRadius: BorderRadius.circular(15),
                           child: Container(
-                            color: Colors.white,
+                            color: mutedBackground,
                             child: Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 20),
                               child: Column(
@@ -109,7 +109,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
                                                   int days = snapshot.requireData;
                                                   return Container(
                                                     
-                                                    child: heading2(text: translatedText("${days} days left", "Zimebaki siku ${days}"),color:primaryColor,fontSize: 12),);
+                                                    child: heading2(text: translatedText("${days} days left", "Zimebaki siku ${days}"),color:mutedColor,fontSize: 12),);
                                                 }
                                               ),
                                          ),
@@ -131,13 +131,13 @@ class _PaymentsPageState extends State<PaymentsPage> {
                                                 child: Padding(
                                                   padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),
                                                   child: Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
-                                                    paragraph(text: translatedText("To avoid inconviniences, you are advised to pay at least 10 days before your subscriptions ends", "Kuepuka kadhaa, tunakushauri kulipia siku kumi kabla ya muda wa kutumia haujaisha"))
+                                                    mutedText(text: translatedText("To avoid inconviniences, you are advised to pay at least 10 days before your subscriptions ends, subscription fee per month is 10,000TZS", "Kuepuka kadhaa, tunakushauri kulipia siku kumi kabla ya muda wa kutumia haujaisha, ada ya kutumia kwa mwezi ni 10,000 TZS"))
                                                     
                                                     ,GestureDetector(
                                                       onTap: (){
                                                         Get.bottomSheet(SubscribeNowPage());
                                                       },
-                                                      child: heading2(text: translatedText("Pay now", "Lipia sasa"),color: Colors.green[900]))
+                                                      child: heading2(text: translatedText("Pay now", "Lipia sasa"),color: Colors.orange[900]))
                                                                                             ],),
                                                 ),),
                                     ),

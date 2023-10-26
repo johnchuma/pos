@@ -18,6 +18,7 @@ class AuthController extends GetxController {
   FirebaseStorage storage = FirebaseStorage.instance;
 
   Rx<User?> userController = Rx<User?>(null);
+  Rx<Client?> me = Rx<Client?>(null);
   User? get user => userController.value;
   bool isLoading =true;
   Rx<bool> loading =Rx<bool>(false);

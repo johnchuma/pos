@@ -20,14 +20,22 @@ class PrivateChatController extends GetxController{
          String? userId;
       
         Stream<List<Message>> getMessages() {
+           var ids = ["admin"];
+           if(clientController.selectedClient.value == null){
+              ids.add(authContoller.user!.email!);
+           }
+           else{
+            ids.add(clientController.selectedClient.value!.email);
+           }
+           
+             ids.sort();
           return firestore
-              .collection("private_messages").where("userId",isEqualTo:appController.isAdmin.value?clientController.selectedClient.value.email:authContoller.user?.email).orderBy("createdAt",descending: true)
+              .collection("private_messages").where("chatMembers",isEqualTo:ids).orderBy("createdAt",descending: true)
               .snapshots() 
               .asyncMap((QuerySnapshot querySnapshot) async {
             List<Message> messages = [];
             for (var element in querySnapshot.docs) {
              Message message = Message.fromDocumentSnapshot(element);
-            
               messages.add(message);
             }
             return  messages;
@@ -46,28 +54,25 @@ class PrivateChatController extends GetxController{
 
       Future<void> sendMessage (message)async{
           try {
+           var array = [clientController.selectedClient.value == null?authContoller.user?.email:clientController.selectedClient.value?.email,"admin"];
+            array.sort();
             var id = Timestamp.now().toDate().toString();
               await  firestore.collection("private_messages").doc(id).set({
               "id":id,
               "message":message,
-              "name":authContoller.auth.currentUser?.displayName,
+              "name": authContoller.user?.displayName,
               "messageSender":"client",
               "replyTo":"",
-              "isRead":false,
               "repliedMessageId":"",
               "image":"",
-              "sentBy": authContoller.auth.currentUser?.email,
-              "userId": appController.isAdmin.value?clientController.selectedClient.value.email: authContoller.user?.email,
+              "referenceId":"",
+              "readBy":1,
+              "chatMembers":array,
+              "from":clientController.selectedClient.value == null?authContoller.user?.email:"admin",
+              "to":clientController.selectedClient.value == null?"admin":clientController.selectedClient.value?.email,
               "createdAt":Timestamp.now()
             });
-           await firestore.collection("conversations").doc(userId).set({
-              "id":userId,
-              "lastMessage":message,
-              'from':authContoller.user?.email,
-              'to':appController.isAdmin.value?clientController.selectedClient.value.email: authContoller.user?.email,
-              "createdAt":Timestamp.now()              
-            });
-        
+           
           } catch (e) {
             print(e);
           }

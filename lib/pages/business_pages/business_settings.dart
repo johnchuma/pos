@@ -1,7 +1,12 @@
+import 'dart:io';
+import 'dart:ui';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
+import 'package:pos/controllers/auth_controller.dart';
 import 'package:pos/controllers/business_controller.dart';
 
 import 'package:pos/controllers/register_controller.dart';
@@ -11,6 +16,7 @@ import 'package:pos/models/business.dart';
 import 'package:pos/models/staff_registers.dart';
 import 'package:pos/utils/colors.dart';
 import 'package:pos/utils/delete_confirmation.dart';
+import 'package:pos/utils/file_picker.dart';
 import 'package:pos/utils/find_location.dart';
 import 'package:pos/utils/notifications.dart';
 import 'package:pos/widgets/back.dart';
@@ -19,6 +25,7 @@ import 'package:pos/widgets/heading2_text.dart';
 import 'package:pos/widgets/muted_text.dart';
 import 'package:pos/widgets/paragraph.dart';
 import 'package:pos/widgets/text_form.dart';
+import 'package:pos/widgets/translatedText.dart';
 
 class BusinessSettings extends StatefulWidget {
   const BusinessSettings({super.key});
@@ -37,10 +44,12 @@ double? latitude ;
 double? longitude;
 bool loading = false;
 bool loading2 = false;
-
+ var imageFile;
+  var path = "";
+  var networkImage = "";
 @override
   void initState() {
-    Business business = businessController.selectedBusiness.value;
+    Business business = businessController.selectedBusiness.value!;
 
     if(business.latitude !=0){
         latitude = business.latitude;
@@ -52,14 +61,14 @@ bool loading2 = false;
     phoneController.text = business.phone;
     addressController.text = business.address;
 
-    
+    networkImage = business.image;
 
     super.initState();
   }
-
+  
   @override
   Widget build(BuildContext context) {
-    Business business = businessController.selectedBusiness.value;
+    Business business = businessController.selectedBusiness.value!;
     return Scaffold(
        backgroundColor: backgroundColor,
       appBar: AppBar(leading: back(),backgroundColor: backgroundColor,elevation: 0.3,
@@ -81,6 +90,88 @@ bool loading2 = false;
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+               Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                  paragraph(text: translatedText("Product image", "Weka picha ya bidhaa") ),
+                    path != "" || networkImage != "" ? GestureDetector(
+                      onTap: (){
+                        setState(() {
+                          path = "";
+                          networkImage = "";
+                        });
+                      },
+                      child: Icon(Icons.cancel,size: 20,color: textColor.withOpacity(0.5),)):Container()
+                    ],
+                  ),
+                  SizedBox(height: 10,),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(15),
+                    child: Container(
+                      color: mutedBackground,
+                      height: 250,
+                      width: double.infinity,
+                      child:  Padding(
+                        padding: const EdgeInsets.all(0),
+                        child: path != "" 
+                        ? Image.file(imageFile,fit: BoxFit.cover)
+                        : networkImage != ""? CachedNetworkImage(imageUrl: networkImage,fit: BoxFit.cover,):  Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            GestureDetector(
+                              onTap: (){
+                                  pickImageFromGalley().then((value) {
+                                    if(value != null){
+                                      setState(() {
+                                        imageFile = File.fromUri(Uri.file(value.path));
+                                      path = value.path;
+                                      });
+                                      
+                                    }
+                                  });
+                              },
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.all(0),
+                                    child: Icon(Icons.camera,size: 30,color: textColor.withOpacity(0.4),),
+                                  ),
+                                  mutedText(text: "Gallery")
+                                ],
+                              ),
+                            ),
+                            SizedBox(width: 50,),
+                            GestureDetector(
+                              onTap: (){
+                                  pickImageFromCamera().then((value) {
+                                    if(value != null){
+                                      setState(() {
+                                        imageFile = File.fromUri(Uri.file(value.path));
+                                      path = value.path;
+                                      });
+                                      
+                                    }
+                                  });
+                              },
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.all(0),
+                                    child: Icon(Icons.add_a_photo,size: 30,color: textColor.withOpacity(0.4),),
+                                  ),
+                                  mutedText(text: "Camera")
+                                ],
+                              ),
+                            ),
+                          ],
+                        )
+                    )),
+                  ),
+             SizedBox(height: 20,),
+
                 paragraph(text: "Business name"),
              SizedBox(height: 5,),
       
@@ -94,6 +185,7 @@ bool loading2 = false;
              TextForm(hint: "Business phone number",textEditingController: phoneController,onChanged:(value){
               business.phone = value;
              }),
+             
              SizedBox(height: 10,),
              paragraph(text: "Business address"),
              SizedBox(height: 5,),
@@ -107,7 +199,7 @@ bool loading2 = false;
              ClipRRect(
               borderRadius: BorderRadius.circular(15),
                child: Container(
-                color: Colors.white,
+                color: mutedBackground,
                 child: Padding(
                   padding: const EdgeInsets.all(20),
                   child: Column(
@@ -162,17 +254,23 @@ bool loading2 = false;
              }),
              SizedBox(height: 10,),
              SizedBox(height: 30,),
-           customButton(text: "Update details",loading: loading2, onClick: (){
+           customButton(text: "Update details",loading: loading2, onClick: ()async{
             {
-                 var data = {
+                
+                 setState(() {
+                   loading2= true;
+                 });
+                 var image = "";
+                 if(path != ""){
+                     image  = await  AuthController().getImageLink(imageFile);
+                 }       
+               var data = {
                   "name":business.name,
                   "phone":business.phone,
                   "address":business.address,
                   "description":business.description,
+                  "image":path == ""?business.image:image
                  };
-                 setState(() {
-                   loading2= true;
-                 });
                  businessController.updateBusiness(data:data).then((value) {
                      setState(() {
                    loading2= false;

@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'package:pos/models/Message_model.dart';
 import 'package:pos/models/business.dart';
 import 'package:pos/models/product_order.dart';
 
@@ -11,7 +12,9 @@ class SupplierOrder{
   late String supplierId;
   late bool isClosed= false;
   late bool inAppOrder ;
+  late Rx<List<Message>> unreadMessages = Rx<List<Message>>([]);
   late Business supplier;
+  late Business from;
   late Rx<List<ProductOrder>> productOrders = Rx<List<ProductOrder>>([]);
   bool areAllProductsDelivered(){
       int index = 0;

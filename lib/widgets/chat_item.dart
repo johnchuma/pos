@@ -1,7 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:pos/controllers/auth_controller.dart';
 import 'package:pos/controllers/business_controller.dart';
+import 'package:pos/controllers/clients_controller.dart';
+import 'package:pos/controllers/product_request_controller.dart';
 import 'package:pos/models/message_model.dart';
+import 'package:pos/models/product_request.dart';
 import 'package:pos/utils/colors.dart';
 import 'package:pos/widgets/avatar.dart';
 import 'package:pos/widgets/heading2_text.dart';
@@ -16,7 +19,18 @@ Widget chatItem({var item}){
   AuthController authController = Get.find<AuthController>();
   BusinessController  businessController = Get.find<BusinessController>();
 
-  var isMe = item.from == authController.auth.currentUser?.email || item.from == businessController.selectedBusiness.value.id ?true:false;
+  bool isMe = false ;
+  if(businessController.selectedBusiness.value != null){
+ isMe = item.from == authController.auth.currentUser?.email || item.from == businessController.selectedBusiness.value?.id;
+
+  }
+  else if(authController.me.value?.role == "admin"){
+    isMe = item.from == "admin";
+  }
+  else {
+ isMe =  item.from == authController.auth.currentUser?.email ;
+
+  }
   return Padding(
     padding:  EdgeInsets.only(top: 15,right: isMe?0:40,left: isMe?40:0),
     child: Column(
@@ -38,7 +52,7 @@ Widget chatItem({var item}){
                     ClipRRect(
                       borderRadius: BorderRadius.circular(15),
                       child: Container(
-                                        color: isMe?primaryColor: Colors.white,
+                                        color: isMe?primaryColor: mutedBackground,
                                         child: Padding(
                                           padding: const EdgeInsets.all(20),
                                           child: Column(
@@ -51,11 +65,11 @@ Widget chatItem({var item}){
                                         )
                                       ),
                     ),
-                    SizedBox(height: 3,),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 5),
-          child: mutedText(text: timeago.format(item.createdAt.toDate()),fontSize: 13),
-        )
+                    const SizedBox(height: 3,),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5),
+                        child: mutedText(text: timeago.format(item.createdAt.toDate()),fontSize: 13),
+                      )
                   ],
                 ),
               ),

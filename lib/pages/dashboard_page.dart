@@ -53,50 +53,41 @@ String language = appController.language.value;
     
         body:Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-              const SizedBox(height: 20,),
-                 Material(
-                  color: Colors.white,
-              
-                  borderRadius: BorderRadius.circular(15),
-                  child: Padding(
-                   padding: const EdgeInsets.all(20),
-                   child: Column
-                   (
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                    headingText(text:  translatedText("Add business", "Ongeza biashara mpya")),
-                    const SizedBox(height: 5,),
-                 
-                    mutedText(text: translatedText("Add your business here to start managing", "Weka biashara yako kuanza kusimamia.") ),
-                    const SizedBox(height: 20,),
-                    customButton(text: translatedText("Add business", "Ongeza biashara mpya"),onClick: (){
-                      Get.to(()=>AddBusiness());
-                      // sendNotification();
-                    })
+          child: Column(
+            children: [
+              Expanded(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: ListView(
                     
-                   ],),
-                 ),),
-                 const SizedBox(height: 30,),
-                 heading2(text: translatedText("My businesses", "Biashara zangu")),
-                 const SizedBox(height: 20,),
-                 GetX<BusinessController>(
-                  init: BusinessController(),
-                   builder: (find) {
-                     return find.businesses.isEmpty ? noData():Column(children:find.businesses.map((business) => GestureDetector(
-                      onTap: (){
-                        find.selectedBusiness.value = business;
+                    children: [
+                              
+            SizedBox(height: 10,),
+                   
+                       GetX<BusinessController>(
+                        init: BusinessController(),
+                         builder: (find) {
+                           return find.businesses.isEmpty ? noData():Column(children:find.businesses.map((business) => GestureDetector(
+                            onTap: (){
+                              find.selectedBusiness.value = business;
+                              Get.to(()=>const BusinessPage());
+                            },
+                             child: businessItem(business),
+                           ) ).toList());
+                         }
+                       ),
                         
-                        Get.to(()=>const BusinessPage());
-                      },
-                       child: businessItem(business),
-                     ) ).toList());
-                   }
-                 )
-            ],),
+                  ],), 
+                ),
+              ),
+              SizedBox(height: 20,),
+               customButton(text: translatedText("Add business", "Ongeza biashara mpya"),onClick: (){
+                          Get.to(()=>AddBusiness());
+                          // sendNotification();
+                        }),
+              SizedBox(height: 10,),
+
+            ],
           ),
         ),
       ),

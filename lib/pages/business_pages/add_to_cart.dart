@@ -29,7 +29,7 @@ ProductController  productController =  Get.find<ProductController>();
       child: ClipRRect(
             borderRadius: const BorderRadius.only(topRight: Radius.circular(15),topLeft: Radius.circular(15)),
             child: Container(
-              color: Colors.white,
+              color: mutedBackground,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
@@ -40,7 +40,7 @@ ProductController  productController =  Get.find<ProductController>();
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [ClipRRect(
                       borderRadius: BorderRadius.circular(15),
-                      child: Container(width: 80,height: 5,color: primaryColor.withOpacity(0.2),))],),
+                      child: Container(width: 80,height: 5,color: backgroundColor,))],),
                   const SizedBox(height: 20,),
                   heading2(text: "Add to cart"),
                   SizedBox(height: 20),
@@ -69,7 +69,7 @@ ProductController  productController =  Get.find<ProductController>();
                         },
                         child: ClipOval(
                           child: Container(
-                            color: Colors.red.withOpacity(0.3),
+                            color:mutedColor,
                             child: Padding(
                               padding: const EdgeInsets.all(3),
                               child: Icon(Icons.remove,color: Colors.black,),
@@ -89,7 +89,7 @@ ProductController  productController =  Get.find<ProductController>();
                         },
                          child: ClipOval(
                           child: Container(
-                            color: Colors.green.withOpacity(0.3),
+                            color:mutedColor,
                             child: Padding(
                               padding: const EdgeInsets.all(3),
                               child: Icon(Icons.add,color: Colors.black,),
@@ -110,7 +110,7 @@ ProductController  productController =  Get.find<ProductController>();
                   ClipRRect(
                     borderRadius: BorderRadius.circular(15),
                     child: Container(
-                      color: Colors.green.withOpacity(0.1),
+                      color: Colors.green.withOpacity(0.5),
                       child: Padding(
                         padding: const EdgeInsets.all(10),
                         child: Column(

@@ -7,7 +7,7 @@ import 'package:pos/controllers/business_controller.dart';
 import 'package:pos/controllers/explore_suppliers_controller.dart';
 import 'package:pos/controllers/stock_controller.dart';
 import 'package:pos/controllers/supplier_controller.dart';
-import 'package:pos/controllers/supplier_order_controller.dart';
+import 'package:pos/controllers/retailer_order_controller.dart';
 import 'package:pos/models/business.dart';
 import 'package:pos/pages/business_pages/business_to_supplier_chat_page.dart';
 import 'package:pos/utils/colors.dart';
@@ -39,7 +39,7 @@ class _FindSupplierState extends State<FindSupplier> {
 
   @override
   void initState() {
-    SupplierOrderController supplierOrderController = Get.put(SupplierOrderController());
+    RetailerOrderController retailerOrderController = Get.put(RetailerOrderController());
 
     super.initState();
   }
@@ -84,7 +84,7 @@ class _FindSupplierState extends State<FindSupplier> {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(15),
                             child: Container(
-                              color: Colors.white,
+                              color: mutedBackground,
                               child:Padding(
                                 padding: const EdgeInsets.all(0),
                                 child: Column(
@@ -154,7 +154,7 @@ class _FindSupplierState extends State<FindSupplier> {
                                            child: ClipRRect(
                                              borderRadius: const BorderRadius.only(topRight: Radius.circular(20),topLeft: Radius.circular(20)),
                                              child: Container(
-                                              color: Colors.white,
+                                              color:mutedBackground ,
                                               child: Padding(
                                                 padding: const EdgeInsets.symmetric(horizontal: 20),
                                                 child: Column(children: [
@@ -163,7 +163,7 @@ class _FindSupplierState extends State<FindSupplier> {
                                                     mainAxisAlignment: MainAxisAlignment.center,
                                                     children: [ClipRRect(
                                                       borderRadius: BorderRadius.circular(10),
-                                                      child: Container(width: 80,height: 5,color: primaryColor.withOpacity(0.2),))],),
+                                                      child: Container(width: 80,height: 5,color: backgroundColor,))],),
                                                       SizedBox(height: 20,),
                                                   Container(
                                                     height: 100,

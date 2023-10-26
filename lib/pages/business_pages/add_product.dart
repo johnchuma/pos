@@ -11,6 +11,7 @@ import 'package:pos/utils/file_picker.dart';
 import 'package:pos/widgets/back.dart';
 import 'package:pos/widgets/custom_button.dart';
 import 'package:pos/widgets/heading2_text.dart';
+import 'package:pos/widgets/menu_item.dart';
 import 'package:pos/widgets/muted_text.dart';
 import 'package:pos/widgets/paragraph.dart';
 import 'package:pos/widgets/text_form.dart';
@@ -28,6 +29,9 @@ class _AddProductState extends State<AddProduct> {
    final _formKey = GlobalKey<FormState>();
 
    TextEditingController nameController = TextEditingController();
+   TextEditingController titleController = TextEditingController();
+   TextEditingController valueController = TextEditingController();
+
    TextEditingController descriptionController = TextEditingController();
   
 
@@ -37,6 +41,7 @@ class _AddProductState extends State<AddProduct> {
   var path = "";
   bool loading = false;
   List relatedTo = [];
+  List<Map> properties = [];
   @override
   Widget build(BuildContext context) {
   return  Scaffold(
@@ -85,7 +90,7 @@ class _AddProductState extends State<AddProduct> {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(15),
                     child: Container(
-                      color: Colors.white,
+                      color: mutedBackground,
                       height: 250,
                       width: double.infinity,
                       child:  Padding(
@@ -148,6 +153,86 @@ class _AddProductState extends State<AddProduct> {
                     )),
                   ),
                    const SizedBox(height: 30,),
+                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                    heading2(text: "Add product properties"), GestureDetector(
+                      onTap: (){
+                        Get.bottomSheet(SingleChildScrollView(child: 
+                        ClipRRect(
+                        borderRadius: const BorderRadius.only(topRight: Radius.circular(15),topLeft: Radius.circular(15)),
+                        child: Container(
+                          color: mutedBackground,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                              const SizedBox(height: 10,),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [ClipRRect(
+                                  borderRadius: BorderRadius.circular(15),
+                                  child: Container(width: 80,height: 5,color: backgroundColor,))],),
+                                SizedBox(height: 20,),
+                                heading2(text: "Product properties"),
+                                SizedBox(height: 20,),
+                                paragraph(text: "Title"),
+                                TextForm(hint: "Properties title",textEditingController: titleController,color: backgroundColor),
+                                paragraph(text: "Value"),
+                                TextForm(hint: "Properties  value/info",textEditingController: valueController,color:backgroundColor ),
+                                SizedBox(height: 20,),
+                                customButton(text: "Add properties",onClick: (){
+                                         Get.back();
+                                         setState(() {
+                                         properties.add({"title":titleController.text,"value":valueController.text});
+                                           
+                                         });
+                              
+                                }),
+                                SizedBox(height: 20,),
+                                                    
+                                                    
+                              ],),
+                            ),
+                          ),
+                        )));
+                      },
+                      child: Icon(Icons.add_circle,color: primaryColor,))
+                   ],),
+                   SizedBox(height: 15,),
+                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children:properties.map((item) =>Padding(
+                      padding: const EdgeInsets.only(bottom: 10),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(15),
+                        child: Container(
+                        color: mutedBackground,
+                        width: double.infinity,
+                        child: Padding(
+                         padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 15),
+                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                           children: [
+                             paragraph(text: "${item["title"]}:  ${item["value"]}" ),
+                             GestureDetector(
+                              onTap: (){
+                                setState(() {
+                                properties.remove(item);
+                                  
+                                });
+                              },
+                              child: Icon(Icons.delete,color: mutedColor,))
+                           ],
+                         ),
+                                         )),
+                      ),
+                    )).toList(),),
+              
+                   const SizedBox(height: 30,),
+
+
                   
                    customButton(text: translatedText("Add product", "Ongeza bidhaa"), loading: loading, onClick: (){
                    
@@ -155,7 +240,7 @@ class _AddProductState extends State<AddProduct> {
                          setState(() {
                          loading = true;
                        });
-                      ProductController().addNormalProduct(nameController.text,imageFile).then((value) {
+                      ProductController().addNormalProduct(nameController.text,imageFile,properties).then((value) {
                         Get.back();
                       });}
                    }),      

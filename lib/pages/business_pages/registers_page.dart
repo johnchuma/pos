@@ -7,6 +7,7 @@ import 'package:pos/controllers/register_controller.dart';
 import 'package:pos/controllers/worker_controller.dart';
 import 'package:pos/pages/add_worker.dart';
 import 'package:pos/pages/business_pages/add_register.dart';
+import 'package:pos/pages/business_pages/edit_pages/edit_register.dart';
 import 'package:pos/pages/business_pages/product_stock.dart';
 import 'package:pos/utils/colors.dart';
 import 'package:pos/utils/delete_confirmation.dart';
@@ -92,7 +93,7 @@ class _RegistersPageState extends State<RegistersPage> {
                      child: ClipRRect(
                         borderRadius: BorderRadius.circular(15),
                         child: Container(
-                          color: Colors.white,
+                          color: mutedBackground,
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 20),
                             child: Column(
@@ -128,8 +129,11 @@ class _RegistersPageState extends State<RegistersPage> {
                                               child:registerId == register.id ? Column(
                                                 children: [
                                                   const SizedBox(height: 10,),                      
-                                                  // expandedItem(title:translatedText("Edit register", "Boresha taarifa za dirisha"), iconData:Icons.table_restaurant, onClick:  (){   
-                                                  // }),
+                                                  expandedItem(title:translatedText("Edit register", "Boresha taarifa za dirisha"), iconData:Icons.edit, onClick:  (){   
+                                                   find.selectedRegister = register;
+                                                   Get.to(()=>UpdateRegister());
+                                                  
+                                                  }),
                                                    expandedItem(title:translatedText("Delete register", "Futa dirisha"), iconData:Icons.delete, onClick:  (){
                                                     confirmDelete(context,onClick:  (){
                                                         find.deleteRegister(register.id);

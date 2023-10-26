@@ -69,7 +69,7 @@ class _AddBusinessState extends State<AddBusiness> {
               ClipRRect(
                 borderRadius: BorderRadius.circular(20),
                 child: Container(
-                  color: Colors.white,
+                  color: mutedBackground,
                   child: Padding(
                     padding: const EdgeInsets.all(20),
                     child: Obx(
@@ -115,7 +115,7 @@ class _AddBusinessState extends State<AddBusiness> {
                ClipRRect(
                     borderRadius: BorderRadius.circular(15),
                     child: Container(
-                      color: Colors.white,
+                      color: mutedBackground,
                       height: 250,
                       width: double.infinity,
                       child:  Padding(
@@ -188,20 +188,14 @@ class _AddBusinessState extends State<AddBusiness> {
                   return ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: Container(
-                      color: Colors.white,
+                      color: mutedBackground,
                       width: double.infinity,
                       child: Padding(
                         padding: const EdgeInsets.all(20),
-                        child: Wrap(children: find.stores.map((item) =>Padding(
-                          padding: const EdgeInsets.only(right: 10,bottom: 10),
-                          child: GestureDetector(
-                            onTap: (){
-                             businessController.category.value = item.name;
-                            },
-                            child: Obx(()=>
-                               pill(active: businessController.category.value == item.name,text: item.name),
-                            ),
-                          ),
+                        child: Wrap(children: find.stores.map((item) =>Obx(()=>
+                           pill(active: businessController.category.value == item.name,text: item.name,onClick: (){
+                           businessController.category.value = item.name;
+                           }),
                         ) ).toList(),),
                       ),
                     ),

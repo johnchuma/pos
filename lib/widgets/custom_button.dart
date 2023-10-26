@@ -6,7 +6,7 @@ Widget customButton({var text,onClick,color,double? height,bool loading=false,Co
   return GestureDetector(
     onTap:onClick?? (){},
     child: ClipRRect(
-      borderRadius: BorderRadius.circular(15),
+      borderRadius: BorderRadius.circular(20),
       child: Container(
                  decoration: BoxDecoration(gradient: LinearGradient(colors: [color??primaryColor,color??primaryColor2])),              
                   width: double.infinity,

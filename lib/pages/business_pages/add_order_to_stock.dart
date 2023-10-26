@@ -8,7 +8,7 @@ import 'package:pos/controllers/product_controller.dart';
 import 'package:pos/controllers/register_controller.dart';
 import 'package:pos/controllers/staff_register_controller.dart';
 import 'package:pos/controllers/stock_controller.dart';
-import 'package:pos/controllers/supplier_order_controller.dart';
+import 'package:pos/controllers/retailer_order_controller.dart';
 import 'package:pos/controllers/worker_controller.dart';
 import 'package:pos/models/Stock.dart';
 import 'package:pos/models/staff_registers.dart';
@@ -31,7 +31,7 @@ class AddorderToStock extends StatefulWidget {
 class _AddorderToStockState extends State<AddorderToStock> {  
 
 TextEditingController passwordController = TextEditingController();
-  SupplierOrderController find = Get.find<SupplierOrderController>();
+  RetailerOrderController find = Get.find<RetailerOrderController>();
   ProductController productController = Get.find<ProductController>();
   Rx<bool> show =Rx<bool>(true);
   Rx<bool> loading = Rx<bool>(false);
@@ -44,7 +44,7 @@ TextEditingController passwordController = TextEditingController();
           child: ClipRRect(
             borderRadius: const BorderRadius.only(topRight: Radius.circular(15),topLeft: Radius.circular(15)),
             child: Container(
-              color: Colors.white,
+              color: mutedBackground,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: FutureBuilder(
@@ -65,7 +65,7 @@ TextEditingController passwordController = TextEditingController();
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [ClipRRect(
                           borderRadius: BorderRadius.circular(15),
-                          child: Container(width: 80,height: 5,color: primaryColor.withOpacity(0.2),))],),
+                          child: Container(width: 80,height: 5,color: backgroundColor,))],),
                       const SizedBox(height: 20,),
                       heading2(text: "Add delivered products to stock",textAlign:TextAlign.start ),
                       const SizedBox(height: 10,),

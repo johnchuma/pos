@@ -67,7 +67,7 @@ class _ProductSalesState extends State<ProductSales> {
                        ClipRRect(
                             borderRadius: BorderRadius.circular(15),
                              child: Container(
-                              color: Colors.white,
+                              color: mutedBackground,
                               child: Column(
                                 children: [
                                 
@@ -103,7 +103,7 @@ class _ProductSalesState extends State<ProductSales> {
                                     ),
                                   SizedBox(height: 20,),
                                    
-                             customButton(text: "Show graph")
+                             
                                   
                                    
                                    ],),
@@ -122,7 +122,7 @@ class _ProductSalesState extends State<ProductSales> {
                                child: ClipRRect(
                                   borderRadius: BorderRadius.circular(15),
                                   child: Container(
-                                    color: Colors.white,
+                                    color: mutedBackground,
                                     child: Padding(
                                       padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 20),
                                       child: Column(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pos/utils/colors.dart';
 Widget back (){
   return GestureDetector(
           onTap: (){
@@ -7,5 +8,5 @@ Widget back (){
           },
           child: Container(
           color: Colors.transparent,
-            child: const Icon(Icons.arrow_back,color: Colors.black45,size: 20,)));
+            child:  Icon(Icons.arrow_back,color:mutedColor,size: 20,)));
 }

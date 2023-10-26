@@ -11,7 +11,7 @@ Widget menuItem({icon,title,onTap,subtitle,double? paddingTop,double iconSize = 
               onTap:onTap??(){},
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(15),
-                child: Container(color: Colors.white,
+                child: Container(color: backgroundColor2,
                 child: Padding(
                   padding:  EdgeInsets.symmetric(horizontal: 15,vertical:verticalPadding?? 20),
                   child: Row(children: [

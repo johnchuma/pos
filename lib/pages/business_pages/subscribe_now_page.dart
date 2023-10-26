@@ -35,7 +35,7 @@ class _SubscribeNowPageState extends State<SubscribeNowPage> {
           child: ClipRRect(
             borderRadius: const BorderRadius.only(topRight: Radius.circular(15),topLeft: Radius.circular(15)),
             child: Container(
-              color: Colors.white,
+              color: mutedBackground,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
@@ -46,7 +46,7 @@ class _SubscribeNowPageState extends State<SubscribeNowPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [ClipRRect(
                       borderRadius: BorderRadius.circular(15),
-                      child: Container(width: 80,height: 5,color: primaryColor.withOpacity(0.2),))],),
+                      child: Container(width: 80,height: 5,color: backgroundColor,))],),
                   const SizedBox(height: 20,),
                   Container(
                     height: 150,
@@ -64,12 +64,11 @@ class _SubscribeNowPageState extends State<SubscribeNowPage> {
               
               
                   SizedBox(height: 20,),
-
                   customButton(text: "Send payment request ",loading: loading, onClick: (){
                     setState(() {
                       loading = true;
                     });
-                     PrivateChatController().sendMessage("Hello, Customer Service Team,I need assistance with processing a payment for my shop. Could you please help me? Thank you in advance.").then((value) {
+                     PrivateChatController().sendMessage("Hello, Customer Service Team,I need assistance with processing a payment for ${businessSubscriptionController.selectedBusiness.value?.name}. Could you please help me? Thank you in advance.").then((value) {
                       Get.to(()=>PrivateChatRoom());
                       setState(() {
                         loading = false;

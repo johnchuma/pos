@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:pos/controllers/auth_controller.dart';
 import 'package:pos/controllers/business_controller.dart';
+import 'package:pos/controllers/notification_controller.dart';
 import 'package:pos/models/business.dart';
 import 'package:pos/models/supplier.dart';
 import 'package:pos/models/product_order.dart';
@@ -39,8 +40,8 @@ class SupplierOrderController extends GetxController{
         BusinessController businessController = Get.find<BusinessController>();
         Stream<List<SupplierOrder>> getSupplierOrders() {
           return firestore
-              .collection("supplierOrders").
-              where("businessId",isEqualTo: businessController.selectedBusiness.value.id).
+              .collection("orders").
+              where("supplierId",isEqualTo: businessController.selectedBusiness.value?.id).
               where("isClosed",isEqualTo: false).orderBy("createdAt",descending: true)
               .snapshots()
               .asyncMap((QuerySnapshot querySnapshot) async{
@@ -56,11 +57,9 @@ class SupplierOrderController extends GetxController{
                      supplierOrder.productOrders.value.add(productOrder);
                     }
                   }
-                DocumentSnapshot supplierSnapshot = await firestore.collection("suppliers").doc(element["supplierId"]).get();
-                  if(supplierSnapshot.exists){
-                    DocumentSnapshot doc = await firestore.collection("businesses").doc(supplierSnapshot["supplierId"]).get();
-                    supplierOrder.supplier = Business.fromDocumentSnapshot(doc);
-                  }
+                DocumentSnapshot doc = await firestore.collection("businesses").doc(element["businessId"]).get();
+                  supplierOrder.from = Business.fromDocumentSnapshot(doc);
+                  supplierOrder.unreadMessages.bindStream(NotificationController().getUnreadOrderMessages(supplierOrder.id));
                   supplierOrders.add(supplierOrder);
                 }
             return supplierOrders;    
@@ -68,8 +67,8 @@ class SupplierOrderController extends GetxController{
         }
         Stream<List<SupplierOrder>> previousOrders() {
           return firestore
-              .collection("supplierOrders").
-              where("businessId",isEqualTo: businessController.selectedBusiness.value.id).
+              .collection("orders").
+              where("businessId",isEqualTo: businessController.selectedBusiness.value?.id).
               where("isClosed",isEqualTo: true).orderBy("createdAt",descending: true)
               .snapshots()
               .asyncMap((QuerySnapshot querySnapshot) async{
@@ -85,11 +84,8 @@ class SupplierOrderController extends GetxController{
                      supplierOrder.productOrders.value.add(productOrder);
                     }
                   }
-                 DocumentSnapshot supplierSnapshot = await firestore.collection("suppliers").doc(element["supplierId"]).get();
-                  if(supplierSnapshot.exists){
-                    DocumentSnapshot doc = await firestore.collection("businesses").doc(supplierSnapshot["supplierId"]).get();
-                    supplierOrder.supplier = Business.fromDocumentSnapshot(doc);
-                  }
+                  DocumentSnapshot doc = await firestore.collection("businesses").doc(element["supplierId"]).get();
+                  supplierOrder.supplier = Business.fromDocumentSnapshot(doc);
                   supplierOrders.add(supplierOrder);
                 }
             return supplierOrders;    
@@ -98,9 +94,9 @@ class SupplierOrderController extends GetxController{
      Future<void> addSupplierOrder ()async{
           try {
             var id = Timestamp.now().toDate().toString();
-           await  firestore.collection("supplierOrders").doc(id).set({
+           await  firestore.collection("orders").doc(id).set({
               "id":id,
-              "businessId":businessController.selectedBusiness.value.id,
+              "businessId":businessController.selectedBusiness.value?.id,
               "supplierId":selectedSupplier.value == null ?null:selectedSupplier.value?.id,
               "isClosed":false,
               "inAppOrder":selectedSupplier.value == null?true:false,
@@ -132,7 +128,7 @@ class SupplierOrderController extends GetxController{
       }
         Future<void> deleteSupplierOrder (supplierOrderId) async{
           try {
-           await firestore.collection("supplierOrders").doc(supplierOrderId).delete();
+           await firestore.collection("orders").doc(supplierOrderId).delete();
           } catch (e) {
           }
        }
@@ -152,7 +148,7 @@ class SupplierOrderController extends GetxController{
        }
         Future<void> updateSupplierProducts (supplierOrdersId,{data}) async{
           try {
-           await firestore.collection("supplierOrders").doc(supplierOrdersId).update(data);
+           await firestore.collection("orders").doc(supplierOrdersId).update(data);
           } catch (e) {
             print(e);
           }

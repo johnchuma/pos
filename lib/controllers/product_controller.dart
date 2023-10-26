@@ -27,7 +27,7 @@ class ProductController extends GetxController{
         BusinessController businessController = Get.find<BusinessController>();
         Stream<List<Product>> getProducts() {
           return firestore
-              .collection("products").where("businessId",isEqualTo: businessController.selectedBusiness.value.id)
+              .collection("products").where("businessId",isEqualTo: businessController.selectedBusiness.value?.id)
               .snapshots()
               .asyncMap((QuerySnapshot querySnapshot) async{
                List<Product> products = [];
@@ -63,21 +63,20 @@ class ProductController extends GetxController{
          
       }
     
+     
        Stream<List<Product>> getProductsWithStock() {
           return firestore
-              .collection("products").where("businessId",isEqualTo: businessController.selectedBusiness.value.id)
+              .collection("products").where("businessId",isEqualTo: businessController.selectedBusiness.value?.id)
               .snapshots()
-              .asyncMap((QuerySnapshot querySnapshot) async{
+              .asyncMap((QuerySnapshot querySnapshot) {
                List<Product> products = [];
                   for (var element in querySnapshot.docs) {
                   Product product = Product.fromDocumentSnapshot(element);
                  
-                  QuerySnapshot querySnapshot = await firestore.collection("stocks").where("productId",isEqualTo: element["id"]).get();
-                  QuerySnapshot salesQuerySnapshot = await firestore.collection("sales").where("productId",isEqualTo: element["id"]).get();
-                  double totalStocks = 0;
+               firestore.collection("stocks").where("productId",isEqualTo: element["id"]).get().then((QuerySnapshot querySnapshot)  {
+                 firestore.collection("sales").where("productId",isEqualTo: element["id"]).get().then((salesQuerySnapshot ) {
+                 double totalStocks = 0;
                   double totalSoldStocks = 0;
-
-                  
                   for (var stocks in querySnapshot.docs) {
                     totalStocks = totalStocks + stocks["amount"];
                   }
@@ -85,47 +84,59 @@ class ProductController extends GetxController{
                     totalSoldStocks = totalSoldStocks + sale["amount"];
                   }
                   if(querySnapshot.docs.length > 0){
-                      product.availableStock = totalStocks - totalSoldStocks;
-                      product.sellingPrice = querySnapshot.docs.last["sellingPrice"];
-                      product.buyingPrice = querySnapshot.docs.last["buyingPrice"];
-                      products.add(product);
+                      product.availableStock.value = totalStocks - totalSoldStocks;
                   }
+                 });
+               });
+                      products.add(product);
+
                 }
+
             return products;    
           });
         }
-    
-     Future<void> addNormalProduct (name,imageFile)async{
+     
+     Future<void> addNormalProduct (name,imageFile,properties)async{
           try {
             var productId = Timestamp.now().toDate().toString();
              var imagelink =  await authController.getImageLink(imageFile);
            await  firestore.collection("products").doc(productId).set({
               "id":productId,
               "name":name,
-              "businessId":businessController.selectedBusiness.value.id,
+              "businessId":businessController.selectedBusiness.value?.id,
               "image":imagelink,
+              "properties":properties,
+              "sellingPrice":0.0,
+              "buyingPrice":0.0,
+              "isPublic":false,
+              "allowDiscount":false,
               "createdAt":Timestamp.now()
             });
         
-              for (var category in productVariantsController.selectedCategories.value) {
-            var categoryId = Timestamp.now().toDate().toString();
-                await firestore.collection("products").doc(productId).collection("variantsCategories").doc(categoryId).set({
-                  "id":categoryId,
-                  "categoryId":category.id
-                });
-                for (var variant in category.selectedVariants.value) {
-                var variantId = Timestamp.now().toDate().toString();     
-                  await firestore.collection("products").doc(productId).collection("variantsCategories").doc(categoryId).collection("variants").doc(variantId).set({
-                  "id":variantId,
-                  "categoryId":categoryId,
-                  "variantId":variant.id
-                });
-                }
-            }
+            //   for (var category in productVariantsController.selectedCategories.value) {
+            // var categoryId = Timestamp.now().toDate().toString();
+            //     await firestore.collection("products").doc(productId).collection("variantsCategories").doc(categoryId).set({
+            //       "id":categoryId,
+            //       "categoryId":category.id
+            //     });
+            //     for (var variant in category.selectedVariants.value) {
+            //     var variantId = Timestamp.now().toDate().toString();     
+            //       await firestore.collection("products").doc(productId).collection("variantsCategories").doc(categoryId).collection("variants").doc(variantId).set({
+            //       "id":variantId,
+            //       "categoryId":categoryId,
+            //       "variantId":variant.id
+            //     });
+            //     }
+            // }
           } catch (e) {
           }
       }
-       
+        Future<void> updateProduct (productId,data) async{
+          try {
+           await firestore.collection("products").doc(productId).update(data);
+          } catch (e) {
+          }
+       }
         Future<void> deleteProduct (productId) async{
           try {
            await firestore.collection("products").doc(productId).delete();

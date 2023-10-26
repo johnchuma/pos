@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_unnecessary_containers
 
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pos/controllers/business_controller.dart';
@@ -11,6 +12,8 @@ import 'package:pos/pages/business_pages/find_supplier.dart';
 import 'package:pos/utils/colors.dart';
 import 'package:pos/widgets/avatar.dart';
 import 'package:pos/widgets/back.dart';
+import 'package:pos/widgets/bar_chart.dart';
+import 'package:pos/widgets/bottomsheet_template.dart';
 import 'package:pos/widgets/custom_button.dart';
 import 'package:pos/widgets/expanded_item.dart';
 import 'package:pos/widgets/heading2_text.dart';
@@ -66,7 +69,7 @@ class _SalesReportsPageState extends State<SalesReportsPage> {
                        ClipRRect(
                             borderRadius: BorderRadius.circular(15),
                              child: Container(
-                              color: Colors.white,
+                              color: mutedBackground,
                               child: Column(
                                 children: [
                                 
@@ -76,7 +79,7 @@ class _SalesReportsPageState extends State<SalesReportsPage> {
                                    (
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
-                                      mutedText(text: "Total sales",color: mutedColor.withOpacity(0.6)),
+                                      mutedText(text: "Total sales",color: mutedColor),
                                       SizedBox(height: 5,),
                                       headingText(text: "${salesController.totalSales(sales)}TZS",fontSize: 35),
                                       SizedBox(height: 10,),
@@ -86,23 +89,21 @@ class _SalesReportsPageState extends State<SalesReportsPage> {
                                       children: [
                                        Row(
                                          children: [
-                                          Icon(Icons.rocket,size: 20,color: Color.fromARGB(255, 230, 175, 10),),
-                                          SizedBox(width: 5,),
+                                         
                                            mutedText(text: "Capital: ${salesController.productsCapital(sales)}TZS",fontSize: 12),
                                          ],
                                        ),
                                        Row(
                                          children: [
                                          
-                                                                            Icon(Icons.arrow_upward,size: 20,color:Colors.green),
+                                                                           
                                            mutedText(text: "profit: ${salesController.productsProfit(sales)}TZS",fontSize: 12),
                                          ],
                                        ),
                                       ],
                                     ),
                                   SizedBox(height: 20,),
-                                   
-                             customButton(text: "Show graph")
+                          
                                   
                                    
                                    ],),
@@ -117,11 +118,11 @@ class _SalesReportsPageState extends State<SalesReportsPage> {
                            children: [
                             
                           sales.isEmpty ?noData():  Column(children:sales.map((sales) => Padding(
-                               padding: const EdgeInsets.only(bottom: 15),
+                               padding: const EdgeInsets.only(bottom: 10),
                                child: ClipRRect(
                                   borderRadius: BorderRadius.circular(15),
                                   child: Container(
-                                    color: Colors.white,
+                                    color: mutedBackground,
                                     child: Padding(
                                       padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 20),
                                       child: Column(

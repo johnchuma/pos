@@ -32,7 +32,7 @@ class StaffSaleController extends GetxController{
            DateTime now = DateTime.now();
               var from = Timestamp.fromDate(DateTime(now.year,now.month,now.day));
                var querySnapshot =await firestore
-              .collection("sales").where(businessController.selectedRegister.value != null? "registerId":"businessId",isEqualTo:businessController.selectedRegister.value != null? businessController.selectedRegister.value?.id: businessController.selectedBusiness.value.id).where("staffId",isEqualTo: selectedStaff.value?.details.email).where("createdAt",isEqualTo:from )
+              .collection("sales").where(businessController.selectedRegister.value != null? "registerId":"businessId",isEqualTo:businessController.selectedRegister.value != null? businessController.selectedRegister.value?.id: businessController.selectedBusiness.value?.id).where("staffId",isEqualTo: selectedStaff.value?.details.email).where("createdAt",isEqualTo:from )
               .get();
                List<Sale> sales = [];
             for (var element in querySnapshot.docs) {
@@ -50,7 +50,7 @@ class StaffSaleController extends GetxController{
            DateTime now = DateTime.now();
               var from = Timestamp.fromDate(DateTime(now.year,now.month,now.day).subtract(const Duration(days: 1)));
                var querySnapshot =await firestore
-              .collection("sales").where(businessController.selectedRegister.value != null? "registerId":"businessId",isEqualTo:businessController.selectedRegister.value != null? businessController.selectedRegister.value?.id: businessController.selectedBusiness.value.id).where("staffId",isEqualTo: selectedStaff.value?.details.email).where("createdAt",isEqualTo:from )
+              .collection("sales").where(businessController.selectedRegister.value != null? "registerId":"businessId",isEqualTo:businessController.selectedRegister.value != null? businessController.selectedRegister.value?.id: businessController.selectedBusiness.value?.id).where("staffId",isEqualTo: selectedStaff.value?.details.email).where("createdAt",isEqualTo:from )
               .get();
                List<Sale> sales = [];
             for (var element in querySnapshot.docs) {
@@ -77,7 +77,7 @@ class StaffSaleController extends GetxController{
               DateTime endOfWeek = startOfWeek.add(Duration(days: 6));
 
               var querySnapshot = await FirebaseFirestore.instance
-                  .collection("sales").where(businessController.selectedRegister.value != null? "registerId":"businessId",isEqualTo:businessController.selectedRegister.value != null? businessController.selectedRegister.value?.id: businessController.selectedBusiness.value.id).where("staffId",isEqualTo: selectedStaff.value?.details.email)
+                  .collection("sales").where(businessController.selectedRegister.value != null? "registerId":"businessId",isEqualTo:businessController.selectedRegister.value != null? businessController.selectedRegister.value?.id: businessController.selectedBusiness.value?.id).where("staffId",isEqualTo: selectedStaff.value?.details.email)
                   .where("createdAt", isGreaterThanOrEqualTo: Timestamp.fromDate(startOfWeek))
                   .where("createdAt", isLessThanOrEqualTo: Timestamp.fromDate(endOfWeek))
                   .get();
@@ -109,7 +109,7 @@ class StaffSaleController extends GetxController{
               Timestamp endOfMonthTimestamp = Timestamp.fromDate(endOfMonth);
 
               var querySnapshot = await FirebaseFirestore.instance
-                  .collection("sales").where(businessController.selectedRegister.value != null? "registerId":"businessId",isEqualTo:businessController.selectedRegister.value != null? businessController.selectedRegister.value?.id: businessController.selectedBusiness.value.id).where("staffId",isEqualTo: selectedStaff.value?.details.email)
+                  .collection("sales").where(businessController.selectedRegister.value != null? "registerId":"businessId",isEqualTo:businessController.selectedRegister.value != null? businessController.selectedRegister.value?.id: businessController.selectedBusiness.value?.id).where("staffId",isEqualTo: selectedStaff.value?.details.email)
                   .where("createdAt", isGreaterThanOrEqualTo: startOfMonthTimestamp)
                   .where("createdAt", isLessThanOrEqualTo: endOfMonthTimestamp)
                   .get();
@@ -141,7 +141,7 @@ class StaffSaleController extends GetxController{
               Timestamp endOfYearTimestamp = Timestamp.fromDate(endOfYear);
 
               var querySnapshot = await FirebaseFirestore.instance
-                  .collection("sales").where(businessController.selectedRegister.value != null? "registerId":"businessId",isEqualTo:businessController.selectedRegister.value != null? businessController.selectedRegister.value?.id: businessController.selectedBusiness.value.id).where("staffId",isEqualTo: selectedStaff.value?.details.email)
+                  .collection("sales").where(businessController.selectedRegister.value != null? "registerId":"businessId",isEqualTo:businessController.selectedRegister.value != null? businessController.selectedRegister.value?.id: businessController.selectedBusiness.value?.id).where("staffId",isEqualTo: selectedStaff.value?.details.email)
                   .where("createdAt", isGreaterThanOrEqualTo: startOfYearTimestamp)
                   .where("createdAt", isLessThanOrEqualTo: endOfYearTimestamp)
                   .get();
@@ -165,7 +165,7 @@ class StaffSaleController extends GetxController{
              var querySnapshot;
                   if(startingDate.value != null && endingDate.value != null){
                         querySnapshot = await FirebaseFirestore.instance
-                                        .collection("sales").where(businessController.selectedRegister.value != null? "registerId":"businessId",isEqualTo:businessController.selectedRegister.value != null? businessController.selectedRegister.value?.id: businessController.selectedBusiness.value.id).where("staffId",isEqualTo: selectedStaff.value?.details.email)
+                                        .collection("sales").where(businessController.selectedRegister.value != null? "registerId":"businessId",isEqualTo:businessController.selectedRegister.value != null? businessController.selectedRegister.value?.id: businessController.selectedBusiness.value?.id).where("staffId",isEqualTo: selectedStaff.value?.details.email)
                                         .where("createdAt", isGreaterThanOrEqualTo: Timestamp.fromDate(startingDate.value!))
                                         .where("createdAt", isLessThanOrEqualTo: Timestamp.fromDate(endingDate.value!))
                                         .get();
@@ -193,7 +193,7 @@ print(sales);
             
 
               var querySnapshot = await FirebaseFirestore.instance
-                  .collection("sales").where(businessController.selectedRegister.value != null? "registerId":"businessId",isEqualTo:businessController.selectedRegister.value != null? businessController.selectedRegister.value?.id: businessController.selectedBusiness.value.id).where("staffId",isEqualTo: selectedStaff.value?.details.email)
+                  .collection("sales").where(businessController.selectedRegister.value != null? "registerId":"businessId",isEqualTo:businessController.selectedRegister.value != null? businessController.selectedRegister.value?.id: businessController.selectedBusiness.value?.id).where("staffId",isEqualTo: selectedStaff.value?.details.email)
                   .get();
 
               List<Sale> sales = [];
@@ -239,7 +239,7 @@ print(sales);
 
                await firestore.collection("sales").doc(id).set({
                 "id":id,
-                "businessId":businessController.selectedBusiness.value.id,
+                "businessId":businessController.selectedBusiness.value?.id,
                 "registerId":businessController.selectedRegister.value?.id,
                 "staffId":authController.user?.email,
                 "productId":product.id,

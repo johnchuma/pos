@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:pos/utils/colors.dart';
 import 'package:pos/widgets/paragraph.dart';
 
-Widget expandedItem({String? title,IconData? iconData,Function? onClick,double? elevation}){
+Widget expandedItem({String? title,IconData? iconData, onClick,double? elevation}){
   return GestureDetector(
-    onTap:()=>onClick!(),
+    onTap:onClick??(){},
     child: Material(
             elevation:elevation?? 0,
-            color: Colors.white,
+            color: backgroundColor2,
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),
               child: Row(children: [

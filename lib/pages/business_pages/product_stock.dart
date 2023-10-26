@@ -7,6 +7,7 @@ import 'package:pos/controllers/product_controller.dart';
 import 'package:pos/controllers/stock_controller.dart';
 import 'package:pos/pages/business_pages/add_stock.dart';
 import 'package:pos/utils/colors.dart';
+import 'package:pos/utils/format_date.dart';
 import 'package:pos/widgets/avatar.dart';
 import 'package:pos/widgets/back.dart';
 import 'package:pos/widgets/custom_button.dart';
@@ -43,7 +44,7 @@ class _ProductStockState extends State<ProductStock> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             heading2(text: productController.selectedProduct.value.name),
-            mutedText(text: "from ${find2.selectedBusiness.value.name}")
+            mutedText(text: "from ${find2.selectedBusiness.value?.name}")
           ],
         ))
       ],) 
@@ -84,7 +85,7 @@ class _ProductStockState extends State<ProductStock> {
                      child: ClipRRect(
                       borderRadius: BorderRadius.circular(15),
                        child: Container(
-                        color: Colors.white,
+                        color: mutedBackground,
                         width: double.infinity,
                         child: Padding(
                           padding: const EdgeInsets.symmetric(vertical: 20,horizontal: 20),
@@ -96,7 +97,7 @@ class _ProductStockState extends State<ProductStock> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                                children: [
                                  heading2(text: stock.amount),
-                                 mutedText(text: stock.createdAt.toDate())
+                                 mutedText(text: formatDate(stock.createdAt.toDate()))
                                ],
                                                  ),
                             ],

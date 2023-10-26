@@ -17,6 +17,7 @@ import 'package:pos/pages/clients_page.dart';
 import 'package:pos/pages/private_chat_room.dart';
 import 'package:pos/pages/dashboard_page.dart';
 import 'package:pos/pages/community_page.dart';
+import 'package:pos/pages/public_page.dart';
 import 'package:pos/pages/settings_page.dart';
 import 'package:pos/pages/worker_dashboard.dart';
 import 'package:pos/utils/notifications.dart';
@@ -61,6 +62,7 @@ class _HomePageState extends State<HomePage> {
             body: Center(child: CircularProgressIndicator(color: textColor,),),);
         }
         Client client = snapshot.requireData;
+        authController.me.value = client;
         appController.language.value = client.language;
         appController.isMainDashboardSelected.value = client.selectedDashboard == "main"?true:false;
         appController.isAdmin.value = client.role == "admin" ? true:false;
@@ -129,26 +131,31 @@ class _HomePageState extends State<HomePage> {
           child:   BottomNavigationBar(
           backgroundColor: Colors.transparent,
           landscapeLayout: BottomNavigationBarLandscapeLayout.spread,
+        
           selectedLabelStyle: const TextStyle(color: Colors.black),
           unselectedLabelStyle: const TextStyle(color: Colors.grey),
           showUnselectedLabels: false,
           type: BottomNavigationBarType.fixed,
           showSelectedLabels: false,
           items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.dashboard),
+             BottomNavigationBarItem(
+              icon: Icon(Icons.home,size: 30,),
               label: '',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Ionicons.people_sharp), // Example different icon and color
+              icon: Icon(Icons.person,size: 30,),
+              label: '',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.people,size: 30,), // Example different icon and color
               label: '',
             ),
              BottomNavigationBarItem(
-              icon: Icon(Ionicons.chatbox), // Example different icon and color
+               icon: Icon(Icons.chat_bubble,size: 25,),  // Example different icon and color
               label: '',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Ionicons.settings), // Example different icon and color
+               icon: Icon(Icons.settings,size: 30,),  // Example different icon and color
               label: '',
             ),
           ],
@@ -168,7 +175,7 @@ class _HomePageState extends State<HomePage> {
         ,
             body: Scaffold(
             backgroundColor: backgroundColor,
-            body:[  Obx(()=>appController.isMainDashboardSelected.value?DashboardPage():WorkerDashboardPage()),InsightsPage(),appController.isAdmin.value ?ClientsPage():PrivateChatRoom(),SettingsPage()][selectedTab] ,));
+            body:[ PublicPage(), Obx(()=>appController.isMainDashboardSelected.value?DashboardPage():WorkerDashboardPage()),InsightsPage(),PrivateChatRoom(),SettingsPage()][selectedTab] ,));
         
       }
     );

@@ -39,7 +39,7 @@ class BusinessSubscriptionController extends GetxController{
         }
         Future<List<BusinessSubscription>> getSubscriptionHistory({businessId})async{
           print(businessId);
-        QuerySnapshot querySnapshot = await firestore.collection("businessSubscription").where("businessId",isEqualTo: businessId?? businessController.selectedBusiness.value.id).get();
+        QuerySnapshot querySnapshot = await firestore.collection("businessSubscription").where("businessId",isEqualTo: businessId?? businessController.selectedBusiness.value?.id).get();
          List<BusinessSubscription> businessSubscriptions = [];
          for (var subscription in querySnapshot.docs) {
            businessSubscriptions.add(BusinessSubscription.fromDocumentSnapshot(subscription));

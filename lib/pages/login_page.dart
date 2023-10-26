@@ -35,11 +35,8 @@ bool loading = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: backgroundColor,
-      body: Container(
-        height: MediaQuery.of(context).size.height,
-       decoration: BoxDecoration(gradient: LinearGradient(colors: [primaryColor,primaryColor2])),
-      child: Padding(
+      backgroundColor: mutedBackground,
+      body: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
          mainAxisAlignment: MainAxisAlignment.center,
@@ -55,24 +52,25 @@ bool loading = false;
                      child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Container(
-                   height: 200,
-                   width: double.infinity,
-                   child: Image.asset("assets/chart-pie-alt (1).png")),
+                        ClipOval(
+                          child: Container(
+                              height: 100,
+                              width: 100,
+                              child: Image.asset("assets/icons/1024.png")),
+                        ),
+                    
                    
                    const SizedBox(height: 20,),
                     headingText(text: "Sign in to continue", textAlign: TextAlign.center,color: Colors.white,
                             fontSize: 20
                             ),
                             const SizedBox(height: 5,),
-                             mutedText(text: "To access all Powered POS features, please log in now. Press the button below to get started.",
+                             mutedText(text: "To access all Trade Point features, please log in now. Press the button below to get started.",
                              textAlign: TextAlign.center,
                              color: Colors.white70,
                              
                              ),
                      
-                             
-                           
                           const SizedBox(height: 60,),
                            GestureDetector(
                              onTap: (){
@@ -89,7 +87,7 @@ bool loading = false;
                              child: ClipRRect(
                                borderRadius: BorderRadius.circular(15),
                                child: Container(
-                                                     color: Colors.white,
+                                                  decoration: BoxDecoration(gradient:LinearGradient(colors: [primaryColor,primaryColor2])),
                                                      child: Padding(
                                                        padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 25),
                                                        child: loading? Center(child: SizedBox(
@@ -122,8 +120,7 @@ bool loading = false;
            )
         
         ]),
-      ),
-         )
+      )
     );
   }
 }

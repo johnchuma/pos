@@ -4,8 +4,9 @@ import 'package:get/get.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:pos/controllers/business_controller.dart';
 import 'package:pos/controllers/product_controller.dart';
-import 'package:pos/controllers/supplier_order_controller.dart';
+import 'package:pos/controllers/retailer_order_controller.dart';
 import 'package:pos/pages/business_pages/add_product.dart';
+import 'package:pos/pages/business_pages/business_to_supplier_chat_page.dart';
 import 'package:pos/pages/business_pages/confirm_received_order.dart';
 import 'package:pos/pages/business_pages/pick_products_to_order.dart';
 import 'package:pos/pages/business_pages/previous_orders.dart';
@@ -38,9 +39,10 @@ class _OrdersPageState extends State<OrdersPage> {
   @override
   void initState() {
     Get.put(ProductController());
-    Get.put(SupplierOrderController());
+    Get.put(RetailerOrderController());
     super.initState();
   }
+  BusinessController businessController = Get.find<BusinessController>();
   @override
   Widget build(BuildContext context) {
     BusinessController find = Get.find<BusinessController>();
@@ -92,15 +94,15 @@ class _OrdersPageState extends State<OrdersPage> {
                ),
 
                const SizedBox(height: 20),
-                 GetX<SupplierOrderController>(
-                init: SupplierOrderController(),
+                 GetX<RetailerOrderController>(
+                init: RetailerOrderController(),
                  builder: (find) {
                    return find.supplierOrders.isEmpty?noData(): Column(children:find.supplierOrders.map((item) => Padding(
                      padding: const EdgeInsets.only(bottom: 10),
                      child: ClipRRect(
                         borderRadius: BorderRadius.circular(15),
                         child: Container(
-                          color: item.inAppOrder ?Colors.green.withOpacity(0.1) :Colors.white,
+                          color: item.inAppOrder ?Colors.green.withOpacity(0.1) :mutedBackground,
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 20),
                             child: Column(
@@ -126,21 +128,23 @@ class _OrdersPageState extends State<OrdersPage> {
                                       child: Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                        heading2(text: item.inAppOrder == true? "In app order": "Order to ${item.supplier.name}",fontSize: 14),
-                                        mutedText(text:"Ordered ${timeago.format(item.createdAt.toDate()) }"),
+                                        heading2(text: item.inAppOrder == true? "In app order": "Order to ${item.supplier.name}",fontSize: 14,maxLines: 1),
+                                        mutedText(text:"Ordered ${timeago.format(item.createdAt.toDate()) }",maxLines: 1),
                                       ],),
                                     ),
-                                    GestureDetector(
+                                    SizedBox(width: 10,),
+                                        GestureDetector(
                                       onTap: (){
                                         find.selectedSupplierOrder.value = item;
-                                        Get.to(OrderChatPage());
+                                        businessController.selectedSender.value = item.supplier;
+                                        Get.to(const OrderChatPage());
                                       },
-                                      child: Icon(Ionicons.chatbubble, size: 30,color: mutedColor.withOpacity(0.4),))
-                                  
+                                      child:item.unreadMessages.value.isNotEmpty ? ClipOval(child: Container(width: 25,height: 25,color: primaryColor,  child: Center(child: paragraph(text: item.unreadMessages.value.length.toString(),color: mutedBackground,fontSize: 11)),))
+                                    : Icon(Ionicons.chatbubble, size: 25,color: mutedColor.withOpacity(0.4),))
                                                 ],),
                                   ),
                                 ),
-                                
+                              
                                              AnimatedSize(
                                               duration: const Duration(milliseconds: 200),
                                               child: supplierOrderId == item.id ? Padding(
@@ -149,7 +153,7 @@ class _OrdersPageState extends State<OrdersPage> {
                                                   crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
                                                      SizedBox(height: 20,),
-                                                     heading2(text: "Ordered products",fontSize: 14,color: primaryColor),
+                                                     heading2(text: "Ordered products",fontSize: 14,color: mutedColor),
                                                      SizedBox(height: 20,),
                                                      Obx(
                                                        ()=> Column(children:item.productOrders.value.map((productOrder)=>
@@ -178,7 +182,6 @@ class _OrdersPageState extends State<OrdersPage> {
                                                               find.selectedSupplierOrder.value = item;
                                                               if(value == false){
                                                                 setState(() {
-                                                                  
                                                                 find.updateOrderProducts(productOrder.id,data:{"isDelivered":false});
                                                                 productOrder.isDelivered.value = false;
                                                                 });

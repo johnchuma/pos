@@ -12,10 +12,11 @@ class RegisterController extends GetxController{
         Rx<List<Register>> registersReceiver = Rx<List<Register>>([]);
         List<Register> get registers => registersReceiver.value;
         AuthController authController = Get.find<AuthController>();
+        Register? selectedRegister = null;
         BusinessController businessController = Get.find<BusinessController>();
         Stream<List<Register>> getRegisters() {
           return firestore
-              .collection("registers").where("businessId",isEqualTo: businessController.selectedBusiness.value.id)
+              .collection("registers").where("businessId",isEqualTo: businessController.selectedBusiness.value?.id)
               .snapshots()
               .asyncMap((QuerySnapshot querySnapshot) async{
                List<Register> registers = [];
@@ -34,7 +35,7 @@ class RegisterController extends GetxController{
            await  firestore.collection("registers").doc(id).set({
               "id":id,
               "title":name,
-              "businessId":businessController.selectedBusiness.value.id,
+              "businessId":businessController.selectedBusiness.value?.id,
               "description":description,
               "createdAt":Timestamp.now()
             });
@@ -43,6 +44,13 @@ class RegisterController extends GetxController{
           }
       }
 
+        Future<void> updateRegister (registerId,data)async{
+          try {
+           await  firestore.collection("registers").doc(registerId).update(data);
+          } catch (e) {
+            print(e);
+          }
+      }
         Future<void> deleteRegister (registerId)async{
           try {
            await  firestore.collection("registers").doc(registerId).delete();

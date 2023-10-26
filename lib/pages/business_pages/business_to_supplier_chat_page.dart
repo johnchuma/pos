@@ -5,10 +5,10 @@ import 'package:get/get.dart';
 import 'package:pos/controllers/app_controller.dart';
 import 'package:pos/controllers/auth_controller.dart';
 import 'package:pos/controllers/business_controller.dart';
-import 'package:pos/controllers/business_to_supplier_chat_controller.dart';
+import 'package:pos/controllers/businesses_chat_controller.dart';
 import 'package:pos/controllers/clients_controller.dart';
 import 'package:pos/controllers/private_chat_controller.dart';
-import 'package:pos/controllers/supplier_client_chat_controller.dart';
+import 'package:pos/controllers/order_chat_controller.dart';
 import 'package:pos/controllers/supplier_controller.dart';
 import 'package:pos/models/client.dart';
 import 'package:pos/models/message_model.dart';
@@ -109,6 +109,7 @@ class _BusinessToSupplierChatPageState extends State<BusinessToSupplierChatPage>
                       }),
                       maxLines: 4,
                       minLines: 1,
+                      style: TextStyle(color: textColor),
                       decoration:  InputDecoration(
                         hintStyle: TextStyle(color: mutedColor),
                         suffixIcon: GestureDetector(

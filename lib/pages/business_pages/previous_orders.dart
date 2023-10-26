@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pos/controllers/business_controller.dart';
 import 'package:pos/controllers/product_controller.dart';
-import 'package:pos/controllers/supplier_order_controller.dart';
+import 'package:pos/controllers/retailer_order_controller.dart';
 import 'package:pos/pages/business_pages/add_product.dart';
 import 'package:pos/pages/business_pages/pick_products_to_order.dart';
 import 'package:pos/pages/business_pages/product_stock.dart';
@@ -58,15 +58,15 @@ class _PreviousOrdersState extends State<PreviousOrders> {
           
           children: [
                      SizedBox(height: 20,),
-                 GetX<SupplierOrderController>(
-                init: SupplierOrderController(),
+                 GetX<RetailerOrderController>(
+                init: RetailerOrderController(),
                  builder: (find) {
                    return Column(children:find.completedOrders.map((item) => Padding(
                      padding: const EdgeInsets.only(bottom: 10),
                      child: ClipRRect(
                         borderRadius: BorderRadius.circular(15),
                         child: Container(
-                          color: item.inAppOrder ?Colors.green.withOpacity(0.1) :Colors.white,
+                          color: item.inAppOrder ?Colors.green.withOpacity(0.1) :mutedBackground,
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 20),
                             child: Column(
@@ -109,7 +109,7 @@ class _PreviousOrdersState extends State<PreviousOrders> {
                                                   crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
                                                      SizedBox(height: 20,),
-                                                     heading2(text: "Ordered products",fontSize: 14,color: primaryColor),
+                                                     heading2(text: "Ordered products",fontSize: 14,color:mutedColor),
                                                      SizedBox(height: 20,),
                                                      Column(children:item.productOrders.value.map((productOrder)=>
                                                       Padding(

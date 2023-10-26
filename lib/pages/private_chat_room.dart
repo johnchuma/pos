@@ -29,7 +29,6 @@ class _PrivateChatRoomState extends State<PrivateChatRoom> {
   TextEditingController messageController = TextEditingController();
   AuthController authController  = Get.find<AuthController>();
   ClientsController clientController  = Get.find<ClientsController>();
-
   AppController appController = Get.find<AppController>();
   int index = 0;
   @override
@@ -46,17 +45,17 @@ class _PrivateChatRoomState extends State<PrivateChatRoom> {
          leadingWidth: 1,
           title: Row(children: [
             
-          appController.isAdmin.value ? Row(
+          clientController.selectedClient.value != null ? Row(
             children: [
               back(),
               SizedBox(width: 10,),
-              avatar(image: clientController.selectedClient.value.profileImageUrl,size: 40),
+              avatar(image: clientController.selectedClient.value?.profileImageUrl,size: 40),
               SizedBox(width: 10,),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  heading2(text:clientController.selectedClient.value.name ),
-                  mutedText(text:clientController.selectedClient.value.email )
+                  heading2(text:clientController.selectedClient.value?.name ),
+                  mutedText(text:clientController.selectedClient.value?.email )
                 ],
               ),
             ],
@@ -109,6 +108,7 @@ class _PrivateChatRoomState extends State<PrivateChatRoom> {
                       }),
                       maxLines: 4,
                       minLines: 1,
+                      style: TextStyle(color: textColor),
                       decoration:  InputDecoration(
                         hintStyle: TextStyle(color: mutedColor),
                         suffixIcon: GestureDetector(

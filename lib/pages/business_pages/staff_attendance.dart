@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:pos/controllers/attendance_controller.dart';
+import 'package:pos/controllers/auth_controller.dart';
 import 'package:pos/controllers/business_controller.dart';
 import 'package:pos/controllers/product_controller.dart';
 import 'package:pos/controllers/register_controller.dart';
@@ -38,17 +39,21 @@ class _StaffAttendanceState extends State<StaffAttendance> {
   String registerId = "";
   bool loading = false;
   bool loading2 = false;
+  Rx<bool> checkedIn = Rx<bool>(false);
+  Rx<bool> checkedOut = Rx<bool>(false);
+
   String selectedAttendance = "";
+
   @override
   void initState() {
     Get.put(ProductController());
     super.initState();
   }
     BusinessController find = Get.find<BusinessController>();
-
+    AuthController authController = Get.find<AuthController>();
   @override
   Widget build(BuildContext context) {
-    Business business = find.selectedBusiness.value;
+    Business business = find.selectedBusiness.value!;
     return  Scaffold(
       backgroundColor: backgroundColor,
       appBar: AppBar(leading: back(),backgroundColor: backgroundColor,elevation: 0.3,
@@ -77,53 +82,75 @@ class _StaffAttendanceState extends State<StaffAttendance> {
                   color: mutedBackground,
                   child: Padding(
                    padding: const EdgeInsets.all(20),
-                   child: Column
-                   (
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                    headingText(text: "Welcome today",),
-                    const SizedBox(height: 5,),
-                    mutedText(text: "Check in or out  by clicking below"),
-                    const SizedBox(height: 20,),
-                    customButton(text: "Check in",loading: loading, onClick: (){
-                      setState(() {
-                        loading = true;
-                      });
-                      findCurrentLocation().then((value) {
-                        if(value != null){
-                         double distance= Geolocator.distanceBetween(business.latitude, business.longitude, value.latitude!, value.longitude!);
-                       
-                       if(distance <100 && distance>0){
-                        AttendanceController().checkIn().then((value) {
-                        successNotification("Checked in successfully");
-                        });
-
-                       }
-                       else{
-                        failureNotification("Sorry! you are not around, you can not check In");
-                       }
-                      
-                        setState(() {
-                        loading = false;
-                      });
-                        }
-                      });
-                    }) 
-                   ],),
+                   child: Obx(
+                     ()=> Column
+                     (
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                      Container(
+                        height: 100,
+                        child:checkedIn.value == true?checkedOut.value ==true?Image.asset("assets/pngwing.com (1).png"): Image.asset("assets/8864305-removebg-preview.png"):Image.asset("assets/pngwing.com.png")),
+                      SizedBox(height: 10,),
+                      headingText(text: checkedIn.value == true? checkedOut.value ==true?"Bye! ${authController.user?.displayName}": "Happy working!": "Check in",),
+                      const SizedBox(height: 5,),
+                      mutedText(text: checkedIn.value == true?checkedOut.value ==true?"See you again tommorow":"Don't forget to checkOut later":"Clicking the button below to check in"),
+                      const SizedBox(height: 20,),
+                     Obx(()=>
+                        checkedIn.value == true?Container():customButton(text: "Check in",loading: loading, onClick: (){
+                          setState(() {
+                            loading = true;
+                          });
+                          findCurrentLocation().then((value) {
+                            if(value != null){
+                             double distance= Geolocator.distanceBetween(business.latitude, business.longitude, value.latitude!, value.longitude!);
+                           
+                           if(distance <100 && distance>0){
+                            AttendanceController().checkIn().then((value) {
+                            successNotification("Checked in successfully");
+                            });
+                     
+                           }
+                           else{
+                            failureNotification("Sorry! you are not around, you can not check In");
+                           }
+                          
+                            setState(() {
+                            loading = false;
+                          });
+                            }
+                          });
+                        }),
+                     ) 
+                     ],),
+                   ),
                  ),),
                ),
                const SizedBox(height: 20,),
                heading2(text: "Attendance report"),
-               const SizedBox(height: 20),
+               const SizedBox(height: 10),
                  GetX<AttendanceController>(
                 init: AttendanceController(),
                  builder: (find) {
+                 
+                Future.delayed(Duration(milliseconds: 20                                                                                                  ),(){
+                     for (var attendance in find.attendances) {
+                      if(formatDate(attendance.checkInTime.toDate()) == formatDate(DateTime.now()) ){
+                        checkedIn.value = true;
+                      }
+                      if(attendance.checkOutTime != null){
+                      if(formatDate(attendance.checkOutTime.toDate()) == formatDate(DateTime.now()) ){
+                        checkedOut.value = true;
+                      }
+                      }
+                      
+                   }
+                });
                    return find.attendances.isEmpty ?noData(): Column(children:find.attendances.map((attendance) => Padding(
                      padding: const EdgeInsets.only(bottom: 15),
                      child: ClipRRect(
                         borderRadius: BorderRadius.circular(15),
                         child: Container(
-                          color: Colors.white,
+                          color: mutedBackground,
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 20),
                             child: Column(
@@ -197,7 +224,7 @@ class _StaffAttendanceState extends State<StaffAttendance> {
                                             height: 25,
                                             width: 25,
                                             child: CircularProgressIndicator(color: primaryColor,)): Container(
-                                              child: heading2(text: "Check out",color: primaryColor,fontSize: 13)),
+                                              child: heading2(text: "Check out",color: Colors.green[700],fontSize: 13)),
                                         ),
                                       ))
                                                 ],),

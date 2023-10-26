@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pos/utils/colors.dart';
 import 'package:pos/widgets/heading2_text.dart';
 
 successNotification(message){
     Get.snackbar("","",
     duration: Duration(seconds: 2),
-    backgroundColor: Colors.white70,
+    backgroundColor: mutedBackground,
           padding: EdgeInsets.all(20),
           messageText: Container(),
           
@@ -16,7 +17,7 @@ successNotification(message){
 }
 
 failureNotification(message){
-    Get.snackbar("","",backgroundColor: Colors.white70,
+    Get.snackbar("","",backgroundColor: mutedBackground,
     duration: Duration(seconds: 2),
 
           padding: EdgeInsets.all(20),

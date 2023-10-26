@@ -31,7 +31,7 @@ class StaffRegistersController extends GetxController{
         BusinessController businessController = Get.find<BusinessController>();
         Stream<List<StaffRegister>> getStaffRegisters() {
           return firestore
-              .collection("staffRegisters").where("staffId",isEqualTo:staffController.selectedStaff.value.details.email ).where("businessId",isEqualTo: businessController.selectedBusiness.value.id)
+              .collection("staffRegisters").where("staffId",isEqualTo:staffController.selectedStaff.value.details.email ).where("businessId",isEqualTo: businessController.selectedBusiness.value?.id)
               .snapshots()
               .asyncMap((QuerySnapshot querySnapshot) async{
                List<StaffRegister> staffRegisters = [];
@@ -51,7 +51,7 @@ class StaffRegistersController extends GetxController{
            await  firestore.collection("staffRegisters").doc(id).set({
               "id":id,
               "staffId":staffController.selectedStaff.value.details.email,
-              "businessId":businessController.selectedBusiness.value.id,
+              "businessId":businessController.selectedBusiness.value?.id,
               "registerId":registerId,
               "permissions":[],
               "password":null,

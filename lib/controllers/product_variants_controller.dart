@@ -22,7 +22,7 @@ class ProductVariantsController extends GetxController{
         late Rx<List<ProductsVariantsCategory>> selectedCategories = Rx<List<ProductsVariantsCategory>>([]);
         Stream<List<ProductsVariantsCategory>> getProductsVariantsCategorys() {
           return firestore
-              .collection("productsVariantsCategories").where("businessId",isEqualTo: businessController.selectedBusiness.value.id)
+              .collection("productsVariantsCategories").where("businessId",isEqualTo: businessController.selectedBusiness.value?.id)
               .snapshots()
               .asyncMap((QuerySnapshot querySnapshot) async{
                List<ProductsVariantsCategory> productsVariantsCategories = [];
@@ -72,7 +72,7 @@ class ProductVariantsController extends GetxController{
             var id = Timestamp.now().toDate().toString();
            await  firestore.collection("productsVariantsCategories").doc(id).set({
               "id":id,
-              "businessId":businessController.selectedBusiness.value.id,
+              "businessId":businessController.selectedBusiness.value?.id,
               "title":title,
               "createdAt":Timestamp.now()
             });
