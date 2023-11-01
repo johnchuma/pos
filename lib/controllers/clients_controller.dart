@@ -3,8 +3,6 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
-import 'package:pos/controllers/auth_controller.dart';
-import 'package:pos/controllers/business_controller.dart';
 import 'package:pos/models/client.dart';
 import 'package:pos/models/client.dart';
 
@@ -15,7 +13,12 @@ class ClientsController extends GetxController{
         List<Client> get clients => clientsReceiver.value;
        
         Rx<Client?> selectedClient = Rx<Client?>(null);
-      
+        Rx<Client?> selectedStaff = Rx<Client?>(null);
+        
+       Future<Client> getClient(id)async{
+              DocumentSnapshot documentSnapshot = await firestore.collection("clients").doc(id).get();
+             return Client.fromDocumentSnapshot(documentSnapshot);
+        }
         Stream<List<Client>> getClients() {
           return firestore
               .collection("clients")

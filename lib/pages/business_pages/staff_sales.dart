@@ -10,6 +10,7 @@ import 'package:pos/controllers/supplier_controller.dart';
 import 'package:pos/models/sale.dart';
 import 'package:pos/pages/business_pages/find_supplier.dart';
 import 'package:pos/utils/colors.dart';
+import 'package:pos/utils/money_format.dart';
 import 'package:pos/widgets/avatar.dart';
 import 'package:pos/widgets/back.dart';
 import 'package:pos/widgets/custom_button.dart';
@@ -63,7 +64,7 @@ class _StaffSalesState extends State<StaffSales> {
                  Expanded(
                    child: ListView(
                      children: [
-                       ClipRRect(
+                        ClipRRect(
                             borderRadius: BorderRadius.circular(15),
                              child: Container(
                               color: mutedBackground,
@@ -76,33 +77,31 @@ class _StaffSalesState extends State<StaffSales> {
                                    (
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
-                                      mutedText(text: "Total sales",color: mutedColor.withOpacity(0.6)),
+                                      mutedText(text: "Total sales",color: mutedColor),
                                       SizedBox(height: 5,),
-                                      headingText(text: "${salesController.totalSales(sales)} TZS",fontSize: 35),
+                                      headingText(text: "${moneyFormat(salesController.totalSales(sales))}TZS",fontSize: 35),
                                       SizedBox(height: 10,),
                                     
                                       Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                                       children: [
                                        Row(
                                          children: [
-                                          Icon(Icons.rocket,size: 20,color: Color.fromARGB(255, 230, 175, 10),),
-                                          SizedBox(width: 5,),
-                                           mutedText(text: "Capital: ${salesController.productsCapital(sales)}TZS",fontSize: 12),
+                                         
+                                           mutedText(text: "Capital: ${moneyFormat(salesController.productsCapital(sales))}TZS",fontSize: 12),
                                          ],
                                        ),
                                        Row(
                                          children: [
-                                          SizedBox(width: 20,),
-                                                                            Icon(Icons.arrow_upward,size: 20,color:Colors.green),
-                                           mutedText(text: "profit: ${salesController.productsProfit(sales)}TZS",fontSize: 12),
+                                         
+                                                                           
+                                           mutedText(text: "profit: ${moneyFormat(salesController.productsProfit(sales))}TZS",fontSize: 12),
                                          ],
                                        ),
                                       ],
                                     ),
                                   SizedBox(height: 20,),
-                                   
-                             
+                          
                                   
                                    
                                    ],),
@@ -154,7 +153,7 @@ class _StaffSalesState extends State<StaffSales> {
                                               Column(
                                                 children: [
                                                   mutedText(text: "Sold for",color: mutedColor.withOpacity(0.5)),
-                                              heading2(text: "${sales.totalPrice}TZS",fontSize: 14)
+                                              heading2(text: "${moneyFormat(sales.totalPrice)}TZS",fontSize: 14)
     
                                                 ],
                                               ),

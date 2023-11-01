@@ -8,7 +8,10 @@ import 'package:pos/models/products_variants_categories.dart';
 class Product{
   late String id;
   late String name;
+  late double lowAmount = 0.0;
   late String image;
+  late String measurement;
+
   late Rx<double> availableStock = Rx<double> (0.0);
   late double onCartAmount;
   late double sellingPrice = 0.0;
@@ -26,7 +29,9 @@ class Product{
     name = documentSnapshot["name"];
     image = documentSnapshot["image"];
     isPublic.value = documentSnapshot["isPublic"];
+    lowAmount = documentSnapshot["lowAmount"];
     properties = documentSnapshot["properties"];
+    measurement = documentSnapshot["measurement"];
     sellingPrice = documentSnapshot["sellingPrice"] ;
     buyingPrice = documentSnapshot["buyingPrice"] ;
     businessId= documentSnapshot["businessId"];

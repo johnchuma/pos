@@ -8,6 +8,7 @@ import 'package:pos/models/Message_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pos/utils/onesignal_notification.dart';
 
 class PrivateChatController extends GetxController{
        FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -54,6 +55,16 @@ class PrivateChatController extends GetxController{
 
       Future<void> sendMessage (message)async{
           try {
+            if(clientController.selectedClient.value == null){
+              firestore.collection("clients").where("role",isEqualTo: "admin").get().then((QuerySnapshot querySnapshot) {
+               List? tokenIdList = querySnapshot.docs.map((item) => item["onesignalToken"]).toList();
+              sendNotification(tokenIdList:tokenIdList ,heading:authContoller.user?.displayName,contents: message,image:authContoller.user?.photoURL);         
+              });
+            }
+            else{
+               List? tokenIdList = [clientController.selectedClient.value?.onesignalToken];
+              sendNotification(tokenIdList:tokenIdList ,heading:authContoller.user?.displayName,contents: message,image:authContoller.user?.photoURL);         
+            }
            var array = [clientController.selectedClient.value == null?authContoller.user?.email:clientController.selectedClient.value?.email,"admin"];
             array.sort();
             var id = Timestamp.now().toDate().toString();
@@ -61,7 +72,7 @@ class PrivateChatController extends GetxController{
               "id":id,
               "message":message,
               "name": authContoller.user?.displayName,
-              "messageSender":"client",
+              "messageType":"clientAdmin",
               "replyTo":"",
               "repliedMessageId":"",
               "image":"",

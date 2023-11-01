@@ -22,7 +22,7 @@ class SupplierOrderController extends GetxController{
           Rx<ProductOrder?> selectedProductOrder = Rx<ProductOrder?>(null);
           Rx<SupplierOrder?> selectedSupplierOrder = Rx<SupplierOrder?>(null);
 
-
+      Rx<bool> fetching = Rx<bool>(false);
         List<SupplierOrder> get completedOrders => completedOrdersReceiver.value;
         Rx<Supplier?> selectedSupplier = Rx<Supplier?>(null);
         
@@ -41,10 +41,12 @@ class SupplierOrderController extends GetxController{
         Stream<List<SupplierOrder>> getSupplierOrders() {
           return firestore
               .collection("orders").
-              where("supplierId",isEqualTo: businessController.selectedBusiness.value?.id).
-              where("isClosed",isEqualTo: false).orderBy("createdAt",descending: true)
+              where("supplierId",isEqualTo: businessController.selectedBusiness.value?.id)
               .snapshots()
               .asyncMap((QuerySnapshot querySnapshot) async{
+             
+              fetching.value = true;
+               
                List<SupplierOrder> supplierOrders = [];
                   for (var element in querySnapshot.docs) {
                   SupplierOrder supplierOrder = SupplierOrder.fromDocumentSnapshot(element);
@@ -62,6 +64,7 @@ class SupplierOrderController extends GetxController{
                   supplierOrder.unreadMessages.bindStream(NotificationController().getUnreadOrderMessages(supplierOrder.id));
                   supplierOrders.add(supplierOrder);
                 }
+              fetching.value = false;
             return supplierOrders;    
           });
         }

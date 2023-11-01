@@ -62,12 +62,12 @@ AppController appController = Get.find<AppController>();
                       children: [
                      Obx(
                        ()=> appController.isMainDashboardSelected.value? avatar(size: 100,image: auth.auth.currentUser?.photoURL): Container(
-                        height: 150,
+                        height: 100,
                           child: Image.asset("assets/29845426_7265372-removebg-preview.png")),
                      ),
+                      const SizedBox(height: 20,),
                       Obx(()=> headingText(text:appController.isMainDashboardSelected.value? translatedText("You are in main dashboard", "Upo kwenye dashibodi kuu"):translatedText("You are in workers dashboard", "Upo kwenye dashibodi ya mfanyakazi"),fontSize: 20,textAlign: TextAlign.center)),
                       const SizedBox(height: 5,),
-                 
                       mutedText(text: translatedText("You can change the app dashboards here", "Unaweza kubadili dashibodi hapa")),
                       const SizedBox(height: 20,),
                       Obx(()=> customButton(text: appController.isMainDashboardSelected.value?translatedText("Change to workers dashboard", "Tumia dashibodi ya mfanyakazi"):translatedText("Back to main dashboard", "Rudi kwenye dashibodi kuu"), onClick: (){

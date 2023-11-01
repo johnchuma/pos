@@ -8,6 +8,7 @@ import 'package:pos/controllers/staff_register_controller.dart';
 import 'package:pos/controllers/worker_controller.dart';
 import 'package:pos/models/staff_registers.dart';
 import 'package:pos/utils/colors.dart';
+import 'package:pos/widgets/custom_button.dart';
 
 import 'package:pos/widgets/heading2_text.dart';
 import 'package:pos/widgets/paragraph.dart';
@@ -129,9 +130,9 @@ TextEditingController passwordController = TextEditingController();
                
                     ],
                   ));}).toList(),),
-                  const SizedBox(height: 20,),
+                  // const SizedBox(height: 0,),
 
-        
+        customButton(text: "Save",onClick: (){Get.back();})
                 ],),
               ),
             )),

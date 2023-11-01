@@ -77,13 +77,8 @@ class _MyProductRequestsState extends State<MyProductRequests> {
                                     children: [
                                       GestureDetector(
                                         onTap: (){
-                                        setState(() {
-                                          if(productrequestId == productrequest.id){
-                                             productrequestId = "";
-                                            }else{
-                                             productrequestId = productrequest.id;
-                                            }
-                                          });
+                                          find.selectedProductRequest.value = productrequest;
+                                              Get.to(()=>const BusinessThatMadeOffer());          
                                         },
                                         child: Container(
                                           color: Colors.transparent,
@@ -98,33 +93,19 @@ class _MyProductRequestsState extends State<MyProductRequests> {
                                              
                                             ],),
                                           ),
+                                              SizedBox(width: 5,),
+                                      if(productrequest.messages.value.length >0)  ClipOval(
+                                    child: Container(
+                                      color: Colors.red,
+                                      height: 20,
+                                      width: 20,
+                                      child: Center(child: Text("${productrequest.messages.value.length}",style: TextStyle(color: textColor),)),),
+                                  ),
                                                       ],),
                                         ),
-                                      ),
-                                       AnimatedSize(
-                                                    duration: const Duration(milliseconds: 200),
-                                                    child:productrequestId == productrequest.id ? Column(
-                                                      children: [
-                                                        const SizedBox(height: 10,),                      
-                                                         expandedItem(title: "View offers",iconData: Icons.business,onClick: (){
-                                                          find.selectedProductRequest.value = productrequest;
-                                                          Get.to(()=>const BusinessThatMadeOffer());
-                                                         }),
-                                                         expandedItem(title:translatedText("Delete request", "Futa ombi"), iconData:Icons.delete, onClick:  (){
-                                                          confirmDelete(context,onClick:  (){
-                                                            find.deleteRequest(productrequest.id);
-                                                          },onSuccess: (){
-                                                            successNotification(translatedText("Product is deleted successfully", "Umefanikiwa kufuta dirisha") );
-                                                          });
-                                                        },elevation: 0), 
-                                                       
-                                                      ],
-                                                    ):Container(),
-                                                  )
-                                               
+                                      ),           
                                     ],
                                   ),
-                                  
                                 ),),
                             ),
                          ) ).toList());

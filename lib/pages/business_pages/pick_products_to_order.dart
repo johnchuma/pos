@@ -111,7 +111,7 @@ class _PickProductsToOrderState extends State<PickProductsToOrder> {
                               borderRadius: BorderRadius.circular(15),
                                child: Container(
                                                         
-                                decoration: BoxDecoration(gradient: LinearGradient(colors: [primaryColor,primaryColor2])),
+                               color: mutedBackground,
                                 child: Padding(
                                  padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 20),
                                  child: Column(
@@ -174,7 +174,7 @@ class _PickProductsToOrderState extends State<PickProductsToOrder> {
                                            
                                             SizedBox(height: 20,),
                                            
-                                            customButton(text: "Continue",color: Colors.yellow[800],textColor: Colors.white, loading:loading, onClick: (){
+                                            customButton(text: "Continue",textColor: Colors.white, loading:loading, onClick: (){
                                              Get.bottomSheet(SelectOrderSupplier());
                                                                                    
                                             })

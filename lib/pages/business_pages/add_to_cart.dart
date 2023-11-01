@@ -64,6 +64,10 @@ ProductController  productController =  Get.find<ProductController>();
                            setState(() {
                             if(onCartAmount >1){
                                onCartAmount--;
+                           
+
+                             product.availableStock.value++;
+
                             }
                           });
                         },
@@ -82,8 +86,9 @@ ProductController  productController =  Get.find<ProductController>();
                        GestureDetector(
                         onTap: (){
                           setState(() {
-                            if(product.availableStock-onCartAmount>0){
+                            if(product.availableStock.value-onCartAmount>0){
                                onCartAmount++;
+                             product.availableStock.value--;
                             }
                           });
                         },

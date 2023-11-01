@@ -48,23 +48,25 @@ class RetailerOrderController extends GetxController{
                List<SupplierOrder> supplierOrders = [];
                   for (var element in querySnapshot.docs) {
                   SupplierOrder supplierOrder = SupplierOrder.fromDocumentSnapshot(element);
-                  QuerySnapshot productOrdersSnapshot = await firestore.collection("orderProducts").where("supplierOrderId",isEqualTo: element["id"]).get();
-                  for (var doc in productOrdersSnapshot.docs) {
+                 firestore.collection("orderProducts").where("supplierOrderId",isEqualTo: element["id"]).get().then((productOrdersSnapshot){
+                   for (var doc in productOrdersSnapshot.docs) {
                     ProductOrder productOrder = ProductOrder.fromDocumentSnapshot(doc);
-                    DocumentSnapshot productSnapshot =  await firestore.collection("products").doc(productOrder.productId).get();
+                   firestore.collection("products").doc(productOrder.productId).get().then((productSnapshot)  {
                     if(productSnapshot.exists){
                      productOrder.product.value = Product.fromDocumentSnapshot(productSnapshot);
                      supplierOrder.productOrders.value.add(productOrder);
-                    }
+                     }
+                    });
                   }
-                  DocumentSnapshot doc = await firestore.collection("businesses").doc(element["supplierId"]).get();
-                  supplierOrder.supplier = Business.fromDocumentSnapshot(doc);
+                 });
+                  supplierOrder.supplier = await businessController.getBusiness(supplierOrder.supplierId.trim());
                   supplierOrder.unreadMessages.bindStream(NotificationController().getUnreadOrderMessages(supplierOrder.id));
                   supplierOrders.add(supplierOrder);
-                }
+               }
             return supplierOrders;    
           });
         }
+
         Stream<List<SupplierOrder>> previousOrders() {
           return firestore
               .collection("orders").
@@ -84,6 +86,7 @@ class RetailerOrderController extends GetxController{
                      supplierOrder.productOrders.value.add(productOrder);
                     }
                   }
+                  print(element["supplierId"]);
                     DocumentSnapshot doc = await firestore.collection("businesses").doc(element["supplierId"]).get();
                     supplierOrder.supplier = Business.fromDocumentSnapshot(doc);
                   
@@ -97,7 +100,8 @@ class RetailerOrderController extends GetxController{
             var id = Timestamp.now().toDate().toString();
            await  firestore.collection("orders").doc(id).set({
               "id":id,
-              "businessId":businessController.selectedBusiness.value?.id,
+              "from":businessController.selectedBusiness.value?.id,
+              
               "supplierId":selectedSupplier.value == null ?null:selectedSupplier.value?.supplier.id,
               "isClosed":false,
               "inAppOrder":selectedSupplier.value == null?true:false,

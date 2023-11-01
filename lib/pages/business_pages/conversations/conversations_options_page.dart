@@ -10,8 +10,10 @@ import 'package:pos/controllers/business_controller.dart';
 import 'package:pos/controllers/register_controller.dart';
 import 'package:pos/controllers/suppliers_conversations_controller.dart';
 import 'package:pos/controllers/tutorial_controller.dart';
+import 'package:pos/controllers/unread_messages_controller.dart';
 import 'package:pos/pages/business_pages/business_to_supplier_chat_page.dart';
 import 'package:pos/pages/business_pages/conversations/businesses_conversations.dart';
+import 'package:pos/pages/business_pages/conversations/clients_conversation.dart';
 import 'package:pos/pages/business_pages/conversations/product_requests_from_clients.dart';
 import 'package:pos/pages/business_pages/conversations/supplier_orders_page.dart';
 import 'package:pos/pages/business_pages/video_player.dart';
@@ -32,6 +34,8 @@ import 'package:pos/widgets/translatedText.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
+import '../../../models/message_model.dart';
+
 
 class ConversationsOptionsPage extends StatefulWidget {
  
@@ -50,6 +54,18 @@ class _ConversationsOptionsPageState extends State<ConversationsOptionsPage> {
   var path = "";
   bool loading = false;
   List relatedTo = [];
+  Rx<List<Message>> unreadClientMessages = Rx<List<Message>>([]);
+  Rx<List<Message>> unreadOrderMessages = Rx<List<Message>>([]);
+  Rx<List<Message>> unreadRequestMessages = Rx<List<Message>>([]);
+
+
+  @override
+  void initState() {
+    unreadClientMessages.bindStream(UnreadMessagesController().getUnreadMessages(messageType: "clientBusiness",to: businessController.selectedBusiness.value?.id));
+    unreadRequestMessages.bindStream(UnreadMessagesController().getUnreadMessages(messageType: "productRequest",to: businessController.selectedBusiness.value?.id));
+    unreadOrderMessages.bindStream(UnreadMessagesController().getUnreadMessages(messageType: "order",to: businessController.selectedBusiness.value?.id));
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,15 +79,46 @@ class _ConversationsOptionsPageState extends State<ConversationsOptionsPage> {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(children: [
-         menuItem(title: "Conversations with businesses",onTap: (){
-          Get.to(()=>BusinessesConversation());
-         }),
-         menuItem(title: "Product orders",onTap: (){
-          Get.to(()=>const SupplierOrdersPage());
-         }),
-         menuItem(title: "Product requests",onTap: (){
-          Get.to(()=>const ProductRequestsFromClients());
-         }),
+        //  menuItem(title: "Conversations with businesses",onTap: (){
+        //   Get.to(()=>BusinessesConversation());
+        //  }),
+        if(businessController.selectedBusiness.value?.role == "supplier") Obx(()=> menuItem(title: "Product orders",trailing:unreadOrderMessages.value.length <1?Container():  ClipOval(
+                              child: Container(
+                                color: Colors.red,
+                                height: 20,
+                                width: 20,
+                                child: Center(child: Text("${unreadOrderMessages.value.length}",style: TextStyle(color: textColor),)),),
+                            ),  onTap: (){
+            Get.to(()=>const SupplierOrdersPage());
+           }),
+        ),
+         Obx(
+           ()=> menuItem(title: "Product requests",
+           trailing:unreadRequestMessages.value.length < 1?Container():ClipOval(
+                              child: Container(
+                                color: Colors.red,
+                                height: 20,
+                                width: 20,
+                                child: Center(child: Text("${unreadRequestMessages.value.length}",style: TextStyle(color: textColor),)),),
+                            ),
+           onTap: (){
+            Get.to(()=>const ProductRequestsFromClients());
+           }),
+         ),
+          Obx(()=>
+           menuItem(title: "Chat with clients",
+           trailing:unreadClientMessages.value.length <1?Container():  ClipOval(
+                            child: Container(
+                              color: Colors.red,
+                              height: 20,
+                              width: 20,
+                              child: Center(child: Text("${unreadClientMessages.value.length}",style: TextStyle(color: textColor),)),),
+                          ),
+                          
+                           onTap: (){
+            Get.to(()=> ClientsConversation());
+                   }),
+          ),
         ],),
       ),
     

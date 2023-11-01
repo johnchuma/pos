@@ -7,6 +7,7 @@ import 'package:pos/controllers/sales_controller.dart';
 import 'package:pos/pages/business_pages/add_to_cart.dart';
 import 'package:pos/pages/business_pages/product_stock.dart';
 import 'package:pos/utils/colors.dart';
+import 'package:pos/utils/money_format.dart';
 import 'package:pos/utils/notifications.dart';
 import 'package:pos/widgets/back.dart';
 import 'package:pos/widgets/custom_button.dart';
@@ -145,13 +146,13 @@ class _SaleProductsState extends State<SaleProducts> {
                                                        crossAxisAlignment: CrossAxisAlignment.start,
                                                        children: [
                                                         heading2(text: product.name,fontSize: 14,color: Colors.white),
-                                                       mutedText(text: "${translatedText("Price", "Bei")}: ${(product.sellingPrice*product.onCartAmount)} TZS",color: Colors.white70),
+                                                       mutedText(text: "${translatedText("Price", "Bei")}: ${(moneyFormat(product.sellingPrice*product.onCartAmount))} TZS",color: Colors.white70),
                                                       if(product.discount> 0.0)
                                                        Column(
                                                         crossAxisAlignment: CrossAxisAlignment.start,
                                                          children: [
                                                            mutedText(text: "${translatedText("Discount", "Punguzo")}: ${product.discount} TZS",color: Colors.white70),
-                                                       mutedText(text: "${translatedText("Final offer", "Bei ya mwisho")}: ${(product.sellingPrice*product.onCartAmount)-product.discount} TZS",fontSize: 13,color: Colors.white),
+                                                       mutedText(text: "${translatedText("Final offer", "Bei ya mwisho")}: ${moneyFormat((product.sellingPrice*product.onCartAmount)-product.discount)} TZS",fontSize: 13,color: Colors.white),
                                                         
                                                          ],
                                                        ),
@@ -184,7 +185,7 @@ class _SaleProductsState extends State<SaleProducts> {
                                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                               children: [
                                                 mutedText(text: translatedText("Total price", "Jumla ya gharama"),color: Colors.white70),
-                                               heading2(text: "${find.totalCartAmount} TZS",color: Colors.white)
+                                               heading2(text: "${moneyFormat(find.totalCartAmount.value)} TZS",color: Colors.white)
                                               ],
                                             ),
                                             SizedBox(height: 20,),
@@ -252,7 +253,7 @@ class _SaleProductsState extends State<SaleProducts> {
                                           crossAxisAlignment: CrossAxisAlignment.end,
                                           children: [
                                           mutedText(text: "selling price",fontSize: 12,color: textColor.withOpacity(0.4)),
-                                          heading2(text: "${product.sellingPrice}TZS",fontSize: 13),
+                                          heading2(text: "${moneyFormat(product.sellingPrice)}TZS",fontSize: 13),
                                         ],),
                                                     ],),
                                       ),
@@ -266,6 +267,7 @@ class _SaleProductsState extends State<SaleProducts> {
                                                       const SizedBox(height: 10,),                      
                                                       expandedItem(title:"Add to shopping cart", iconData:Icons.add_shopping_cart,onClick:  (){
                                                           find.selectedProduct.value = product;
+                                                          find.selectedProduct.value.availableStock.value --;
                                                          Get.bottomSheet(AddToCart());
                                                       }),
                                                                                                                                   

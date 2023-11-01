@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:pos/controllers/business_controller.dart';
 import 'package:pos/controllers/product_controller.dart';
 import 'package:pos/controllers/product_request_controller.dart';
+import 'package:pos/controllers/unread_messages_controller.dart';
 import 'package:pos/pages/admin/approve_request.dart';
 import 'package:pos/pages/business_pages/product_request_chat_page.dart';
 import 'package:pos/pages/business_pages/request_product.dart';
@@ -88,6 +89,7 @@ class _ProductRequestsFromClientsState extends State<ProductRequestsFromClients>
                                             find.updateRequest(data: {"businessesThatSentTheirOffers":uniqueOffers.toList()});
                                             find.selectedClient.value = productrequest.client;
                                             Get.to(()=>const ProductRequestChatPage());
+                                            UnreadMessagesController().updateAllUnreadMessages(messages:productrequest.messages.value);
                                           
                                         },
                                         child: Container(
@@ -99,10 +101,17 @@ class _ProductRequestsFromClientsState extends State<ProductRequestsFromClients>
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
                                               heading2(text: productrequest.request,fontSize: 14),
-                                              mutedText(text:timeago.format(productrequest.createdAt.toDate()),maxLines: 2 ),
+                                             productrequest.messages.value.length>0?mutedText(text: productrequest.messages.value.first.message): mutedText(text:timeago.format(productrequest.createdAt.toDate()),maxLines: 2 ),
                                              
                                             ],),
                                           ),
+                                          productrequest.messages.value.length < 1?Container():ClipOval(
+                              child: Container(
+                                color: Colors.red,
+                                height: 20,
+                                width: 20,
+                                child: Center(child: Text("${productrequest.messages.value.length}",style: TextStyle(color: textColor),)),),
+                            ),
                                                       ],),
                                         ),
                                       ),

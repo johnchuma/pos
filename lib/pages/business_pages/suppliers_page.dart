@@ -139,6 +139,7 @@ class _SuppliersPageState extends State<SuppliersPage> {
                                                   const SizedBox(height: 10,),                      
                                                      expandedItem(title:"Chat with a supplier", iconData:Icons.message, onClick:  (){
                                                        businessController.selectedSender.value = item.supplier;
+                                                       find.selectedSupplier.value = item;
                                                       Get.to(()=>BusinessToSupplierChatPage());
                                                   },elevation: 0), 
                                                    expandedItem(title:"Delete this suppllier", iconData:Icons.delete, onClick:  (){

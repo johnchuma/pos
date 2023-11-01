@@ -1,3 +1,4 @@
+import 'package:geolocator/geolocator.dart';
 import 'package:location/location.dart';
 
  Future<LocationData?> findCurrentLocation()async{
@@ -29,4 +30,13 @@ print(_locationData.longitude);
 
 
 return _locationData;
+}
+String distanceBetweenTwoCoordinates({lat1,long1,lat2,long2}){
+  double value = (Geolocator.distanceBetween(lat1,long1,lat2,long2));
+  if(value > 1000){
+    return "${(Geolocator.distanceBetween(lat1,long1,lat2,long2)/1000).toStringAsFixed(2)}Km away";
+  }
+  
+     return "${(Geolocator.distanceBetween(lat1,long1,lat2,long2)).toStringAsFixed(2)} Meters away";
+
 }

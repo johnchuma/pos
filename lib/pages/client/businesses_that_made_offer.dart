@@ -5,21 +5,16 @@ import 'package:pos/controllers/auth_controller.dart';
 import 'package:pos/controllers/business_controller.dart';
 import 'package:pos/controllers/product_controller.dart';
 import 'package:pos/controllers/product_request_controller.dart';
-import 'package:pos/models/business.dart';
+import 'package:pos/controllers/unread_messages_controller.dart';
 import 'package:pos/pages/business_pages/product_request_chat_page.dart';
 import 'package:pos/pages/business_pages/request_product.dart';
 import 'package:pos/utils/colors.dart';
-import 'package:pos/utils/delete_confirmation.dart';
-import 'package:pos/utils/notifications.dart';
 import 'package:pos/widgets/back.dart';
 import 'package:pos/widgets/custom_button.dart';
-import 'package:pos/widgets/expanded_item.dart';
 import 'package:pos/widgets/heading2_text.dart';
-import 'package:pos/widgets/heading_text.dart';
 import 'package:pos/widgets/muted_text.dart';
 import 'package:pos/widgets/no_data.dart';
 import 'package:pos/widgets/translatedText.dart';
-import 'package:timeago/timeago.dart' as timeago;
 
 class BusinessThatMadeOffer extends StatefulWidget {
   const BusinessThatMadeOffer({super.key});
@@ -64,54 +59,62 @@ class _BusinessThatMadeOfferState extends State<BusinessThatMadeOffer> {
                 
                 children: [
                        
-                     const SizedBox(height: 20),
+                     const SizedBox(height: 10),
                        StreamBuilder(
                       stream: productRequestController.getBusinessesThatMadeOffers(),
                       initialData: [],
                        builder: (context,snapshot) {
                       var businesses = snapshot.requireData;
-                         return businesses.isEmpty ?noData(): Column(children:businesses.map((business) => Padding(
-                           padding: const EdgeInsets.only(bottom: 15),
-                           child: ClipRRect(
-                              borderRadius: BorderRadius.circular(15),
-                              child: Container(
-                                color: mutedBackground,
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 20),
-                                  child: Column(
-                                    children: [
-                                      GestureDetector(
-                                        onTap: (){
-                                              businessController.selectedBusiness.value = business;
-                                              productRequestController.isClient = true;
-                                              productRequestController.aboutProductRequest = true;
-                                            productRequestController.selectedClient.value = authController.me.value;
-                                              Get.to(()=>const ProductRequestChatPage());
-                                        },
-                                        child: Container(
-                                          color: Colors.transparent,
-                                          child: Row(children:  [
-                                           
-                                          Expanded(
-                                            child: Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                              heading2(text: business.name,fontSize: 14),
-                                              mutedText(text:"Click to view offer" ),
-                                             
-                                            ],),
+                         return businesses.isEmpty ?noData(): Obx(
+                           ()=> Column(children:businesses.map((business) => Padding(
+                             padding: const EdgeInsets.only(bottom: 15),
+                             child: ClipRRect(
+                                borderRadius: BorderRadius.circular(15),
+                                child: Container(
+                                  color: mutedBackground,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 20),
+                                    child: Column(
+                                      children: [
+                                        GestureDetector(
+                                          onTap: (){
+                                                businessController.selectedBusiness.value = business;
+                                                productRequestController.isClient = true;
+                                                productRequestController.aboutProductRequest = true;
+                                              productRequestController.selectedClient.value = authController.me.value;
+                                                Get.to(()=>const ProductRequestChatPage());
+                                                UnreadMessagesController().updateAllUnreadMessages(messages:business.messages.value);
+                                          },
+                                          child: Container(
+                                            color: Colors.transparent,
+                                            child: Row(children:  [
+                                            Expanded(
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                heading2(text: business.name,fontSize: 14),
+                                                business.messages.value.length >0?mutedText(text:business.messages.value.first.message ):   mutedText(text:"Click to view offer" ), 
+                                              ],),
+                                            ),
+                                          if(business.messages.value.length>0)   ClipOval(
+                                      child: Container(
+                                        color: Colors.red,
+                                        height: 20,
+                                        width: 20,
+                                        child: Center(child: Text("${business.messages.value.length}",style: TextStyle(color: textColor),)),),
+                                    ),
+                                                        ],),
                                           ),
-                                                      ],),
                                         ),
-                                      ),
-                                       
-                                               
-                                    ],
-                                  ),
-                                  
-                                ),),
-                            ),
-                         ) ).toList());
+                                         
+                                                 
+                                      ],
+                                    ),
+                                    
+                                  ),),
+                              ),
+                           ) ).toList()),
+                         );
                        }
                      )
               ],),

@@ -5,6 +5,7 @@ import 'package:ionicons/ionicons.dart';
 import 'package:pos/controllers/business_controller.dart';
 import 'package:pos/controllers/product_controller.dart';
 import 'package:pos/controllers/retailer_order_controller.dart';
+import 'package:pos/controllers/unread_messages_controller.dart';
 import 'package:pos/pages/business_pages/add_product.dart';
 import 'package:pos/pages/business_pages/business_to_supplier_chat_page.dart';
 import 'package:pos/pages/business_pages/confirm_received_order.dart';
@@ -129,7 +130,7 @@ class _OrdersPageState extends State<OrdersPage> {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                         heading2(text: item.inAppOrder == true? "In app order": "Order to ${item.supplier.name}",fontSize: 14,maxLines: 1),
-                                        mutedText(text:"Ordered ${timeago.format(item.createdAt.toDate()) }",maxLines: 1),
+                                       item.unreadMessages.value.isNotEmpty?mutedText(text: item.unreadMessages.value.last.message): mutedText(text:"Ordered ${timeago.format(item.createdAt.toDate()) }",maxLines: 1),
                                       ],),
                                     ),
                                     SizedBox(width: 10,),
@@ -138,8 +139,10 @@ class _OrdersPageState extends State<OrdersPage> {
                                         find.selectedSupplierOrder.value = item;
                                         businessController.selectedSender.value = item.supplier;
                                         Get.to(const OrderChatPage());
+                                        UnreadMessagesController().updateAllUnreadMessages(messages:item.unreadMessages.value);
+
                                       },
-                                      child:item.unreadMessages.value.isNotEmpty ? ClipOval(child: Container(width: 25,height: 25,color: primaryColor,  child: Center(child: paragraph(text: item.unreadMessages.value.length.toString(),color: mutedBackground,fontSize: 11)),))
+                                      child:item.unreadMessages.value.isNotEmpty ? ClipOval(child: Container(width: 20,height: 20,color: Colors.red,  child: Center(child: paragraph(text: item.unreadMessages.value.length.toString(),fontSize: 11)),))
                                     : Icon(Ionicons.chatbubble, size: 25,color: mutedColor.withOpacity(0.4),))
                                                 ],),
                                   ),

@@ -1,6 +1,6 @@
 // ignore_for_file: avoid_unnecessary_containers
 
-import 'package:fl_chart/fl_chart.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pos/controllers/business_controller.dart';
@@ -10,9 +10,10 @@ import 'package:pos/controllers/supplier_controller.dart';
 import 'package:pos/models/sale.dart';
 import 'package:pos/pages/business_pages/find_supplier.dart';
 import 'package:pos/utils/colors.dart';
+import 'package:pos/utils/money_format.dart';
 import 'package:pos/widgets/avatar.dart';
 import 'package:pos/widgets/back.dart';
-import 'package:pos/widgets/bar_chart.dart';
+
 import 'package:pos/widgets/bottomsheet_template.dart';
 import 'package:pos/widgets/custom_button.dart';
 import 'package:pos/widgets/expanded_item.dart';
@@ -81,7 +82,7 @@ class _SalesReportsPageState extends State<SalesReportsPage> {
                                     children: [
                                       mutedText(text: "Total sales",color: mutedColor),
                                       SizedBox(height: 5,),
-                                      headingText(text: "${salesController.totalSales(sales)}TZS",fontSize: 35),
+                                      headingText(text: "${moneyFormat(salesController.totalSales(sales))}TZS",fontSize: 35),
                                       SizedBox(height: 10,),
                                     
                                       Row(
@@ -90,14 +91,14 @@ class _SalesReportsPageState extends State<SalesReportsPage> {
                                        Row(
                                          children: [
                                          
-                                           mutedText(text: "Capital: ${salesController.productsCapital(sales)}TZS",fontSize: 12),
+                                           mutedText(text: "Capital: ${moneyFormat(salesController.productsCapital(sales))}TZS",fontSize: 12),
                                          ],
                                        ),
                                        Row(
                                          children: [
                                          
                                                                            
-                                           mutedText(text: "profit: ${salesController.productsProfit(sales)}TZS",fontSize: 12),
+                                           mutedText(text: "profit: ${moneyFormat(salesController.productsProfit(sales))}TZS",fontSize: 12),
                                          ],
                                        ),
                                       ],
@@ -155,7 +156,7 @@ class _SalesReportsPageState extends State<SalesReportsPage> {
                                               Column(
                                                 children: [
                                                   mutedText(text: "Sold for",color: mutedColor.withOpacity(0.5)),
-                                              heading2(text: "${sales.totalPrice}TZS",fontSize: 14)
+                                              heading2(text: "${moneyFormat(sales.totalPrice)}TZS",fontSize: 14)
     
                                                 ],
                                               ),

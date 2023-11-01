@@ -7,6 +7,7 @@ import 'package:pos/controllers/product_controller.dart';
 import 'package:pos/controllers/product_sales_controller.dart';
 import 'package:pos/pages/business_pages/add_product.dart';
 import 'package:pos/pages/business_pages/edit_pages/edit_product.dart';
+import 'package:pos/pages/business_pages/edit_pages/product_settings.dart';
 import 'package:pos/pages/business_pages/product_sales_main.dart';
 import 'package:pos/pages/business_pages/product_stock.dart';
 import 'package:pos/utils/colors.dart';
@@ -140,44 +141,19 @@ class _ProductsPageState extends State<ProductsPage> {
                                               child: productId == product.id ? Column(
                                                 children: [
                                                   const SizedBox(height: 10,),            
-                                                   expandedItem(title:translatedText("Change visibility", "Bidilisha uonekanaji"), iconData:Icons.remove_red_eye,onClick:  (){
-                                                            Get.bottomSheet(SingleChildScrollView(
-                                                              child: ClipRRect(
-                                                              borderRadius: const BorderRadius.only(topRight: Radius.circular(15),topLeft: Radius.circular(15)),
-                                                              child: Container(
-                                                                color: mutedBackground,
-                                                                child: Padding(
-                                                                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                                                                  child: Column(
-                                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                                    children: [
-                                                                    const SizedBox(height: 10,),
-                                                                    Row(
-                                                                      mainAxisAlignment: MainAxisAlignment.center,
-                                                                      children: [ClipRRect(
-                                                                        borderRadius: BorderRadius.circular(15),
-                                                                        child: Container(width: 80,height: 5,color: backgroundColor,))],),
-                                                                    SizedBox(height: 20,),
-                                                                    heading2(text: "Change visibility"),
-                                                                    Obx(
-                                                                     ()=>Row(
-                                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                      children: [
-                                                                        mutedText(text: "Make product public"),
-                                                                        Switch(value: product.isPublic.value,activeColor: primaryColor, onChanged: (value){
-                                                                          product.isPublic.value = value;
-                    
-                                                                          find.updateProduct(product.id, {"isPublic":value});
-                                                                        })
-                                                                      ],),
-                                                                    ),
-                                                                                                                    SizedBox(height: 20,),
-                                                                  ],),
-                                                                ),),
-                                                              ),
-                                                            ));
-                                                  }),     
-                                                   expandedItem(title:translatedText("Product features", "Sifa za bidhaa"), iconData:Icons.list,onClick:  (){
+                                             
+                                                   
+                                                  expandedItem(title:translatedText("Product stock", "Mzigo wa bidhaa"), iconData:Icons.add,onClick:  (){
+                                                      find.selectedProduct.value = product;
+                                                      Get.to(()=>const ProductStock());
+                                                  }),
+                                                   expandedItem(title:translatedText("Product sales", "Mauzo ya bidhaa"),iconData: Icons.bar_chart,onClick:  (){
+                                                      productSaleController.selectedProduct.value = product;
+                                                      Get.to(()=>const ProductsSalesMain());
+                                                  },elevation: 0),  
+
+                                                
+                                                  expandedItem(title:translatedText("Product features", "Sifa za bidhaa"), iconData:Icons.remove_red_eye,onClick:  (){
                                                       find.selectedProduct.value = product;
                                                       Get.bottomSheet(bottomSheetTemplate(widget: Container(child: Column(
                                                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -200,17 +176,13 @@ class _ProductsPageState extends State<ProductsPage> {
                                                               ),
                                                             )).toList(),),
                                                       ],),)));
-                                                  }),     
-                                                  expandedItem(title:translatedText("Product stock", "Mzigo wa bidhaa"), iconData:Icons.add_box,onClick:  (){
-                                                      find.selectedProduct.value = product;
-                                                      Get.to(()=>const ProductStock());
                                                   }),
-                                                   expandedItem(title:translatedText("Product sales", "Mauzo ya bidhaa"),iconData: Icons.report,onClick:  (){
-                                                      productSaleController.selectedProduct.value = product;
-                                                      Get.to(()=>const ProductsSalesMain());
-                                                  },elevation: 0),  
-
-                                                  expandedItem(title:translatedText("Edit product details", "Badili taarifa"), iconData:Icons.edit,onClick:  (){
+                                                       
+                                                  expandedItem(title:translatedText("Product settings", "Mipangilia ya bidhaa"), iconData:Icons.settings,onClick:  (){
+                                                      find.selectedProduct.value = product;
+                                                      Get.to(()=> ProductSettings());
+                                                  }),
+                                                    expandedItem(title:translatedText("Edit product details", "Badili taarifa"), iconData:Icons.edit,onClick:  (){
                                                       find.selectedProduct.value = product;
                                                       Get.to(()=> EditProduct());
                                                   }),

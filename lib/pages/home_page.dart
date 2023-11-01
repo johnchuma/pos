@@ -11,7 +11,9 @@ import 'package:pos/controllers/app_controller.dart';
 import 'package:pos/controllers/auth_controller.dart';
 import 'package:pos/controllers/business_controller.dart';
 import 'package:pos/controllers/clients_controller.dart';
+import 'package:pos/controllers/conversation_controller.dart';
 import 'package:pos/controllers/register_controller.dart';
+import 'package:pos/controllers/unread_messages_controller.dart';
 import 'package:pos/models/client.dart';
 import 'package:pos/pages/clients_page.dart';
 import 'package:pos/pages/private_chat_room.dart';
@@ -26,6 +28,7 @@ import 'package:pos/widgets/muted_text.dart';
 import 'package:pos/widgets/text_form.dart';
 import 'package:pos/widgets/translatedText.dart';
 
+import '../models/message_model.dart';
 import '../utils/colors.dart';
 import '../widgets/avatar.dart';
 import '../widgets/heading2_text.dart';
@@ -42,15 +45,17 @@ class _HomePageState extends State<HomePage> {
    AppController appController = Get.find<AppController>();
    TextEditingController passwordController = TextEditingController();
    AuthController authController =Get.find<AuthController>();
+   Rx<List<Message>> unreadMessages = Rx<List<Message>>([]);
   @override
   void initState() {
+    unreadMessages.bindStream(UnreadMessagesController().getUnreadMessages(messageType: "clientAdmin",to: authController.auth.currentUser?.email));
+
     Get.put(BusinessController());
     Get.put(ClientsController());
-
- 
+    Get.put(ConversationController());
     super.initState();
   }
-
+  
   @override
   Widget build(BuildContext context) {
     return  FutureBuilder(
@@ -137,7 +142,7 @@ class _HomePageState extends State<HomePage> {
           showUnselectedLabels: false,
           type: BottomNavigationBarType.fixed,
           showSelectedLabels: false,
-          items: const [
+          items:  [
              BottomNavigationBarItem(
               icon: Icon(Icons.home,size: 30,),
               label: '',
@@ -151,7 +156,26 @@ class _HomePageState extends State<HomePage> {
               label: '',
             ),
              BottomNavigationBarItem(
-               icon: Icon(Icons.chat_bubble,size: 25,),  // Example different icon and color
+               icon: Obx(
+                 ()=> Stack(
+                   children: [
+                     Padding(
+                       padding: const EdgeInsets.all(5),
+                       child: Icon(Icons.chat_bubble,size: 25,),
+                     ),
+                    if(unreadMessages.value.length>0) Positioned(
+                      right: 1,top: 1,
+                       child: ClipOval(
+                              child: Container(
+                                color: Colors.red,
+                                height: 15,
+                                width: 15,
+                                child: Center(child: Text("${unreadMessages.value.length}",style: TextStyle(color: textColor,fontSize: 11),)),),
+                            ),
+                     ),
+                   ],
+                 ),
+               ),  // Example different icon and color
               label: '',
             ),
             BottomNavigationBarItem(
@@ -169,10 +193,12 @@ class _HomePageState extends State<HomePage> {
           setState(() {
           selectedTab = index;
           });
+          if(index == 3){
+            UnreadMessagesController().updateAllUnreadMessages(messages: unreadMessages.value);
+          }
           },
           ),
-        )
-        ,
+        ),
             body: Scaffold(
             backgroundColor: backgroundColor,
             body:[ PublicPage(), Obx(()=>appController.isMainDashboardSelected.value?DashboardPage():WorkerDashboardPage()),InsightsPage(),PrivateChatRoom(),SettingsPage()][selectedTab] ,));

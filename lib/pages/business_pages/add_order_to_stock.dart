@@ -1,20 +1,11 @@
-import 'package:cached_network_image/cached_network_image.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
 import 'package:pos/controllers/product_controller.dart';
-
-import 'package:pos/controllers/register_controller.dart';
-import 'package:pos/controllers/staff_register_controller.dart';
 import 'package:pos/controllers/stock_controller.dart';
 import 'package:pos/controllers/retailer_order_controller.dart';
-import 'package:pos/controllers/worker_controller.dart';
 import 'package:pos/models/Stock.dart';
-import 'package:pos/models/staff_registers.dart';
 import 'package:pos/utils/colors.dart';
-import 'package:pos/utils/delete_confirmation.dart';
-import 'package:pos/utils/notifications.dart';
 import 'package:pos/widgets/custom_button.dart';
 import 'package:pos/widgets/heading2_text.dart';
 import 'package:pos/widgets/muted_text.dart';

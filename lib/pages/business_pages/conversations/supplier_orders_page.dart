@@ -6,12 +6,8 @@ import 'package:pos/controllers/business_controller.dart';
 import 'package:pos/controllers/product_controller.dart';
 import 'package:pos/controllers/retailer_order_controller.dart';
 import 'package:pos/controllers/supplier_order_controller.dart';
-import 'package:pos/pages/business_pages/add_product.dart';
-import 'package:pos/pages/business_pages/business_to_supplier_chat_page.dart';
-import 'package:pos/pages/business_pages/confirm_received_order.dart';
-import 'package:pos/pages/business_pages/pick_products_to_order.dart';
-import 'package:pos/pages/business_pages/previous_orders.dart';
-import 'package:pos/pages/business_pages/product_stock.dart';
+import 'package:pos/controllers/unread_messages_controller.dart';
+
 import 'package:pos/pages/business_pages/order_chat_page.dart';
 import 'package:pos/utils/colors.dart';
 import 'package:pos/utils/delete_confirmation.dart';
@@ -73,7 +69,10 @@ class _SupplierOrdersPageState extends State<SupplierOrdersPage> {
                      GetX<SupplierOrderController>(
                     init: SupplierOrderController(),
                      builder: (find) {
-                       return find.supplierOrders.isEmpty?noData(): Column(children:find.supplierOrders.map((item) => Padding(
+                      // print(find.supplierOrders.length);
+                       return find.fetching.value?Container(
+                        height: MediaQuery.of(context).size.height-200,
+                        child: Center(child: CircularProgressIndicator(color: textColor,),)): find.supplierOrders.isEmpty?noData(): Column(children:find.supplierOrders.map((item) => Padding(
                          padding: const EdgeInsets.only(bottom: 10),
                          child: ClipRRect(
                             borderRadius: BorderRadius.circular(15),
@@ -85,13 +84,17 @@ class _SupplierOrdersPageState extends State<SupplierOrdersPage> {
                                   children: [
                                     GestureDetector(
                                       onTap: (){
-                                        setState(() {
-                                          if(supplierOrderId == item.id){
-                                          supplierOrderId = "";
-                                          }else{
-                                          supplierOrderId = item.id;
-                                          }
-                                        });
+                                            retailerOrderController.selectedSupplierOrder.value = item;
+                                            businessController.selectedSender.value = item.from;
+                                            Get.to(const OrderChatPage());
+                                            UnreadMessagesController().updateAllUnreadMessages(messages:item.unreadMessages.value);
+                                        // setState(() {
+                                        //   if(supplierOrderId == item.id){
+                                        //   supplierOrderId = "";
+                                        //   }else{
+                                        //   supplierOrderId = item.id;
+                                        //   }
+                                        // });
                                       },
                                       child: Container(
                                         color: Colors.transparent,
@@ -104,8 +107,8 @@ class _SupplierOrdersPageState extends State<SupplierOrdersPage> {
                                           child: Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
-                                            heading2(text: item.inAppOrder == true? "In app order": "From ${item.from.name}",fontSize: 14,maxLines: 1),
-                                            mutedText(text:"Ordered ${timeago.format(item.createdAt.toDate()) }"),
+                                            heading2(text: item.inAppOrder == true? "In app order": "${item.from.name}",fontSize: 14,maxLines: 1),
+                                          item.unreadMessages.value.length>0? mutedText(text:"${item.unreadMessages.value.last?.message}"): mutedText(text:"Ordered ${timeago.format(item.createdAt.toDate()) }"),
                                           ],),
                                         ),
                                         SizedBox(width: 10,),
@@ -115,7 +118,7 @@ class _SupplierOrdersPageState extends State<SupplierOrdersPage> {
                                             businessController.selectedSender.value = item.from;
                                             Get.to(const OrderChatPage());
                                           },
-                                          child:  item.unreadMessages.value.isNotEmpty ? ClipOval(child: Container(width: 25,height: 25,color: primaryColor,  child: Center(child: paragraph(text: item.unreadMessages.value.length.toString(),color: Colors.white,fontSize: 11)),))
+                                          child:  item.unreadMessages.value.isNotEmpty ? ClipOval(child: Container(width: 25,height: 25,color: Colors.red,  child: Center(child: paragraph(text: item.unreadMessages.value.length.toString(),color: Colors.white,fontSize: 11)),))
                                         :  Icon(Ionicons.chatbubble, size: 25,color: mutedColor.withOpacity(0.4),))
                                                     ],),
                                       ),

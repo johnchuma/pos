@@ -4,7 +4,7 @@ import 'package:pos/widgets/heading2_text.dart';
 import 'package:pos/widgets/muted_text.dart';
 import 'package:pos/widgets/paragraph.dart';
 
-Widget menuItem({icon,title,onTap,subtitle,double? paddingTop,double iconSize = 30,double? verticalPadding,Color? titleColor,bool? expandable=false, Widget? expandedItem}){
+Widget menuItem({icon,title,onTap,trailing, subtitle,double? paddingTop,double iconSize = 30,double? verticalPadding,Color? titleColor,bool? expandable=false, Widget? expandedItem}){
   return Padding(
             padding:  EdgeInsets.only(top:paddingTop?? 10),
             child: GestureDetector(
@@ -32,7 +32,8 @@ Widget menuItem({icon,title,onTap,subtitle,double? paddingTop,double iconSize = 
                          ),
                        )
                       ],),
-                    )
+                    ),
+                   trailing??Container()
                   ],),
                 ),
                 ),

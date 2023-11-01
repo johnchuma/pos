@@ -3,6 +3,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
 import 'package:pos/controllers/business_controller.dart';
+import 'package:pos/controllers/supplier_controller.dart';
 import 'package:pos/pages/business_pages/business_to_supplier_chat_page.dart';
 import 'package:pos/utils/colors.dart';
 import 'package:pos/widgets/avatar.dart';
@@ -17,7 +18,7 @@ import '../../../controllers/suppliers_conversations_controller.dart';
 class BusinessesConversation extends StatelessWidget {
    BusinessesConversation({super.key});
    BusinessController businessController = Get.find<BusinessController>();
-
+  SupplierController supplierController = Get.find<SupplierController>();
   @override
   Widget build(BuildContext context) {
     return   Scaffold(
@@ -43,8 +44,9 @@ class BusinessesConversation extends StatelessWidget {
                   return ListView(children: find.suppliers.map((item) => 
                   GestureDetector(
                     onTap: (){
-                      find.updateAllNewConversations(item!);
-                      businessController.selectedSender.value = item;
+                      find.updateAllNewConversations(item?.messages);
+                      businessController.selectedSender.value = item!.business;
+                      supplierController.selectedSupplier.value = item;
                       Get.to(()=>const BusinessToSupplierChatPage());
                     },
                     child: Padding(
@@ -58,13 +60,13 @@ class BusinessesConversation extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 15),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [avatar(image: item?.image),
+                            children: [avatar(image: item?.business.image),
                           const SizedBox(width: 14,),
                            Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                heading2(text:item?.name,fontSize: 15),
+                                heading2(text:item?.business.name,fontSize: 15),
                             item?.messages.value.isEmpty == true ?mutedText(text: "No new messages for now"):
                              Column(
                               crossAxisAlignment: CrossAxisAlignment.start,

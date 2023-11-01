@@ -71,7 +71,7 @@ class _UnapprovedProductsRequestsState extends State<UnapprovedProductsRequests>
                            child: ClipRRect(
                               borderRadius: BorderRadius.circular(15),
                               child: Container(
-                                color: Colors.white,
+                                color: mutedBackground,
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 20),
                                   child: Column(

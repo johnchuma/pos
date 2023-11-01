@@ -11,7 +11,7 @@ class PublicProductsController extends GetxController{
         Product? selectedProduct;
 Stream<List<Product>> getProducts() {
           return firestore
-              .collection("products").where("isPublic",isEqualTo: true).orderBy("name",descending: true).limit(18)
+              .collection("products").where("isPublic",isEqualTo: true).orderBy("name",descending: true).limit(60)
               .snapshots()
               .asyncMap((QuerySnapshot querySnapshot) async{
                List<Product> products = [];
@@ -25,7 +25,7 @@ Stream<List<Product>> getProducts() {
 
 Future<List<Product>> getSpecificBusinessPublicProducts({businessId})async {
         QuerySnapshot querySnapshot =  await firestore
-              .collection("products").where("isPublic",isEqualTo: true).where("businessId",isEqualTo:businessId ).orderBy("name",descending: true).limit(9)
+              .collection("products").where("isPublic",isEqualTo: true).where("businessId",isEqualTo:businessId ).orderBy("name",descending: true)
               .get();
 
                List<Product> products = [];

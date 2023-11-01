@@ -17,19 +17,15 @@ class BusinessToSupplierChatController extends GetxController{
     AuthController authContoller = Get.find<AuthController>();
     ClientsController clientController = Get.find<ClientsController>();
     AppController appController = Get.find<AppController>();
-    
+    SupplierController supplierController = Get.find<SupplierController>();
     BusinessController businessController = Get.find<BusinessController>();
         Rx<List<Message?>> messageReceiver = Rx<List<Message?>>([]);
         List<Message?> get messages => messageReceiver.value;
         
          String? userId;
         Stream<List<Message>> getMessages() {
-             var ids = [];
-             ids.add(businessController.selectedBusiness.value?.id);
-             ids.add(businessController.selectedSender.value.id);
-             ids.sort();
           return firestore
-              .collection("private_messages").where("chatMembers",isEqualTo: ids).where("referenceId",isEqualTo: "").orderBy("createdAt",descending: true)
+              .collection("private_messages").where("referenceId",isEqualTo: supplierController.selectedSupplier.value.id).orderBy("createdAt",descending: true)
               .snapshots() 
               .asyncMap((QuerySnapshot querySnapshot) async {
                   List<Message> messages = [];
@@ -40,7 +36,19 @@ class BusinessToSupplierChatController extends GetxController{
                   return  messages;
           });
         }
-
+           Stream<List<Message>> getUnreadMessages({referenceId}) {
+          return firestore
+              .collection("private_messages").where("referenceId",isEqualTo: referenceId).where("from",isNotEqualTo: businessController.selectedBusiness.value?.id).where("readBy",isEqualTo: 1)
+              .snapshots() 
+              .asyncMap((QuerySnapshot querySnapshot) async {
+                  List<Message> messages = [];
+                  for (var element in querySnapshot.docs) {
+                   Message message = Message.fromDocumentSnapshot(element);
+                   messages.add(message);
+                  }
+                  return  messages;
+          });
+        }
         Future<void> deleteMessage(id) async {
         try {
           await firestore.collection("private_messages").doc(id).delete();
@@ -57,12 +65,12 @@ class BusinessToSupplierChatController extends GetxController{
               await  firestore.collection("private_messages").doc(id).set({
               "id":id,
               "message":message,
-              "name":businessController.selectedBusiness.value?.name,
-              "messageSender":"client",
+              "name":authContoller.auth.currentUser?.displayName,
+              "messageType":"businesses",
               "replyTo":"",
               "repliedMessageId":"",
               "image":"",
-              "referenceId":"",
+              "referenceId":supplierController.selectedSupplier.value.id,
               "readBy":1,
               "chatMembers":array,
               "from":businessController.selectedBusiness.value?.id,

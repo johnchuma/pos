@@ -1,5 +1,6 @@
 
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pos/controllers/app_controller.dart';
@@ -14,12 +15,16 @@ import 'package:pos/controllers/product_request_controller.dart';
 import 'package:pos/controllers/supplier_controller.dart';
 import 'package:pos/models/client.dart';
 import 'package:pos/models/message_model.dart';
+import 'package:pos/models/product_request.dart';
 import 'package:pos/utils/colors.dart';
 import 'package:pos/widgets/avatar.dart';
 import 'package:pos/widgets/back.dart';
+import 'package:pos/widgets/bottomsheet_template.dart';
 import 'package:pos/widgets/chat_item.dart';
 import 'package:pos/widgets/heading2_text.dart';
 import 'package:pos/widgets/muted_text.dart';
+import 'package:pos/widgets/paragraph.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class ProductRequestChatPage extends StatefulWidget {
   
@@ -42,6 +47,7 @@ class _ProductRequestChatPageState extends State<ProductRequestChatPage> {
   int index = 0;
   @override
   Widget build(BuildContext context) {
+    ProductRequest  request = productRequestController.selectedProductRequest.value!;
     return DefaultTabController(
       length: 4,
       child: Scaffold(
@@ -52,12 +58,47 @@ class _ProductRequestChatPageState extends State<ProductRequestChatPage> {
           elevation: 0.3,
           leading: Container(),
          leadingWidth: 1,
-          title: Row(
-           children: [
-             back(),
-             const SizedBox(width: 20,),
-             Expanded(child: heading2(text: productRequestController.selectedProductRequest.value?.request,maxLines: 1))
-           ],
+          title: GestureDetector(
+            onTap: (){
+              Get.bottomSheet(bottomSheetTemplate(widget: Container(
+                width: double.infinity,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                  heading2(text: "Request informations",fontSize: 20),
+                  SizedBox(height: 15,),
+                  Row(children: [avatar(image: request.client?.profileImageUrl),
+                  SizedBox(width: 10,),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [heading2(text: request.client?.name),mutedText(text: timeago.format(request.createdAt.toDate()))],)],),
+                 
+                  SizedBox(height: 20,),
+                  paragraph(text: request.request),
+                  SizedBox(height: 10,),
+              
+                 if(request.image != "")
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Container(child:Container(child: CachedNetworkImage(imageUrl: request.image),),))
+                ],),
+              )));
+            },
+            child: Row(
+             children: [
+               back(),
+               const SizedBox(width: 20,),
+               avatar(image: request.client?.profileImageUrl),
+               SizedBox(width: 15,),
+               Expanded(child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                 children: [
+                   heading2(text: request.client?.name,maxLines: 1),
+                   mutedText(text: "Click to view request")
+                 ],
+               ))
+             ],
+            ),
           ),
         ),
         body: GetX<ProductRequestChatController>(

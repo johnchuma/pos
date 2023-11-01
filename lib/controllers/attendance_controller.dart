@@ -1,21 +1,27 @@
 
 // ignore_for_file: avoid_print
 
+
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:pos/controllers/auth_controller.dart';
 import 'package:pos/controllers/business_controller.dart';
+import 'package:pos/controllers/clients_controller.dart';
 import 'package:pos/models/attendance.dart';
 
 class AttendanceController extends GetxController{
        FirebaseFirestore firestore = FirebaseFirestore.instance;
         Rx<List<Attendance>> attendancesReceiver = Rx<List<Attendance>>([]);
+       
         List<Attendance> get attendances => attendancesReceiver.value;
+
         AuthController authController = Get.find<AuthController>();
         BusinessController businessController = Get.find<BusinessController>();
+        ClientsController clientsController = Get.find<ClientsController>();
         Stream<List<Attendance>> getAttendances() {
           return firestore
-              .collection("attendances").where("businessId",isEqualTo: businessController.selectedBusiness.value?.id).orderBy("createdAt",descending: true)
+              .collection("attendances").where("businessId",isEqualTo: businessController.selectedBusiness.value?.id).where("staffId",isEqualTo: authController.user?.email).orderBy("createdAt",descending: true)
               .snapshots()
               .asyncMap((QuerySnapshot querySnapshot) async{
                List<Attendance> attendances = [];
@@ -27,6 +33,19 @@ class AttendanceController extends GetxController{
           });
         }
 
+        Stream<List<Attendance>> getAnotherStaffAttendance() {
+          return firestore
+              .collection("attendances").where("businessId",isEqualTo: businessController.selectedBusiness.value?.id).where("staffId",isEqualTo: clientsController.selectedStaff.value?.email).orderBy("createdAt",descending: true)
+              .snapshots()
+              .asyncMap((QuerySnapshot querySnapshot) async{
+               List<Attendance> attendances = [];
+                  for (var element in querySnapshot.docs) {
+                  Attendance attendance = Attendance.fromDocumentSnapshot(element);
+                  attendances.add(attendance);
+                }
+            return attendances;    
+          });
+        }
 
      Future<void> checkIn ()async{
           try {

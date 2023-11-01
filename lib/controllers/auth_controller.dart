@@ -87,9 +87,10 @@ Future<void> registerClient() async {
           idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
 
   DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance.collection("clients").doc(googleUser.email).get();
+  var status = await OneSignal.shared.getDeviceState();
+  
   if(documentSnapshot.exists == false){
     OneSignal.shared.setExternalUserId(googleUser.email);
-  var status = await OneSignal.shared.getDeviceState();
     await FirebaseFirestore.instance.collection('clients').doc(googleUser.email).set({
       'name': googleUser.displayName,
       'address': "",
@@ -103,7 +104,13 @@ Future<void> registerClient() async {
       'email': googleUser.email,
       'profileImageUrl': googleUser.photoUrl,
     });
+  }else{
+    await FirebaseFirestore.instance.collection('clients').doc(googleUser.email).update({
+      "onesignalToken":status?.userId,
+    });
   }
+  
+
   await auth.signInWithCredential(credential);
 
    

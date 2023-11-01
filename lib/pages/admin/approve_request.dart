@@ -67,7 +67,7 @@ class _ApproveRequestState extends State<ApproveRequest> {
                   return ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: Container(
-                      color: Colors.white,
+                      color: mutedBackground,
                       width: double.infinity,
                       child: Padding(
                         padding: const EdgeInsets.all(20),

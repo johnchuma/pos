@@ -198,7 +198,7 @@ class _AddProductState extends State<AddProduct> {
                           ),
                         )));
                       },
-                      child: Icon(Icons.add_circle,color: primaryColor,))
+                      child: Icon(Icons.add_circle,color: mutedColor,))
                    ],),
                    SizedBox(height: 15,),
                    Column(

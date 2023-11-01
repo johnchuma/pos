@@ -4,6 +4,9 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
 import 'package:pos/controllers/app_controller.dart';
 import 'package:pos/controllers/business_controller.dart';
+import 'package:pos/controllers/conversation_controller.dart';
+import 'package:pos/controllers/supplier_controller.dart';
+import 'package:pos/controllers/unread_messages_controller.dart';
 import 'package:pos/pages/business_pages/conversations/conversations_options_page.dart';
 import 'package:pos/controllers/notification_controller.dart';
 import 'package:pos/controllers/private_chat_controller.dart';
@@ -11,6 +14,7 @@ import 'package:pos/controllers/product_variants_controller.dart';
 import 'package:pos/controllers/register_controller.dart';
 import 'package:pos/models/staff_registers.dart';
 import 'package:pos/pages/business_pages/business_settings.dart';
+import 'package:pos/pages/business_pages/options_pages/reports_options_page.dart';
 import 'package:pos/pages/business_pages/orders_page.dart';
 import 'package:pos/pages/business_pages/products_page.dart';
 import 'package:pos/pages/business_pages/products_settings.dart';
@@ -38,6 +42,8 @@ import 'package:pos/widgets/select_register.dart';
 import 'package:pos/widgets/text_form.dart';
 import 'package:pos/widgets/translatedText.dart';
 
+import '../models/message_model.dart';
+
 class BusinessPage extends StatefulWidget {
   const BusinessPage({super.key});
 
@@ -46,18 +52,23 @@ class BusinessPage extends StatefulWidget {
 }
 
 class _BusinessPageState extends State<BusinessPage> {
- 
+   ConversationController conversationController = Get.find<ConversationController>();
     BusinessController find = Get.find<BusinessController>();
     Rx<bool> loading  = Rx<bool>(false);
+  Rx<List<Message>> unreadOrderMessages = Rx<List<Message>>([]);
 
    @override
   void initState() {
 Get.put(ProductVariantsController());
+Get.put(SupplierController());
+    unreadOrderMessages.bindStream(UnreadMessagesController().getUnreadMessages(messageType: "order",to: find.selectedBusiness.value?.id));
+
+
     find.calculateRemainedSubscriptionDays().then((value){
       if(value <1){
         find.noAccess.value = true;
       }else{
-if(value<10){
+if(value<5){
 Get.defaultDialog(title: "",
 backgroundColor: mutedBackground,
 titlePadding: EdgeInsets.all(0),
@@ -105,6 +116,7 @@ titlePadding: EdgeInsets.all(0),
 @override
   void dispose() {
    find.selectedRegister.value = null;
+   
   //  find.selectedBusiness.value = null;
    
     super.dispose();
@@ -165,8 +177,8 @@ titlePadding: EdgeInsets.all(0),
               permissions =   staffRegister?.permissions;
               
               }
-              print(permissions?.first);
-              print(staffRegister?.id);
+              // print(permissions?.first);
+              // print(staffRegister?.id);
               return Obx(
                 ()=> staffRegister?.password != null && find.canAccessRegister.value == false ?  Scaffold(
                   backgroundColor: backgroundColor,
@@ -266,7 +278,7 @@ titlePadding: EdgeInsets.all(0),
                                                     height: 80,
                                                     width: 80,
                                                     child: Image.asset("assets/9276421-removebg-preview.png")),
-                                                      Positioned(
+                                                     find.messages.length <1 ?Container(): Positioned(
                                                         right: 5,
                                                         top: 5,
                                                         child: ClipOval(
@@ -284,7 +296,7 @@ titlePadding: EdgeInsets.all(0),
                                         ],
                                       ),
                                         SizedBox(height: 10,),
-                                      heading2(text: "You have ${find.messages.length} messages"),
+                                      heading2(text: "Check your messages"),
                                       mutedText(text: "Click here to check messages",color: mutedColor),
                                       
                                                           ],),
@@ -293,7 +305,7 @@ titlePadding: EdgeInsets.all(0),
                               );
                             }
                           ),
-                          
+                        
                         if(permissions!.contains("Sell products") || find.selectedRegister.value == null  )  
                         menuItem(title:translatedText("My register", "Dirisha la mauzo"),onTap: (){
                           if(find.selectedRegister.value == null){
@@ -363,18 +375,28 @@ titlePadding: EdgeInsets.all(0),
                             }
                           },
                           subtitle: translatedText("Daily Check in and out here", "Rekodi mahudhurio yako ya kila siku")),
-                        if(permissions.contains("Manage orders") || find.selectedRegister.value == null)  menuItem(title:translatedText("Orders", "Agiza bidhaa"),
-                          onTap: (){
-                            Get.to(()=>OrdersPage());
-                          },
-                          subtitle:  translatedText("Create orders and share with suppliers here", "Agiza bidhaa kutoka kwa wasambazaji wako") ),
+                        if(permissions.contains("Manage orders") || find.selectedRegister.value == null) 
+                         Obx(
+                           ()=> menuItem(title:translatedText("Orders", "Agiza bidhaa"),
+                           trailing: unreadOrderMessages.value.length <1?Container():  ClipOval(
+                              child: Container(
+                                color: Colors.red,
+                                height: 20,
+                                width: 20,
+                                child: Center(child: Text("${unreadOrderMessages.value.length}",style: TextStyle(color: textColor),)),),
+                            ),
+                            onTap: (){
+                              Get.to(()=>OrdersPage());
+                            },
+                            subtitle:  translatedText("Create and manage orders here", "Agiza bidhaa kutoka kwa wasambazaji wako") ),
+                         ),
                                    if(permissions.contains("View sales reports") || find.selectedRegister.value == null)   
                                    
-                                   menuItem(title: translatedText("Sales reports", "Ripoti za mauzo"),
+                                   menuItem(title: translatedText("Reports", "Ripoti mbalimbali"),
                           onTap: (){
-                            Get.to(()=>SalesReportOptions());
+                            Get.to(()=>ReportsOptionsPage());
                           },
-                          subtitle: translatedText("View sales report for any date here", "Ona report za mauzo za terehe mbalimbali hapa")),
+                          subtitle: translatedText("View reports here", "Ona ripoti mbalimbali")),
                              if(permissions.contains("View settings") || find.selectedRegister.value == null)
     
                              menuItem(title:translatedText("Business settings", "Mipangilio") ,

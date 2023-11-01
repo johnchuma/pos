@@ -63,34 +63,15 @@ class ProductRequestChatController extends GetxController{
 
     Future<void> sendMessage (message)async{
           try {
-            if(messages.isEmpty){
-                var array =[businessController.selectedBusiness.value?.id,productRequestController.selectedClient.value?.id];
-            array.sort();
-            var id = Timestamp.now().toDate().toString();
-              await  firestore.collection("private_messages").doc(id).set({
-              "id":id,
-              "message":productRequestController.selectedProductRequest.value?.request,
-              "name": productRequestController.selectedProductRequest.value?.client?.name,
-              "messageSender":"client",
-              "replyTo":"",
-              "repliedMessageId":"",
-              "image":"",
-              "referenceId":productRequestController.selectedProductRequest.value?.id,
-              "readBy":1,
-              "chatMembers":array,
-              "from": productRequestController.selectedProductRequest.value?.client?.id,
-              "to": businessController.selectedBusiness.value?.id,
-              "createdAt":Timestamp.now()
-            });
-            }
+           
             var array =[businessController.selectedBusiness.value?.id,productRequestController.selectedClient.value?.id];
             array.sort();
             var id = Timestamp.now().toDate().toString();
               await  firestore.collection("private_messages").doc(id).set({
               "id":id,
               "message":message,
-              "name": productRequestController.isClient?authController.me.value?.name:businessController.selectedBusiness.value?.name,
-              "messageSender":"client",
+              "name": authController.auth.currentUser?.displayName,
+              "messageType":"productRequest",
               "replyTo":"",
               "repliedMessageId":"",
               "image":"",

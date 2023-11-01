@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pos/controllers/business_controller.dart';
+import 'package:pos/controllers/clients_controller.dart';
 import 'package:pos/controllers/product_controller.dart';
 import 'package:pos/controllers/staff_sales_controller.dart';
 import 'package:pos/controllers/register_controller.dart';
@@ -11,6 +12,7 @@ import 'package:pos/controllers/worker_controller.dart';
 import 'package:pos/pages/add_worker.dart';
 import 'package:pos/pages/business_pages/assign_register.dart';
 import 'package:pos/pages/business_pages/staff_sales_main.dart';
+import 'package:pos/pages/business_pages/view_pages/boss_view_staff_attendance.dart';
 import 'package:pos/utils/colors.dart';
 import 'package:pos/utils/delete_confirmation.dart';
 import 'package:pos/utils/format_date.dart';
@@ -47,6 +49,7 @@ class _WorkersPageState extends State<WorkersPage> {
   Widget build(BuildContext context) {
     BusinessController find = Get.find<BusinessController>();
     StaffSaleController staffSaleController = Get.find<StaffSaleController>();
+    ClientsController clientsController = Get.find<ClientsController>();
   
     return  Scaffold(
       backgroundColor: backgroundColor,
@@ -147,10 +150,15 @@ class _WorkersPageState extends State<WorkersPage> {
                                                     Get.bottomSheet(Container(child: const AssignRegister(),)); 
                                                   }),
                                                 
-                                                   expandedItem(title:translatedText("Worker's sales", "Mauzo ya mfanyakazi"), iconData:Icons.graphic_eq, onClick:  (){
+                                                   expandedItem(title:translatedText("Worker's sales", "Mauzo ya mfanyakazi"), iconData:Icons.bar_chart, onClick:  (){
                                                     staffSaleController.selectedStaff.value = staff;
                                                     Get.to(()=>const StaffSalesMain());
                                                   },elevation: 0),  
+                                                   expandedItem(title:translatedText("Worker's attendance", "Maudhurio ya mfanyakazi"), iconData:Icons.note, onClick:  (){
+                                                    clientsController.selectedStaff.value = staff.details;
+                                                    Get.to(()=>const BossViewStaffAttendance());
+                                                  },elevation: 0),  
+                                               
                                                
                                                    expandedItem(title:translatedText("Remove worker", "Ondoa mfanyakazi"), iconData:Icons.delete, onClick:  (){
                                                       confirmDelete(context,onClick: (){

@@ -17,20 +17,7 @@ import 'package:timeago/timeago.dart' as timeago;
 
 Widget chatItem({var item}){
   AuthController authController = Get.find<AuthController>();
-  BusinessController  businessController = Get.find<BusinessController>();
-
-  bool isMe = false ;
-  if(businessController.selectedBusiness.value != null){
- isMe = item.from == authController.auth.currentUser?.email || item.from == businessController.selectedBusiness.value?.id;
-
-  }
-  else if(authController.me.value?.role == "admin"){
-    isMe = item.from == "admin";
-  }
-  else {
- isMe =  item.from == authController.auth.currentUser?.email ;
-
-  }
+   bool isMe = item.name == authController.auth.currentUser?.displayName;
   return Padding(
     padding:  EdgeInsets.only(top: 15,right: isMe?0:40,left: isMe?40:0),
     child: Column(

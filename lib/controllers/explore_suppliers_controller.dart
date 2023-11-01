@@ -31,12 +31,12 @@ class ExploreSuppliersController extends GetxController{
         Rx<String> category = Rx<String>("");
 
 
-      Future<List<Business>> findSuppliersRelatedToMyStore() async{
+      Future<List<Business>> findSuppliersRelatedToMyStore({category}) async{
         List<Supplier> mySuppliers = await SupplierController().findMySuppliers();
         var array = [""];
          array.addAll(mySuppliers.map((item) => item.supplier.id));
         QuerySnapshot querySnapshot =  await firestore
-              .collection("businesses").where("role",isEqualTo: "supplier").where("id",whereNotIn:array ).where("category",isEqualTo:businessController.selectedBusiness.value?.category).get();
+              .collection("businesses").where("role",isEqualTo: "supplier").where("id",whereNotIn:array ).where("category",isEqualTo:category??businessController.selectedBusiness.value?.category).get();
                List<Business> businesses = [];
                    for (var element in querySnapshot.docs) {
                     QuerySnapshot businesssubscriptionSnapshots = await firestore.collection("businessSubscription").where("businessId",isEqualTo: element["id"]).get();

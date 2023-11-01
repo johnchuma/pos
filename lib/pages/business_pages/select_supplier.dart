@@ -133,7 +133,7 @@ bool loading = false;
                   ),
                   const SizedBox(height: 30,),
                   
-                  customButton(text: "Send order",loading: loading, onClick: (){
+                Obx(() => retailerOrderController.selectedSupplier.value != null? customButton(text: "Send order",loading: loading, onClick: (){
                   setState(() {
                     loading = true;
                   });
@@ -145,7 +145,7 @@ bool loading = false;
         
                   });
                     });
-                  }),
+                  }):Container()),
                   const SizedBox(height: 30,),
 
                 ],),

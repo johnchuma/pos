@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:pos/controllers/app_controller.dart';
 import 'package:pos/controllers/auth_controller.dart';
 import 'package:pos/controllers/business_subscription_controller.dart';
+import 'package:pos/controllers/clients_controller.dart';
 import 'package:pos/models/business.dart';
 import 'package:pos/models/business_subscription.dart';
 import 'package:pos/models/register.dart';
@@ -20,6 +21,8 @@ class BusinessController extends GetxController{
         List<Business> get staffBusinesses => staffBusinessesReceiver.value;
         AppController appController= Get.find<AppController>();
         Rx<Business?> selectedBusiness = Rx<Business?>(null);
+        Rx<Business?> selectedSupplier = Rx<Business?>(null);
+
         Rx<Business> selectedSender = Rx<Business>(Business());
         AuthController authController = Get.find<AuthController>();
         Rx<Register?> selectedRegister = Rx<Register?>(null);
@@ -40,6 +43,13 @@ class BusinessController extends GetxController{
                     businessSubscriptions.add(BusinessSubscription.fromDocumentSnapshot(subscriptionDoc));
                   }
                   Business business = Business.fromDocumentSnapshot(element);
+                  firestore.collection("staffs").where("businessId",isEqualTo:business.id ).get().then((QuerySnapshot querySnapshot) {
+                    for (var doc in querySnapshot.docs) {
+                       ClientsController().getClient(doc["workerId"]).then((value) => {
+                              business.staffs.add(value)
+                      });
+                    }
+                  });
                   business.businesSubscriptions = businessSubscriptions;
                   businesses.add(business);
                 }
@@ -67,13 +77,13 @@ class BusinessController extends GetxController{
       }
       Business requiredBusiness = business??selectedBusiness.value!; 
       DateTime firstTime =  requiredBusiness.createdAt.toDate();
-      Duration difference  = firstTime.add(Duration(days: days+30)).difference(DateTime.now()); 
+      Duration difference  = firstTime.add(Duration(days: days+10)).difference(DateTime.now()); 
       return difference.inDays;
     }
      Future<StaffRegister?> getStaffRegister() async{
   List<Register> registers =    await getStaffRegisters();
-
-       if(registers.isEmpty){
+   
+       if(registers.isNotEmpty){
         if(selectedRegister.value == null){
               selectedRegister.value = registers.first;
           }
@@ -89,7 +99,15 @@ class BusinessController extends GetxController{
         }
          Future<Business> getBusiness(id)async{
                   DocumentSnapshot documentSnapshot = await firestore.collection("businesses").doc(id).get();
-             return Business.fromDocumentSnapshot(documentSnapshot);
+            Business business = Business.fromDocumentSnapshot(documentSnapshot);
+             firestore.collection("staffs").where("businessId",isEqualTo:business.id ).get().then((QuerySnapshot querySnapshot) {
+                    for (var doc in querySnapshot.docs) {
+                       ClientsController().getClient(doc["workerId"]).then((value) => {
+                              business.staffs.add(value)
+                      });
+                    }
+                  });
+            return business;
         }
 
           Stream<List<Business>> getStaffBusinesses() {

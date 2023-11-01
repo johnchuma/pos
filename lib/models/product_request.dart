@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:pos/models/business.dart';
 import 'package:pos/models/client.dart';
+import 'package:pos/models/message_model.dart';
 
 class ProductRequest{
   late String request;
@@ -10,8 +11,10 @@ class ProductRequest{
   late String from;
   late Client? client;
   late String productId;
-  late List businessesThatSentTheirOffers = [];
+  late List businessesThatSentTheirOffers = ["Sample"];
   late Rx<List<Business>> businesses  =Rx<List<Business>>([]);
+  late Rx<List<Message>> messages  =Rx<List<Message>>([]);
+
   late Timestamp createdAt;
   late String id;
   ProductRequest();

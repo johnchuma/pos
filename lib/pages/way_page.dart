@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:pos/utils/shared_preference.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 
 class WayPage extends StatelessWidget {

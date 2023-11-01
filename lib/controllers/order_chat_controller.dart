@@ -4,16 +4,11 @@ import 'package:pos/controllers/app_controller.dart';
 import 'package:pos/controllers/auth_controller.dart';
 import 'package:pos/controllers/business_controller.dart';
 import 'package:pos/controllers/clients_controller.dart';
-import 'package:pos/controllers/supplier_controller.dart';
 import 'package:pos/controllers/retailer_order_controller.dart';
-import 'package:pos/controllers/supplier_order_controller.dart';
 import 'package:pos/models/Message_model.dart';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pos/models/business.dart';
-
 class OrderChatController extends GetxController{
        FirebaseFirestore firestore = FirebaseFirestore.instance;
     AuthController authContoller = Get.find<AuthController>();
@@ -59,8 +54,8 @@ class OrderChatController extends GetxController{
               await  firestore.collection("private_messages").doc(id).set({
               "id":id,
               "message":message,
-              "name":businessController.selectedBusiness.value?.name,
-              "messageSender":"client",
+              "name":authContoller.user?.displayName,
+              "messageType":"order",
               "replyTo":"",
               "repliedMessageId":"",
               "image":"",

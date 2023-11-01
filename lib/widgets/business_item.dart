@@ -21,7 +21,7 @@ Widget businessItem(business){
                                      child: ClipRRect(
                                       borderRadius: BorderRadius.circular(20),
                                       child: Container(
-                                        height: 250,
+                                        height: 260,
                                         width: double.infinity,
                                         child: CachedNetworkImage(imageUrl: business.image,fit: BoxFit.cover,)),
                                                                      ),

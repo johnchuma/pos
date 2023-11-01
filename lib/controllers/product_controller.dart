@@ -21,7 +21,7 @@ class ProductController extends GetxController{
           Rx<List<Product>> onCartProducts = Rx<List<Product>>([]);
           Rx<double> totalCartAmount = Rx<double>(0.0);
           Rx<String> searchKeyword = Rx<String>("");
-
+        
         AuthController authController = Get.find<AuthController>();
         ProductVariantsController  productVariantsController = Get.find<ProductVariantsController>();
         BusinessController businessController = Get.find<BusinessController>();
@@ -62,9 +62,28 @@ class ProductController extends GetxController{
           }
          
       }
-    
+         Stream<List<Product>> getSupplierPublicProducts() {
+        
+          return firestore
+              .collection("products").where("businessId",isEqualTo: businessController.selectedSupplier.value?.id).where("isPublic",isEqualTo: true)
+              .snapshots()
+              .asyncMap((QuerySnapshot querySnapshot) {
+               List<Product> products = [];
+                  for (var element in querySnapshot.docs) {
+                  Product product = Product.fromDocumentSnapshot(element);
+                 
+              
+                      products.add(product);
+
+                }
+   
+
+            return products;    
+          });
+        }
      
        Stream<List<Product>> getProductsWithStock() {
+        print("Start");
           return firestore
               .collection("products").where("businessId",isEqualTo: businessController.selectedBusiness.value?.id)
               .snapshots()
@@ -91,6 +110,7 @@ class ProductController extends GetxController{
                       products.add(product);
 
                 }
+        print("End");
 
             return products;    
           });
@@ -107,6 +127,8 @@ class ProductController extends GetxController{
               "image":imagelink,
               "properties":properties,
               "sellingPrice":0.0,
+              "measurement":"",
+              "lowAmount":0.0,
               "buyingPrice":0.0,
               "isPublic":false,
               "allowDiscount":false,
@@ -137,6 +159,7 @@ class ProductController extends GetxController{
           } catch (e) {
           }
        }
+        
         Future<void> deleteProduct (productId) async{
           try {
            await firestore.collection("products").doc(productId).delete();
