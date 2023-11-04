@@ -51,30 +51,38 @@ TextEditingController passwordController = TextEditingController();
                   heading2(text: "Assign registers to a staff member"),
                   const SizedBox(height: 10,),
                   Column(children: registerController.registers.map((item){
-                 
+    
                           find.selectedStaffRegisterIds.value = find.staffRegisters.map((item) => item.registerId).toList();
                     
                     return Container(child: Column(
                     children: [
-                      Row(children: [
-                        Checkbox(
-                          activeColor: Colors.green,
-                          focusColor: mutedColor,
-                          value: find.staffRegisters.map((item) => item.registerId).toList().contains(item.id)?true:false, onChanged: (value){
-                          if(value == true){  
-                               var list = find.selectedStaffRegisterIds.value ;
-                               list.add(item.id);
-                               find.selectedStaffRegisterIds.value = [];
-                               find.selectedStaffRegisterIds.value = list;
-                               find.assignRegisterToStaff(item.id);
-                          }
-                          else{
-                            List<StaffRegister> staffRegisters = find.staffRegisters.where((staffRegister) => staffRegister.registerId ==item.id).toList();
-                              find.deleteStaffRegister(staffRegisters.first.id);
-                          }
-                        }),
-                        paragraph(text: item.title)
-                      ],),
+                      Container(
+                        child: Row(children: [
+                          Container(
+                            child: Checkbox(
+                              fillColor: MaterialStateColor.resolveWith((states) =>Colors.white ),
+                              splashRadius: 50,
+                              activeColor: Colors.green,
+                              hoverColor: primaryColor,
+                              checkColor: Colors.black,
+                              focusColor: Colors.black,
+                              value: find.staffRegisters.map((item) => item.registerId).toList().contains(item.id)?true:false, onChanged: (value){
+                              if(value == true){  
+                                   var list = find.selectedStaffRegisterIds.value ;
+                                   list.add(item.id);
+                                   find.selectedStaffRegisterIds.value = [];
+                                   find.selectedStaffRegisterIds.value = list;
+                                   find.assignRegisterToStaff(item.id);
+                              }
+                              else{
+                                List<StaffRegister> staffRegisters = find.staffRegisters.where((staffRegister) => staffRegister.registerId ==item.id).toList();
+                                  find.deleteStaffRegister(staffRegisters.first.id);
+                              }
+                            }),
+                          ),
+                          paragraph(text: item.title)
+                        ],),
+                      ),
                   find.staffRegisters.map((item) => item.registerId).toList().contains(item.id) == false? Container():
                     
                     Column(
@@ -132,7 +140,8 @@ TextEditingController passwordController = TextEditingController();
                   ));}).toList(),),
                   // const SizedBox(height: 0,),
 
-        customButton(text: "Save",onClick: (){Get.back();})
+        customButton(text: "Save",onClick: (){Get.back();}),
+        SizedBox(height: 20,)
                 ],),
               ),
             )),

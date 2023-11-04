@@ -102,7 +102,10 @@ class _SaleProductsState extends State<SaleProducts> {
 
                      AnimatedSize(
                       duration: Duration(milliseconds: 300),
-                       child: Container(child: find.onCartProducts.value.isEmpty ?Container():   find.searchKeyword.value.isNotEmpty ?Container():  Column(
+                       child: Container(child: find.loading.value ? Padding(
+                         padding: const EdgeInsets.all(50),
+                         child: Center(child: CircularProgressIndicator(color: Colors.white,)),
+                       ):  find.onCartProducts.value.isEmpty ?Container():   find.searchKeyword.value.isNotEmpty ?Container():  Column(
                            children: [
                                     const SizedBox(height: 20,),
                           ClipRRect(

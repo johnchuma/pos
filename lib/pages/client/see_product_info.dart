@@ -177,7 +177,7 @@ class _ProductInfoState extends State<ProductInfo> {
                   child: Padding(
                     padding: const EdgeInsets.all(20),
                     child: Column(children: [
-                    mutedText(text: "You can chat with the owner of this product for more informations and clarifications"),
+                    mutedText(text: "You can chat with the owner of this product for more informations about this product"),
                     SizedBox(height: 10,),
                              customButton(text: "Chat with owner",loading: loading, onClick: ()async{
                                businessController.selectedBusiness.value = productController.selectedProductBusiness.value;

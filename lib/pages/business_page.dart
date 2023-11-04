@@ -116,8 +116,8 @@ titlePadding: EdgeInsets.all(0),
 @override
   void dispose() {
    find.selectedRegister.value = null;
-   
-  //  find.selectedBusiness.value = null;
+   print("Removed");
+   find.selectedBusiness.value = null;
    
     super.dispose();
   }

@@ -75,7 +75,12 @@ String businessId = "";
                 init: BusinessController(),
                  builder: (find) {
                    return find.staffBusinesses.isEmpty ? noData(): Column(children:find.staffBusinesses.map((business) => 
-                  businessItem(business) ).toList());
+                  GestureDetector(
+                    onTap: (){
+                      find.selectedBusiness.value = business;
+                      Get.to(()=>BusinessPage());
+                    },
+                    child: businessItem(business)) ).toList());
                  }
                )
           ],),

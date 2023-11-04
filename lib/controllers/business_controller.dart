@@ -59,6 +59,8 @@ class BusinessController extends GetxController{
         }
 
         Future<List<Register>> getStaffRegisters() async{
+          print("Running this");
+          print(selectedBusiness.value?.id);
          QuerySnapshot querySnapshot =await firestore
               .collection("staffRegisters").where("staffId",isEqualTo: authController.user?.email).where("businessId",isEqualTo: selectedBusiness.value?.id)
               .get();
@@ -68,6 +70,7 @@ class BusinessController extends GetxController{
                   Register register = Register.fromDocumentSnapshot(documentSnapshot);
                   registers.add(register);
                 }
+                print("Finished running");
            return registers;
         }
     Future<int> calculateRemainedSubscriptionDays({Business? business})async{
@@ -83,8 +86,9 @@ class BusinessController extends GetxController{
     }
      Future<StaffRegister?> getStaffRegister() async{
   List<Register> registers =    await getStaffRegisters();
-   
+    print(registers.length);
        if(registers.isNotEmpty){
+        print("Is not empty");
         if(selectedRegister.value == null){
               selectedRegister.value = registers.first;
           }

@@ -36,8 +36,12 @@ selectRegister(context,BusinessController find,{alwaysShow}){
                  if(appController.isMainDashboardSelected.value)   Row(children: [
                     Obx(
                       ()=> Checkbox(
-            
-                      activeColor: primaryColor,
+            fillColor: MaterialStateColor.resolveWith((states) =>Colors.white ),
+                              splashRadius: 50,
+                              activeColor: Colors.green,
+                              hoverColor: primaryColor,
+                              checkColor: Colors.black,
+                              focusColor: Colors.black,
                         value:find.selectedRegister.value ==null?true:false, onChanged: (value){   
                         find.selectedRegister.value = null;
                         Get.back();

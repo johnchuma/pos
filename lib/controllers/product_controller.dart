@@ -21,7 +21,7 @@ class ProductController extends GetxController{
           Rx<List<Product>> onCartProducts = Rx<List<Product>>([]);
           Rx<double> totalCartAmount = Rx<double>(0.0);
           Rx<String> searchKeyword = Rx<String>("");
-        
+          Rx<bool> loading = Rx<bool>(false);
         AuthController authController = Get.find<AuthController>();
         ProductVariantsController  productVariantsController = Get.find<ProductVariantsController>();
         BusinessController businessController = Get.find<BusinessController>();
@@ -83,18 +83,20 @@ class ProductController extends GetxController{
         }
      
        Stream<List<Product>> getProductsWithStock() {
-        print("Start");
+   
+        loading.value = true;
           return firestore
               .collection("products").where("businessId",isEqualTo: businessController.selectedBusiness.value?.id)
               .snapshots()
-              .asyncMap((QuerySnapshot querySnapshot) {
+              .asyncMap((QuerySnapshot querySnapshot) async{
                List<Product> products = [];
                   for (var element in querySnapshot.docs) {
                   Product product = Product.fromDocumentSnapshot(element);
                  
-               firestore.collection("stocks").where("productId",isEqualTo: element["id"]).get().then((QuerySnapshot querySnapshot)  {
-                 firestore.collection("sales").where("productId",isEqualTo: element["id"]).get().then((salesQuerySnapshot ) {
-                 double totalStocks = 0;
+         QuerySnapshot querySnapshot =    await  firestore.collection("stocks").where("productId",isEqualTo: element["id"]).get();
+
+           var salesQuerySnapshot =      await firestore.collection("sales").where("productId",isEqualTo: element["id"]).get();
+         double totalStocks = 0;
                   double totalSoldStocks = 0;
                   for (var stocks in querySnapshot.docs) {
                     totalStocks = totalStocks + stocks["amount"];
@@ -105,12 +107,10 @@ class ProductController extends GetxController{
                   if(querySnapshot.docs.length > 0){
                       product.availableStock.value = totalStocks - totalSoldStocks;
                   }
-                 });
-               });
                       products.add(product);
 
                 }
-        print("End");
+        loading.value = false;
 
             return products;    
           });

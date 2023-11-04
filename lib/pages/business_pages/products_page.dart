@@ -90,118 +90,138 @@ class _ProductsPageState extends State<ProductsPage> {
                  ),),
                ),
                const SizedBox(height: 20,),
-               heading2(text: translatedText("Products list", "Orodha ya bidhaa zote")),
-               const SizedBox(height: 20),
+               Row(
+                 children: [
+                   heading2(text: translatedText("Products list", "Orodha ya bidhaa zote")),
+                  
+                 ],
+               ),
+               const SizedBox(height: 5),
                  GetX<ProductController>(
                 init: ProductController(),
                  builder: (find) {
-                   return find.products.isEmpty ?noData():  Column(children:find.products.map((product) => Padding(
-                     padding: const EdgeInsets.only(bottom: 15),
-                     child: ClipRRect(
-                        borderRadius: BorderRadius.circular(15),
-                        child: Container(
-                          color: mutedBackground,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 20),
-                            child: Column(
-                              children: [
-                                GestureDetector(
-                                  onTap: (){
-                                  setState(() {
-                                      if(productId == product.id){
-                                        productId = "";
-                                      }else{
-                                      productId = product.id;
-                                      }
-                                    });
-                                  },
-                                  child: Container(
-                                    color: Colors.transparent,
-                                    child: Row(children:  [
-                                      ClipOval(
-                                      child: Container(height: 50,width: 50,child: CachedNetworkImage(
-                                        fit: BoxFit.cover,
-                                        imageUrl:product.image),),
+                   return find.products.isEmpty ?noData():  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                     children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          mutedText(text: "Total"),
+
+                          mutedText(text: "${find.products.length} "),
+                        ],
+                      ),
+               const SizedBox(height: 20),
+
+                       Column(children:find.products.map((product) => Padding(
+                         padding: const EdgeInsets.only(bottom: 15),
+                         child: ClipRRect(
+                            borderRadius: BorderRadius.circular(15),
+                            child: Container(
+                              color: mutedBackground,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 20),
+                                child: Column(
+                                  children: [
+                                    GestureDetector(
+                                      onTap: (){
+                                      setState(() {
+                                          if(productId == product.id){
+                                            productId = "";
+                                          }else{
+                                          productId = product.id;
+                                          }
+                                        });
+                                      },
+                                      child: Container(
+                                        color: Colors.transparent,
+                                        child: Row(children:  [
+                                          ClipOval(
+                                          child: Container(height: 50,width: 50,child: CachedNetworkImage(
+                                            fit: BoxFit.cover,
+                                            imageUrl:product.image),),
+                                        ),
+                                        const SizedBox(width: 10,),
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                            heading2(text: product.name,fontSize: 14),
+                                            mutedText(text: "${translatedText("Created at", "Imewekwa")} ${formatDate(product.createdAt.toDate())}"),
+                                          ],),
+                                        ),
+                                                    ],),
+                                      ),
                                     ),
-                                    const SizedBox(width: 10,),
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                        heading2(text: product.name,fontSize: 14),
-                                        mutedText(text: "${translatedText("Created at", "Imewekwa")} ${formatDate(product.createdAt.toDate())}"),
-                                      ],),
-                                    ),
-                                                ],),
-                                  ),
+                                    
+                                                 AnimatedSize(
+                                                  duration: const Duration(milliseconds: 200),
+                                                  child: productId == product.id ? Column(
+                                                    children: [
+                                                      const SizedBox(height: 10,),            
+                                                 
+                                                       
+                                                      expandedItem(title:translatedText("Product stock", "Mzigo wa bidhaa"), iconData:Icons.add,onClick:  (){
+                                                          find.selectedProduct.value = product;
+                                                          Get.to(()=>const ProductStock());
+                                                      }),
+                                                       expandedItem(title:translatedText("Product sales", "Mauzo ya bidhaa"),iconData: Icons.bar_chart,onClick:  (){
+                                                          productSaleController.selectedProduct.value = product;
+                                                          Get.to(()=>const ProductsSalesMain());
+                                                      },elevation: 0),  
+
+                                                    
+                                                      expandedItem(title:translatedText("Product features", "Sifa za bidhaa"), iconData:Icons.remove_red_eye,onClick:  (){
+                                                          find.selectedProduct.value = product;
+                                                          Get.bottomSheet(bottomSheetTemplate(widget: Container(child: Column(
+                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                            children: [
+                                                            heading2(text: "Product features"),
+                                                            SizedBox(height: 20,),
+                                                            Column(
+                                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                                children:product.properties.map((item) =>Padding(
+                                                                  padding: const EdgeInsets.only(bottom: 10),
+                                                                  child: ClipRRect(
+                                                                    borderRadius: BorderRadius.circular(15),
+                                                                    child: Container(
+                                                                    color: backgroundColor,
+                                                                    width: double.infinity,
+                                                                    child: Padding(
+                                                                    padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 15),
+                                                                    child: Expanded(child: paragraph(text: "${item["title"]}:  ${item["value"]}" )),
+                                                                                    )),
+                                                                  ),
+                                                                )).toList(),),
+                                                          ],),)));
+                                                      }),
+                                                           
+                                                      expandedItem(title:translatedText("Product settings", "Mipangilia ya bidhaa"), iconData:Icons.settings,onClick:  (){
+                                                          find.selectedProduct.value = product;
+                                                          Get.to(()=> ProductSettings());
+                                                      }),
+                                                        expandedItem(title:translatedText("Edit product details", "Badili taarifa"), iconData:Icons.edit,onClick:  (){
+                                                          find.selectedProduct.value = product;
+                                                          Get.to(()=> EditProduct());
+                                                      }),
+                                                       expandedItem(title:translatedText("Delete product","Futa bidhaa"),iconData: Icons.cancel,onClick:  (){
+                                                          confirmDelete(context,onClick: (){
+                                                            find.deleteProduct(product.id);
+                                                          },onSuccess: (){
+                                                            successNotification(translatedText("Product is deleted successfully", "Umefanikiwa kufuta"));
+                                                          });
+                                                      },elevation: 0),                                                                             
+                                                    ],
+                                                  ):Container(),
+                                                )
+                                  ],
                                 ),
                                 
-                                             AnimatedSize(
-                                              duration: const Duration(milliseconds: 200),
-                                              child: productId == product.id ? Column(
-                                                children: [
-                                                  const SizedBox(height: 10,),            
-                                             
-                                                   
-                                                  expandedItem(title:translatedText("Product stock", "Mzigo wa bidhaa"), iconData:Icons.add,onClick:  (){
-                                                      find.selectedProduct.value = product;
-                                                      Get.to(()=>const ProductStock());
-                                                  }),
-                                                   expandedItem(title:translatedText("Product sales", "Mauzo ya bidhaa"),iconData: Icons.bar_chart,onClick:  (){
-                                                      productSaleController.selectedProduct.value = product;
-                                                      Get.to(()=>const ProductsSalesMain());
-                                                  },elevation: 0),  
-
-                                                
-                                                  expandedItem(title:translatedText("Product features", "Sifa za bidhaa"), iconData:Icons.remove_red_eye,onClick:  (){
-                                                      find.selectedProduct.value = product;
-                                                      Get.bottomSheet(bottomSheetTemplate(widget: Container(child: Column(
-                                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                                        children: [
-                                                        heading2(text: "Product features"),
-                                                        SizedBox(height: 20,),
-                                                        Column(
-                                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                                            children:product.properties.map((item) =>Padding(
-                                                              padding: const EdgeInsets.only(bottom: 10),
-                                                              child: ClipRRect(
-                                                                borderRadius: BorderRadius.circular(15),
-                                                                child: Container(
-                                                                color: backgroundColor,
-                                                                width: double.infinity,
-                                                                child: Padding(
-                                                                padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 15),
-                                                                child: Expanded(child: paragraph(text: "${item["title"]}:  ${item["value"]}" )),
-                                                                                )),
-                                                              ),
-                                                            )).toList(),),
-                                                      ],),)));
-                                                  }),
-                                                       
-                                                  expandedItem(title:translatedText("Product settings", "Mipangilia ya bidhaa"), iconData:Icons.settings,onClick:  (){
-                                                      find.selectedProduct.value = product;
-                                                      Get.to(()=> ProductSettings());
-                                                  }),
-                                                    expandedItem(title:translatedText("Edit product details", "Badili taarifa"), iconData:Icons.edit,onClick:  (){
-                                                      find.selectedProduct.value = product;
-                                                      Get.to(()=> EditProduct());
-                                                  }),
-                                                   expandedItem(title:translatedText("Delete product","Futa bidhaa"),iconData: Icons.cancel,onClick:  (){
-                                                      confirmDelete(context,onClick: (){
-                                                        find.deleteProduct(product.id);
-                                                      },onSuccess: (){
-                                                        successNotification(translatedText("Product is deleted successfully", "Umefanikiwa kufuta"));
-                                                      });
-                                                  },elevation: 0),                                                                             
-                                                ],
-                                              ):Container(),
-                                            )
-                              ],
-                            ),
-                            
-                          ),),
-                      ),
-                   ) ).toList());
+                              ),),
+                          ),
+                       ) ).toList()),
+                     ],
+                   );
                  }
                )
         ],)

@@ -60,7 +60,14 @@ AuthController authController = Get.find<AuthController>();
                         ),
                         const SizedBox(height: 20,),
                         Row(children: [
-                          Checkbox(value: client.language == "ENG"? true:false,activeColor: primaryColor, onChanged: (value){
+                          Checkbox(value: client.language == "ENG"? true:false,
+                          fillColor: MaterialStateColor.resolveWith((states) =>Colors.white ),
+                              splashRadius: 50,
+                              activeColor: Colors.green,
+                              hoverColor: primaryColor,
+                              checkColor: Colors.black,
+                              focusColor: Colors.black,
+                           onChanged: (value){
                             setState(() {
                             authController.updateClientInfo({"language":"ENG"});
                             });
@@ -71,7 +78,14 @@ AuthController authController = Get.find<AuthController>();
                         ],),
                          const SizedBox(height: 0,),
                         Row(children: [
-                          Checkbox(value: client.language == "SWH"? true:false, activeColor: primaryColor, onChanged: (value){
+                          Checkbox(value: client.language == "SWH"? true:false, 
+                          fillColor: MaterialStateColor.resolveWith((states) =>Colors.white ),
+                              splashRadius: 50,
+                              activeColor: Colors.green,
+                              hoverColor: primaryColor,
+                              checkColor: Colors.black,
+                              focusColor: Colors.black,
+                           onChanged: (value){
                               setState(() {
                             authController.updateClientInfo({"language":"SWH"});
                             });

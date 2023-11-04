@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:pos/controllers/attendance_controller.dart';
 import 'package:pos/controllers/auth_controller.dart';
 import 'package:pos/controllers/business_controller.dart';
@@ -102,14 +103,15 @@ class _StaffAttendanceState extends State<StaffAttendance> {
                           });
                           findCurrentLocation().then((value) {
                             if(value != null){
-                             double distance= Geolocator.distanceBetween(business.latitude, business.longitude, value.latitude!, value.longitude!);
-                           
-                           if(distance <100 && distance>0){
+                              final Distance distance = new Distance();
+                             double meters=  distance(LatLng( value.latitude!, value.longitude!),LatLng(business.latitude, business.longitude) );
+                           print(meters);
+                           print("Meters");
+                           if(meters <250 && meters>0){
                             AttendanceController().checkIn().then((value) {
                             successNotification("Checked in successfully");
                             });
-                     
-                           }
+                            }
                            else{
                             failureNotification("Sorry! you are not around, you can not check In");
                            }

@@ -30,6 +30,7 @@ class StaffRegistersController extends GetxController{
         
         BusinessController businessController = Get.find<BusinessController>();
         Stream<List<StaffRegister>> getStaffRegisters() {
+      
           return firestore
               .collection("staffRegisters").where("staffId",isEqualTo:staffController.selectedStaff.value.details.email ).where("businessId",isEqualTo: businessController.selectedBusiness.value?.id)
               .snapshots()
