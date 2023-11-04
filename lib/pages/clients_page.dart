@@ -11,6 +11,7 @@ import 'package:pos/controllers/product_controller.dart';
 import 'package:pos/controllers/register_controller.dart';
 import 'package:pos/controllers/worker_controller.dart';
 import 'package:pos/pages/add_worker.dart';
+import 'package:pos/pages/admin/view_client_businesses.dart';
 import 'package:pos/pages/business_pages/assign_register.dart';
 import 'package:pos/pages/private_chat_room.dart';
 
@@ -117,7 +118,10 @@ class _ClientsPageState extends State<ClientsPage> {
                                                     Get.to(()=>PrivateChatRoom()); 
                                                   }),
                                                 
-                                                  
+                                                   expandedItem(title:"View businesses", iconData:Icons.remove_red_eye, onClick:  (){ 
+                                                     find.selectedClient.value = client;
+                                                    Get.to(()=>ViewClientBusinesses()); 
+                                                  }),
                                                
                                                                                                                            
                                                 ],

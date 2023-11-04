@@ -171,7 +171,7 @@ class _ProductsPageState extends State<ProductsPage> {
                                                                 width: double.infinity,
                                                                 child: Padding(
                                                                 padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 15),
-                                                                child: paragraph(text: "${item["title"]}:  ${item["value"]}" ),
+                                                                child: Expanded(child: paragraph(text: "${item["title"]}:  ${item["value"]}" )),
                                                                                 )),
                                                               ),
                                                             )).toList(),),

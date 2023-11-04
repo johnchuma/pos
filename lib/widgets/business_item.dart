@@ -6,7 +6,7 @@ import 'package:pos/widgets/muted_text.dart';
 
 Widget businessItem(business){
   return Padding(
-                         padding: const EdgeInsets.only(bottom: 10),
+                         padding: const EdgeInsets.only(bottom: 20),
                          child: ClipRRect(
                             borderRadius: BorderRadius.circular(20),
                             child: Container(

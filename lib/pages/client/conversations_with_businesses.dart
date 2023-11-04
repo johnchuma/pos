@@ -11,6 +11,7 @@ import 'package:pos/widgets/avatar.dart';
 import 'package:pos/widgets/back.dart';
 import 'package:pos/widgets/heading2_text.dart';
 import 'package:pos/widgets/muted_text.dart';
+import 'package:pos/widgets/no_data.dart';
 import 'package:pos/widgets/paragraph.dart';
 import 'package:pos/widgets/translatedText.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -43,7 +44,7 @@ ClientsController clientsController = Get.find<ClientsController>();
         child: GetX<ConversationController>(
                 init: ConversationController(),
                 builder: (find) {
-                  return find.conversations.length ==0 ?Center(child: CircularProgressIndicator(color: textColor,),): ListView(children: find.conversations.map((item) => 
+                  return find.conversations.length ==0 ?noData(): ListView(children: find.conversations.map((item) => 
                   GestureDetector(
                     onTap: (){
                       find.selectedConversation.value = item;

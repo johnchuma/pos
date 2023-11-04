@@ -7,6 +7,7 @@ import 'package:pos/controllers/app_controller.dart';
 import 'package:pos/controllers/auth_controller.dart';
 import 'package:pos/controllers/business_subscription_controller.dart';
 import 'package:pos/controllers/clients_controller.dart';
+import 'package:pos/controllers/product_controller.dart';
 import 'package:pos/models/business.dart';
 import 'package:pos/models/business_subscription.dart';
 import 'package:pos/models/register.dart';
@@ -109,6 +110,17 @@ class BusinessController extends GetxController{
                   });
             return business;
         }
+          Future<List<Business>> getUserBusinesses()async{
+        ClientsController clientsController = Get.find<ClientsController>();
+
+                  QuerySnapshot querySnapshot = await firestore.collection("businesses").where("userId",isEqualTo:clientsController.selectedClient.value?.id).get();
+          List<Business> businesses = [];
+            for (var documentSnapshot in querySnapshot.docs) {
+              businesses.add(Business.fromDocumentSnapshot(documentSnapshot));
+            }
+            return businesses;
+        }
+
 
           Stream<List<Business>> getStaffBusinesses() {
           return firestore
@@ -162,6 +174,7 @@ class BusinessController extends GetxController{
       Future<void> deleteBusiness (businessId) async{
           try {
            await  firestore.collection("businesses").doc(businessId).delete();
+           await ProductController().deleteBusinessProducts(businessId: businessId);
           } catch (e) {
           }
       }

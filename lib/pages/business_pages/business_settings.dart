@@ -290,7 +290,7 @@ bool loading2 = false;
                   },onSuccess: (){
                     Get.back();
                     Get.back();
-                    Get.back();
+                    // Get.back();
                     
       
                     successNotification("Business is deleted successfully");

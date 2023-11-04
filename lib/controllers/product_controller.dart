@@ -123,12 +123,16 @@ class ProductController extends GetxController{
            await  firestore.collection("products").doc(productId).set({
               "id":productId,
               "name":name,
+              "updatedAt":Timestamp.now(),
               "businessId":businessController.selectedBusiness.value?.id,
               "image":imagelink,
               "properties":properties,
               "sellingPrice":0.0,
               "measurement":"",
+              "category":businessController.selectedBusiness.value?.category,
               "lowAmount":0.0,
+              "offerPrice":0.0,
+              "otherImages":[],
               "buyingPrice":0.0,
               "isPublic":false,
               "allowDiscount":false,
@@ -163,6 +167,16 @@ class ProductController extends GetxController{
         Future<void> deleteProduct (productId) async{
           try {
            await firestore.collection("products").doc(productId).delete();
+          } catch (e) {
+          }
+       }
+        Future<void> deleteBusinessProducts ({businessId}) async{
+          try {
+          await firestore.collection("products").where("businessId",isEqualTo: businessId).get().then((QuerySnapshot querySnapshot) async{
+            for (var doc in querySnapshot.docs) {
+              await firestore.collection("products").doc(doc["id"]).delete();
+            }
+          });
           } catch (e) {
           }
        }

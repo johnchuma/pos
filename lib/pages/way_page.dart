@@ -1,6 +1,7 @@
 // ignore_for_file: unnecessary_import, implementation_imports
 
 import 'package:flutter/services.dart';
+import 'package:lottie/lottie.dart';
 import 'package:pos/controllers/auth_controller.dart';
 import 'package:pos/pages/home_page.dart';
 import 'package:pos/pages/login_page.dart';
@@ -28,7 +29,7 @@ class WayPage extends StatelessWidget {
                 future: SharedPreferencesUtil.getShowOnboarding(),
                  builder: (context,snapshot) {
                   if(snapshot.connectionState == ConnectionState.waiting){
-                    return Container();
+                    return Container(child: Lottie.asset("assets/Animation - 1698840602659.json"),);
                   }
                   var preference = snapshot.requireData;
                    return preference? const OnboardingScreen():LoginPage();

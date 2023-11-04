@@ -7,7 +7,7 @@ class NewAttributeController{
           try {
            QuerySnapshot querySnapshot =await  firestore.collection("products").get();
            for (var doc in querySnapshot.docs) {
-           await firestore.collection("products").doc(doc["id"]).update({"measurement":""});      
+           await firestore.collection("products").doc(doc["id"]).update({"updatedAt":Timestamp.now()});      
            }
           } catch (e) {
           }

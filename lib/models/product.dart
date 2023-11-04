@@ -11,7 +11,9 @@ class Product{
   late double lowAmount = 0.0;
   late String image;
   late String measurement;
-
+  late String category;
+  late List otherImages = [];
+  late double offerPrice = 0.0;
   late Rx<double> availableStock = Rx<double> (0.0);
   late double onCartAmount;
   late double sellingPrice = 0.0;
@@ -28,13 +30,19 @@ class Product{
     id = documentSnapshot["id"];
     name = documentSnapshot["name"];
     image = documentSnapshot["image"];
+    offerPrice = documentSnapshot["offerPrice"];
+    otherImages = documentSnapshot["otherImages"];
     isPublic.value = documentSnapshot["isPublic"];
     lowAmount = documentSnapshot["lowAmount"];
+    category = documentSnapshot["category"];
     properties = documentSnapshot["properties"];
     measurement = documentSnapshot["measurement"];
     sellingPrice = documentSnapshot["sellingPrice"] ;
     buyingPrice = documentSnapshot["buyingPrice"] ;
     businessId= documentSnapshot["businessId"];
     createdAt= documentSnapshot["createdAt"];
+    if(offerPrice != 0){
+      sellingPrice = offerPrice;
+    }
   }
 }

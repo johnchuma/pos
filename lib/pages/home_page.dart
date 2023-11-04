@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:lottie/lottie.dart';
 import 'package:pos/controllers/Product_controller.dart';
 import 'package:pos/controllers/app_controller.dart';
 import 'package:pos/controllers/auth_controller.dart';

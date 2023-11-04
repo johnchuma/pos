@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pos/controllers/auth_controller.dart';
@@ -39,6 +40,8 @@ class _ProductSettingsState extends State<ProductSettings> {
    TextEditingController measurementController = TextEditingController();
    TextEditingController valueController = TextEditingController();
    TextEditingController descriptionController = TextEditingController();
+   TextEditingController offerPriceController = TextEditingController();
+
    DateTime? selectedDate = DateTime.now();
    ProductController productController = Get.find<ProductController>();
    bool expanded = false;
@@ -53,6 +56,7 @@ class _ProductSettingsState extends State<ProductSettings> {
     Product product =productController.selectedProduct.value;
     lowAmountController.text = product.lowAmount.toString();
     measurementController.text = product.measurement;
+    offerPriceController.text = product.offerPrice.toString();
     super.initState();
   }
   Rx<bool> gettingLink = Rx<bool>(false);
@@ -94,6 +98,13 @@ class _ProductSettingsState extends State<ProductSettings> {
                   
                    textEditingController: measurementController,
                    lines: 1),
+                    SizedBox(height: 10,),
+                    mutedText(text: translatedText("Sell product for the offer price", "Uza kwa bei ya offer")),
+                  const SizedBox(height: 10,),
+                   TextForm(hint: translatedText("Enter an offer price","Weka bei ya offer"),
+                  
+                   textEditingController: offerPriceController,
+                   lines: 1),
                   ],)),
                   SizedBox(height: 10,),
 
@@ -105,8 +116,7 @@ class _ProductSettingsState extends State<ProductSettings> {
                                                                         mutedText(text: "Make product public"),
                                                                         Switch(value: product.isPublic.value,activeColor: primaryColor, onChanged: (value){
                                                                           product.isPublic.value = value;
-                    
-                                                                        productController.updateProduct(product.id, {"isPublic":value});
+                                                                        productController.updateProduct(product.id, {"isPublic":value,"updatedAt":Timestamp.now()});
                                                                         })
                                                                       ],),
                                                                     ),
@@ -145,7 +155,8 @@ class _ProductSettingsState extends State<ProductSettings> {
                            
                   var data = {
                       "lowAmount":double.parse(lowAmountController.text) ,
-                      "measurement":measurementController.text.toLowerCase()
+                      "measurement":measurementController.text.toLowerCase(),
+                      "offerPrice":double.parse(offerPriceController.text) 
                     };
                       productController.updateProduct(product.id,data).then((value) {
                         Get.back();

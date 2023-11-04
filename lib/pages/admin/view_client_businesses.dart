@@ -7,7 +7,9 @@ import 'package:get/get.dart';
 import 'package:pos/controllers/app_controller.dart';
 import 'package:pos/controllers/auth_controller.dart';
 import 'package:pos/controllers/business_controller.dart';
+import 'package:pos/controllers/clients_controller.dart';
 import 'package:pos/controllers/register_controller.dart';
+import 'package:pos/models/client.dart';
 import 'package:pos/pages/add_business.dart';
 import 'package:pos/pages/business_page.dart';
 import 'package:pos/pages/update_profile_details.dart';
@@ -15,24 +17,23 @@ import 'package:pos/utils/colors.dart';
 import 'package:pos/utils/notifications.dart';
 import 'package:pos/utils/onesignal_notification.dart';
 import 'package:pos/widgets/avatar.dart';
+import 'package:pos/widgets/back.dart';
 import 'package:pos/widgets/business_item.dart';
 import 'package:pos/widgets/custom_button.dart';
 import 'package:pos/widgets/dashboard_appbar.dart';
 import 'package:pos/widgets/heading2_text.dart';
-import 'package:pos/widgets/heading_text.dart';
-import 'package:pos/widgets/menu_item.dart';
-import 'package:pos/widgets/muted_text.dart';
-import 'package:pos/widgets/no_data.dart';
-import 'package:pos/widgets/translatedText.dart';
 
-class DashboardPage extends StatefulWidget {
- DashboardPage({super.key});
+import 'package:pos/widgets/no_data.dart';
+
+
+class ViewClientBusinesses extends StatefulWidget {
+ ViewClientBusinesses({super.key});
 
   @override
-  State<DashboardPage> createState() => _DashboardPageState();
+  State<ViewClientBusinesses> createState() => _ViewClientBusinessesState();
 }
 
-class _DashboardPageState extends State<DashboardPage> {
+class _ViewClientBusinessesState extends State<ViewClientBusinesses> {
 AuthController auth = Get.find<AuthController>();
 AppController appController = Get.find<AppController>();
 
@@ -41,15 +42,24 @@ AppController appController = Get.find<AppController>();
 
     super.initState();
   }
+ClientsController clientsController = Get.find<ClientsController>();
+
   @override
   Widget build(BuildContext context) {
 String language = appController.language.value;
-
+Client client = clientsController.selectedClient.value!;
     return  AnnotatedRegion(
       value: SystemUiOverlayStyle(statusBarBrightness: Brightness.dark),
       child: Scaffold(
         backgroundColor: backgroundColor,
-           appBar: dashboardAppbar(context),
+           appBar: AppBar(
+            backgroundColor: backgroundColor,
+            elevation: 0,
+            leading: back(),title: Row(children: [
+              avatar(image: client.profileImageUrl,size: 40),
+              SizedBox(width: 10,),
+              heading2(text: client.name)
+            ],),),
     
         body:Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -64,25 +74,32 @@ String language = appController.language.value;
                               
             SizedBox(height: 10,),
                    
-                       GetX<BusinessController>(
+                       GetBuilder<BusinessController>(
                         init: BusinessController(),
                          builder: (find) {
-                           return find.businesses.isEmpty ? noData():Column(children:find.businesses.map((business) => GestureDetector(
-                            onTap: (){
-                              find.selectedBusiness.value = business;
-                              Get.to(()=>const BusinessPage());
-                            },
-                             child: businessItem(business),
-                           ) ).toList());
+                           return FutureBuilder(
+                            future: find.getUserBusinesses(),
+                             builder: (context,snapshot) {
+                              if(snapshot.connectionState == ConnectionState.waiting){
+                                return Center(child: CircularProgressIndicator(color: Colors.white,),);
+                              }
+                              var businesses = snapshot.requireData;
+                               return businesses.isEmpty ? noData():Column(children:businesses.map((business) => GestureDetector(
+                                onTap: (){
+                                  find.selectedBusiness.value = business;
+                                  Get.to(()=>const BusinessPage());
+                                },
+                                 child: businessItem(business),
+                               ) ).toList());
+                             }
+                           );
                          }
                        ),
                         
                   ],), 
                 ),
               ),
-              
-              
-              SizedBox(height: 10,),
+          
 
             ],
           ),

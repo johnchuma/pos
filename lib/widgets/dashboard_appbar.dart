@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pos/controllers/app_controller.dart';
 import 'package:pos/controllers/auth_controller.dart';
+import 'package:pos/pages/add_business.dart';
 import 'package:pos/utils/colors.dart';
 import 'package:pos/widgets/avatar.dart';
 import 'package:pos/widgets/heading2_text.dart';
 import 'package:pos/widgets/muted_text.dart';
+import 'package:pos/widgets/top_icon.dart';
 import 'package:pos/widgets/translatedText.dart';
 
 PreferredSizeWidget dashboardAppbar(context,{title}){
@@ -18,6 +20,13 @@ String language = appController.language.value;
           leadingWidth: 10,
           title: heading2(text: title??language == "ENG"?"My businesses":"Biashara zangu"),
           backgroundColor: backgroundColor,
+          actions: [topIcon(widget: GestureDetector(
+            onTap: (){
+              Get.to(()=>AddBusiness());
+            },
+            child: Icon(Icons.add))),
+          SizedBox(width: 20,)
+          ],
           elevation: 0.3,
         );
 }

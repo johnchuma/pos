@@ -229,7 +229,7 @@ class _EditProductState extends State<EditProduct> {
                          child:  Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                            children: [
-                             paragraph(text: "${item["title"]}:  ${item["value"]}" ),
+                             Expanded(child: paragraph(text: "${item["title"]}:  ${item["value"]}" )),
                              GestureDetector(
                               onTap: (){
                                 setState(() {

@@ -215,7 +215,7 @@ class _AddProductState extends State<AddProduct> {
                          child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                            children: [
-                             paragraph(text: "${item["title"]}:  ${item["value"]}" ),
+                             Expanded(child: paragraph(text: "${item["title"]}:  ${item["value"]}" )),
                              GestureDetector(
                               onTap: (){
                                 setState(() {

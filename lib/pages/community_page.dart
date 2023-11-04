@@ -17,6 +17,7 @@ class InsightsPage extends StatelessWidget {
           leadingWidth: 10,
           title: heading2(text:translatedText("Community", "Jumuiya")),
           backgroundColor: backgroundColor,
+          
           elevation: 0.3
           ),
           body: Container(child: Center(child: Padding(
