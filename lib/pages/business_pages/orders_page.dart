@@ -22,6 +22,7 @@ import 'package:pos/widgets/custom_button.dart';
 import 'package:pos/widgets/expanded_item.dart';
 import 'package:pos/widgets/heading2_text.dart';
 import 'package:pos/widgets/heading_text.dart';
+import 'package:pos/widgets/menu_item.dart';
 import 'package:pos/widgets/muted_text.dart';
 import 'package:pos/widgets/no_data.dart';
 import 'package:pos/widgets/paragraph.dart';
@@ -98,7 +99,10 @@ class _OrdersPageState extends State<OrdersPage> {
                  GetX<RetailerOrderController>(
                 init: RetailerOrderController(),
                  builder: (find) {
-                   return find.supplierOrders.isEmpty?noData(): Column(children:find.supplierOrders.map((item) => Padding(
+                   return find.loading.value ? Padding(
+                         padding: const EdgeInsets.all(50),
+                         child: Center(child: CircularProgressIndicator(color: Colors.white,)),
+                       ):  find.supplierOrders.isEmpty?noData(): Column(children:find.supplierOrders.map((item) => Padding(
                      padding: const EdgeInsets.only(bottom: 10),
                      child: ClipRRect(
                         borderRadius: BorderRadius.circular(15),
@@ -180,7 +184,14 @@ class _OrdersPageState extends State<OrdersPage> {
                                                            ],),
                                                           ),
                                                             Obx(
-                                                              ()=> Checkbox(value: productOrder.isDelivered.value,activeColor: Colors.green, onChanged: (value){
+                                                              ()=> Checkbox(value: productOrder.isDelivered.value,
+                                                              fillColor: MaterialStateColor.resolveWith((states) =>Colors.white ),
+                                                                splashRadius: 50,
+                                                                activeColor: Colors.green,
+                                                                hoverColor: primaryColor,
+                                                                checkColor: Colors.black,
+                                                                focusColor: Colors.black,
+                                                               onChanged: (value){
                                                               find.selectedProductOrder.value  = productOrder;
                                                               find.selectedSupplierOrder.value = item;
                                                               if(value == false){
@@ -205,11 +216,23 @@ class _OrdersPageState extends State<OrdersPage> {
                                                        ).toList(),),
                                                      ),
                                                      SizedBox(height: 20,),
-                                                                                                                
+                                            expandedItem(title: "Complete order",iconData: Icons.lock,onClick: (){
+                                              find.updateSupplierProducts(item.id,data: {"isClosed":true}).then((value) {
+                                                successNotification("Order is completed successfully");
+                                              });
+                                            }),
+                                            expandedItem(title: "Delete order",iconData: Icons.delete,onClick: (){
+                                              confirmDelete(context,onClick: (){
+                                                find.deleteSupplierOrder(item.id);
+                                              }, onSuccess: (){
+                                                successNotification("Order deleted successfully");
+                                              });
+                                            })                                                    
                                                   ],
                                                 ),
                                               ):Container(),
-                                            )
+                                            ),
+                                            
                               ],
                             ),
                             

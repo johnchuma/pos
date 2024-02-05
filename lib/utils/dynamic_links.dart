@@ -12,8 +12,8 @@ Future<String> getDynamicLink({title,description,image,productId})async{
   ),
   
   socialMetaTagParameters: SocialMetaTagParameters(
-    title: title,
-    description: description,
+    title: title??"",
+    description: description??"",
     imageUrl: Uri.parse(image),
   ),
 );

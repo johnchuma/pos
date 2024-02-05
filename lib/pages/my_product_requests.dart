@@ -45,7 +45,7 @@ class _MyProductRequestsState extends State<MyProductRequests> {
         Expanded(child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            heading2(text:translatedText("My  requests", "Maulizo yangu")),
+            heading2(text:translatedText("Product requests", "Maulizo ya bidhaa")),
           
 
           ],

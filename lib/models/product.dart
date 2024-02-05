@@ -18,6 +18,7 @@ class Product{
   late double onCartAmount;
   late double sellingPrice = 0.0;
   late double buyingPrice = 0.0;
+  late bool isCheap = false;
   late double discount = 0.0;
   late Rx<bool> isPublic =Rx<bool>(false);
   late Rx<List<ProductsVariantsCategory>>  variantCategories = Rx<List<ProductsVariantsCategory>>([]);
@@ -25,6 +26,8 @@ class Product{
   late String businessId;
   late List properties  = [];
   late Timestamp  createdAt;
+  late Timestamp  updatedAt;
+
   Product();
   Product.fromDocumentSnapshot(DocumentSnapshot documentSnapshot){
     id = documentSnapshot["id"];
@@ -41,6 +44,8 @@ class Product{
     buyingPrice = documentSnapshot["buyingPrice"] ;
     businessId= documentSnapshot["businessId"];
     createdAt= documentSnapshot["createdAt"];
+    updatedAt= documentSnapshot["updatedAt"];
+    isCheap= documentSnapshot["isCheap"];
     if(offerPrice != 0){
       sellingPrice = offerPrice;
     }

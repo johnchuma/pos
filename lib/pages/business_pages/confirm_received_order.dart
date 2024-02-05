@@ -78,14 +78,21 @@ TextEditingController passwordController = TextEditingController();
                   ClipRRect(
                     borderRadius: BorderRadius.circular(15),
                     child: Container(
-                      color: Colors.red.withOpacity(0.5),
+                      color: backgroundColor,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 20),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(children: [
-                              Checkbox(value: show,activeColor: Colors.red, onChanged: (value){
+                              Checkbox(value: show,
+                             fillColor: MaterialStateColor.resolveWith((states) =>Colors.white ),
+                              splashRadius: 50,
+                              activeColor: Colors.green,
+                              hoverColor: primaryColor,
+                              checkColor: Colors.black,
+                              focusColor: Colors.black,
+                               onChanged: (value){
                                     setState(() {
                                       show = value!;
                                     });

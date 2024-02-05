@@ -22,7 +22,7 @@ class RetailerOrderController extends GetxController{
           Rx<ProductOrder?> selectedProductOrder = Rx<ProductOrder?>(null);
           Rx<SupplierOrder?> selectedSupplierOrder = Rx<SupplierOrder?>(null);
 
-
+        Rx<bool> loading = Rx<bool>(false);
         List<SupplierOrder> get completedOrders => completedOrdersReceiver.value;
         Rx<Supplier?> selectedSupplier = Rx<Supplier?>(null);
         
@@ -39,30 +39,34 @@ class RetailerOrderController extends GetxController{
   
         BusinessController businessController = Get.find<BusinessController>();
         Stream<List<SupplierOrder>> getSupplierOrders() {
+          loading.value = true;
           return firestore
               .collection("orders").
               where("businessId",isEqualTo: businessController.selectedBusiness.value?.id).
               where("isClosed",isEqualTo: false).orderBy("createdAt",descending: true)
               .snapshots()
               .asyncMap((QuerySnapshot querySnapshot) async{
+                print("Supplier orders");
                List<SupplierOrder> supplierOrders = [];
                   for (var element in querySnapshot.docs) {
                   SupplierOrder supplierOrder = SupplierOrder.fromDocumentSnapshot(element);
-                 firestore.collection("orderProducts").where("supplierOrderId",isEqualTo: element["id"]).get().then((productOrdersSnapshot){
-                   for (var doc in productOrdersSnapshot.docs) {
+                  var productOrdersSnapshot=await firestore.collection("orderProducts").where("supplierOrderId",isEqualTo: element["id"]).get();
+                  print(productOrdersSnapshot.docs.length);
+                  for (var doc in productOrdersSnapshot.docs) {
                     ProductOrder productOrder = ProductOrder.fromDocumentSnapshot(doc);
-                   firestore.collection("products").doc(productOrder.productId).get().then((productSnapshot)  {
+                    var productSnapshot =    await firestore.collection("products").doc(productOrder.productId).get();
                     if(productSnapshot.exists){
                      productOrder.product.value = Product.fromDocumentSnapshot(productSnapshot);
                      supplierOrder.productOrders.value.add(productOrder);
                      }
-                    });
                   }
-                 });
+                  print("Amaizing");
                   supplierOrder.supplier = await businessController.getBusiness(supplierOrder.supplierId.trim());
                   supplierOrder.unreadMessages.bindStream(NotificationController().getUnreadOrderMessages(supplierOrder.id));
                   supplierOrders.add(supplierOrder);
                }
+                  loading.value = false;
+
             return supplierOrders;    
           });
         }
@@ -100,15 +104,14 @@ class RetailerOrderController extends GetxController{
             var id = Timestamp.now().toDate().toString();
            await  firestore.collection("orders").doc(id).set({
               "id":id,
-              "from":businessController.selectedBusiness.value?.id,
-              
+              "businessId":businessController.selectedBusiness.value?.id,
               "supplierId":selectedSupplier.value == null ?null:selectedSupplier.value?.supplier.id,
               "isClosed":false,
               "inAppOrder":selectedSupplier.value == null?true:false,
               "createdAt":Timestamp.now()
-            }).then((value) async{
-           await addOrderProducts(id);
             });
+           await addOrderProducts(id);
+          
           } catch (e) {
             print(e);
           }

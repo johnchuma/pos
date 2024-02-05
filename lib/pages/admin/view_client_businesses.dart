@@ -43,7 +43,11 @@ AppController appController = Get.find<AppController>();
     super.initState();
   }
 ClientsController clientsController = Get.find<ClientsController>();
-
+@override
+  void dispose() {
+    clientsController.selectedClient.value = null;
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
 String language = appController.language.value;

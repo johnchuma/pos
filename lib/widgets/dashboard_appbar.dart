@@ -24,7 +24,7 @@ String language = appController.language.value;
             onTap: (){
               Get.to(()=>AddBusiness());
             },
-            child: Icon(Icons.add))),
+            child: Icon(Icons.add,color: mutedColor,))),
           SizedBox(width: 20,)
           ],
           elevation: 0.3,

@@ -97,8 +97,13 @@ bool loading = false;
                               child: Container(child: Row(children: [
                               Obx(()=>
                                  Checkbox(
-                                  activeColor: Colors.green[600],
-                                  focusColor: mutedColor,
+                                 fillColor: MaterialStateColor.resolveWith((states) =>Colors.white ),
+                              splashRadius: 50,
+                              activeColor: Colors.green,
+                              hoverColor: primaryColor,
+                              checkColor: Colors.black,
+                              focusColor: Colors.black,
+                                 
                                   value:retailerOrderController.selectedSupplier.value==null?false:retailerOrderController.selectedSupplier.value?.id == item.id?true:false, onChanged: (value){
                                   
                                     if(value == true){

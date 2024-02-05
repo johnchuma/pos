@@ -55,7 +55,7 @@ class StaffRegistersController extends GetxController{
               "businessId":businessController.selectedBusiness.value?.id,
               "registerId":registerId,
               "permissions":[],
-              "password":null,
+              "password":"",
               "createdAt":Timestamp.now()
             });
           } catch (e) {

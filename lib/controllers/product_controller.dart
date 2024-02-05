@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:pos/controllers/auth_controller.dart';
 import 'package:pos/controllers/business_controller.dart';
 import 'package:pos/controllers/product_variants_controller.dart';
+import 'package:pos/models/business.dart';
 import 'package:pos/models/product.dart';
 import 'package:pos/models/products_variants_categories.dart';
 import 'package:pos/models/variant_item.dart';
@@ -27,7 +28,7 @@ class ProductController extends GetxController{
         BusinessController businessController = Get.find<BusinessController>();
         Stream<List<Product>> getProducts() {
           return firestore
-              .collection("products").where("businessId",isEqualTo: businessController.selectedBusiness.value?.id)
+              .collection("products").where("businessId",isEqualTo: businessController.selectedBusiness.value?.id).orderBy("createdAt",descending: true)
               .snapshots()
               .asyncMap((QuerySnapshot querySnapshot) async{
                List<Product> products = [];
@@ -38,7 +39,25 @@ class ProductController extends GetxController{
             return products;    
           });
         }
+   Future<List<Product>> getSampleBusinessProduct() async{
+              List<Product> products = [];
+              QuerySnapshot businessSnapshot = await firestore
+              .collection("businesses").where("category",isEqualTo: businessController.selectedBusiness.value?.category).where("isSampleBusiness",isEqualTo: true)
+              .get();
 
+              if(businessSnapshot.docs.length >0){
+                  Business business = Business.fromDocumentSnapshot(businessSnapshot.docs.first);
+                  QuerySnapshot querySnapshot  = await firestore
+                  .collection("products").where("businessId",isEqualTo: business.id).orderBy("createdAt",descending: true)
+                  .get();
+                  for (var element in querySnapshot.docs) {
+                  Product product = Product.fromDocumentSnapshot(element);
+                  products.add(product);
+                  }
+              }
+         
+            return products;  
+        }
   Future populateProductVariants({Product? product})async{
         Product productToBeUsed = product??selectedProduct.value;
            QuerySnapshot querySnapshot =await  firestore.collection("products").doc(productToBeUsed.id).collection("variantsCategories").get();
@@ -132,6 +151,7 @@ class ProductController extends GetxController{
               "category":businessController.selectedBusiness.value?.category,
               "lowAmount":0.0,
               "offerPrice":0.0,
+              "isCheap":false,
               "otherImages":[],
               "buyingPrice":0.0,
               "isPublic":false,
@@ -139,21 +159,35 @@ class ProductController extends GetxController{
               "createdAt":Timestamp.now()
             });
         
-            //   for (var category in productVariantsController.selectedCategories.value) {
-            // var categoryId = Timestamp.now().toDate().toString();
-            //     await firestore.collection("products").doc(productId).collection("variantsCategories").doc(categoryId).set({
-            //       "id":categoryId,
-            //       "categoryId":category.id
-            //     });
-            //     for (var variant in category.selectedVariants.value) {
-            //     var variantId = Timestamp.now().toDate().toString();     
-            //       await firestore.collection("products").doc(productId).collection("variantsCategories").doc(categoryId).collection("variants").doc(variantId).set({
-            //       "id":variantId,
-            //       "categoryId":categoryId,
-            //       "variantId":variant.id
-            //     });
-            //     }
-            // }
+          } catch (e) {
+          }
+      }
+
+
+      Future<void> copyProduct (Product product)async{
+          try {
+            var productId = Timestamp.now().toDate().toString();
+             
+           await  firestore.collection("products").doc(productId).set({
+               "id":productId,
+              "name":product.name,
+              "updatedAt":Timestamp.now(),
+              "businessId":businessController.selectedBusiness.value?.id,
+              "image":product.image,
+              "properties":product.properties,
+              "sellingPrice":0.0,
+              "measurement":product.measurement,
+              "category":businessController.selectedBusiness.value?.category,
+              "lowAmount":0.0,
+              "offerPrice":0.0,
+              "otherImages":product.otherImages,
+              "buyingPrice":0.0,
+              "isPublic":false,
+              "isCheap":false,
+              "allowDiscount":false,
+              "createdAt":Timestamp.now()
+            });
+        
           } catch (e) {
           }
       }

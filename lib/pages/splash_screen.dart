@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:pos/utils/colors.dart';
+import 'package:pos/widgets/avatar.dart';
 import 'package:pos/widgets/heading2_text.dart';
 import 'package:pos/widgets/muted_text.dart';
 
@@ -16,8 +17,8 @@ class SplashScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-                  heading2(text: "Trade point",fontSize: 45)
-
-    ],),),),);
+          
+          heading2(text: "Trade Point",fontSize: 45)
+        ],),),),);
   }
 }

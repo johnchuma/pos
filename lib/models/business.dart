@@ -17,6 +17,7 @@ class Business{
   late String userId;
   late String category = "";
   late String role;
+  late bool isSampleBusiness = false;
   late String address;
   late Client owner;
   late List<Client> staffs = [];
@@ -37,8 +38,14 @@ class Business{
   address = documentSnapshot["address"];
   category = documentSnapshot["category"];
   role = documentSnapshot["role"];
+  isSampleBusiness = documentSnapshot["isSampleBusiness"];
   userId = documentSnapshot["userId"];
+  if(isSampleBusiness){
+    createdAt = Timestamp.now();
+  }
+  else{
   createdAt = documentSnapshot["createdAt"];
+  }
  }
 
 }

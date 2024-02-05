@@ -147,7 +147,7 @@ class _WorkersPageState extends State<WorkersPage> {
                                                   const SizedBox(height: 10,),                      
                                                   expandedItem(title:translatedText("Assign a register", "Husianisha na dirisha la mauzo"), iconData:Icons.table_restaurant, onClick:  (){ 
                                                      find.selectedStaff.value = staff;
-                                                    Get.bottomSheet(Container(child: const AssignRegister(),)); 
+                                                    Get.bottomSheet(Container(child: const AssignRegisterPage(),)); 
                                                   }),
                                                 
                                                    expandedItem(title:translatedText("Worker's sales", "Mauzo ya mfanyakazi"), iconData:Icons.bar_chart, onClick:  (){

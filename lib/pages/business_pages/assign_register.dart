@@ -14,17 +14,18 @@ import 'package:pos/widgets/heading2_text.dart';
 import 'package:pos/widgets/paragraph.dart';
 import 'package:pos/widgets/text_form.dart';
 
-class AssignRegister extends StatefulWidget {
-  const AssignRegister({super.key});
+class AssignRegisterPage extends StatefulWidget {
+  const AssignRegisterPage({super.key});
 
   @override
-  State<AssignRegister> createState() => _AssignRegisterState();
+  State<AssignRegisterPage> createState() => _AssignRegisterPageState();
 }
 
-class _AssignRegisterState extends State<AssignRegister> {  
+class _AssignRegisterPageState extends State<AssignRegisterPage> {  
 RegisterController  registerController =  Get.find<RegisterController>();
 StaffsController staffsController = Get.find<StaffsController>();
 TextEditingController passwordController = TextEditingController();
+String status = "Trying state";
   @override
   Widget build(BuildContext context) {
     return GetX<StaffRegistersController>(
@@ -49,6 +50,7 @@ TextEditingController passwordController = TextEditingController();
                       child: Container(width: 80,height: 5,color: backgroundColor,))],),
                   const SizedBox(height: 20,),
                   heading2(text: "Assign registers to a staff member"),
+
                   const SizedBox(height: 10,),
                   Column(children: registerController.registers.map((item){
     
@@ -59,26 +61,33 @@ TextEditingController passwordController = TextEditingController();
                       Container(
                         child: Row(children: [
                           Container(
-                            child: Checkbox(
-                              fillColor: MaterialStateColor.resolveWith((states) =>Colors.white ),
-                              splashRadius: 50,
-                              activeColor: Colors.green,
-                              hoverColor: primaryColor,
-                              checkColor: Colors.black,
-                              focusColor: Colors.black,
-                              value: find.staffRegisters.map((item) => item.registerId).toList().contains(item.id)?true:false, onChanged: (value){
-                              if(value == true){  
-                                   var list = find.selectedStaffRegisterIds.value ;
-                                   list.add(item.id);
-                                   find.selectedStaffRegisterIds.value = [];
-                                   find.selectedStaffRegisterIds.value = list;
-                                   find.assignRegisterToStaff(item.id);
-                              }
-                              else{
-                                List<StaffRegister> staffRegisters = find.staffRegisters.where((staffRegister) => staffRegister.registerId ==item.id).toList();
-                                  find.deleteStaffRegister(staffRegisters.first.id);
-                              }
-                            }),
+                            child: Checkbox(                           
+                                splashRadius: 50,
+                               fillColor: MaterialStateColor.resolveWith((states) =>Colors.white ),
+                                activeColor: Colors.green,
+                                hoverColor: primaryColor,
+                                checkColor: Colors.black,
+                                focusColor: Colors.black,
+                                value: find.staffRegisters.map((item) => item.registerId).toList().contains(item.id)?true:false, onChanged: (value){
+                                if(value == true){  
+                                    var list = find.selectedStaffRegisterIds.value ;
+                                     list.add(item.id);
+                                     find.selectedStaffRegisterIds.value = [];
+                                     find.selectedStaffRegisterIds.value = list;
+                                         find.assignRegisterToStaff(item.id); 
+                                         setState(() {
+                                           status = "State is working";
+                                         });
+                                }
+                                else{
+                                  List<StaffRegister> staffRegisters = find.staffRegisters.where((staffRegister) => staffRegister.registerId ==item.id).toList();                           
+                                    find.deleteStaffRegister(staffRegisters.first.id);  
+                                    setState(() {
+                                           status = "Trying state";
+                                         });                    
+                                }
+                              }),
+                            
                           ),
                           paragraph(text: item.title)
                         ],),
@@ -92,7 +101,7 @@ TextEditingController passwordController = TextEditingController();
         
                   heading2(text: "Give permissions",fontSize: 14),
                   SizedBox(height: 10,),
-                  Wrap(children: ["Sell products","Manage products","Manage orders", "View reports","Manage staffs","Manage suppliers","Manage registers","Check in & out","View sales reports","View settings"].map((permission) => 
+                  Wrap(children: ["Sell products","Manage products","Manage orders", "View reports","Manage staffs","Request posters","Manage suppliers","Manage registers","Check in & out","View sales reports","View settings"].map((permission) => 
                   GestureDetector(
                     onTap: (){
                     
@@ -109,7 +118,7 @@ TextEditingController passwordController = TextEditingController();
 
                     },
                     child:  Padding(
-                      padding: const EdgeInsets.only(right: 10,bottom: 10),
+                      padding: const EdgeInsets.only(right: 3,bottom: 10),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(20),
                         child: Container(

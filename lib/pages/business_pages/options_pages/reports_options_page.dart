@@ -114,19 +114,19 @@ class _ReportsOptionsPageState extends State<ReportsOptionsPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                    headingText(text: "Stock count"),
-                    headingText(text: totalStock.toString(),fontSize: 30,color: primaryColor2),
+                    headingText(text: "Stock count",color: primaryColor2),
+                    headingText(text: totalStock.toString(),fontSize: 30),
                     SizedBox(height: 20,),
-                    headingText(text: "All stocks value"),
-                    headingText(text: moneyFormat(totalStockValue)+"TZS",fontSize: 30,color: primaryColor2),
-                    SizedBox(height: 20,),
-                    
-                    headingText(text: "Estimated sales"),
-                    headingText(text: moneyFormat(estimatedSales)+"TZS",fontSize: 30,color: primaryColor2),
+                    headingText(text: "All stocks value",color: primaryColor2),
+                    headingText(text: moneyFormat(totalStockValue)+"TZS",fontSize: 30),
                     SizedBox(height: 20,),
                     
-                    headingText(text: "Estimated profit"),
-                    headingText(text: moneyFormat(estimatedProfit)+"TZS",fontSize: 30,color: primaryColor2),
+                    headingText(text: "Estimated sales",color: primaryColor2),
+                    headingText(text: moneyFormat(estimatedSales)+"TZS",fontSize: 30),
+                    SizedBox(height: 20,),
+                    
+                    headingText(text: "Estimated profit",color: primaryColor2),
+                    headingText(text: moneyFormat(estimatedProfit)+"TZS",fontSize: 30),
 
                           
                   ],),

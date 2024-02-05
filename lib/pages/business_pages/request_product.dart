@@ -9,6 +9,7 @@ import 'package:pos/controllers/product_request_controller.dart';
 import 'package:pos/controllers/store_controller.dart';
 import 'package:pos/utils/colors.dart';
 import 'package:pos/utils/file_picker.dart';
+import 'package:pos/utils/notifications.dart';
 import 'package:pos/widgets/back.dart';
 import 'package:pos/widgets/custom_button.dart';
 import 'package:pos/widgets/heading2_text.dart';
@@ -58,13 +59,13 @@ class _RequestProductState extends State<RequestProduct> {
                   children: [
          
              
-              mutedText(text: translatedText("Write your request", "Andika ulizo lako lako")),
+              mutedText(text: translatedText("What do you want to buy ?", "Unataka kununua nini ?")),
               const SizedBox(height: 10,),
               TextForm(hint:translatedText("Write your request here", "Andika ulizo lako lako hapa") ,textEditingController: requestController,lines: 5),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  mutedText(text: translatedText("Image of product you are requesting ?", "Picha ya bidhaa unayouilizia") ),
+                  mutedText(text: translatedText("Image of product you are requesting ? (optional)", "Picha ya bidhaa unayouilizia") ),
                     path != "" ? GestureDetector(
                       onTap: (){
                         setState(() {
@@ -151,6 +152,7 @@ class _RequestProductState extends State<RequestProduct> {
                    });
                   ProductRequestController().sendRequest(requestController.text, imageFile).then((value) {
                     Get.back();
+                    successNotification("Request is sent successfully");
                   }); }
                }),      
                const SizedBox(height: 30,),

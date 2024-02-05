@@ -69,7 +69,7 @@ class _SubscribeNowPageState extends State<SubscribeNowPage> {
                       loading = true;
                     });
                      PrivateChatController().sendMessage("Hello, Customer Service Team,I need assistance with processing a payment for ${businessSubscriptionController.selectedBusiness.value?.name}. Could you please help me? Thank you in advance.").then((value) {
-                      Get.to(()=>PrivateChatRoom());
+                      Get.to(()=>PrivateChatRoom(false));
                       setState(() {
                         loading = false;
                       });

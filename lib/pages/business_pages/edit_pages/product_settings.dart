@@ -64,7 +64,9 @@ class _ProductSettingsState extends State<ProductSettings> {
   @override
   Widget build(BuildContext context) {
     Product product =productController.selectedProduct.value;
-    
+     DateTime now = DateTime.now();
+          DateTime startOfWeek = now.subtract(Duration(days: now.weekday - 1));
+          DateTime endOfWeek = startOfWeek.add(Duration(days: 6));
   return  Scaffold(
           backgroundColor: backgroundColor,
           appBar: AppBar(
@@ -107,13 +109,38 @@ class _ProductSettingsState extends State<ProductSettings> {
                    lines: 1),
                   ],)),
                   SizedBox(height: 10,),
+                  heading2(text: "Offer visibility"),
+                                                                    Row(
+                                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                      children: [
+                                                                        Expanded(child: mutedText(text: "It will only show for this week then you will have to switch it on again")),
+                                                                        Switch(value: product.updatedAt.toDate().compareTo(startOfWeek) >=0 && product.updatedAt.toDate().compareTo(endOfWeek) ==-1? true:false ,activeColor: primaryColor, onChanged: (value){
+                                                                         setState(() {
+                                                                          if(value){
+                                                                             product.updatedAt = Timestamp.now();
+                                                                             productController.updateProduct(product.id, {"updatedAt":Timestamp.now()});
+                                                                          }
+                                                                          else{
+                                                                            product.updatedAt = product.createdAt;
+                                                                             productController.updateProduct(product.id, {"updatedAt":product.createdAt});
 
-                    heading2(text: "Change visibility"),
+                                                                          }
+                                                                          
+                                                                          
+                                                                         });
+                                                                          
+                                                                        })
+                                                                      ],),
+                                                                    
+                  SizedBox(height: 10,),
+
+
+                    heading2(text: "Product visibility"),
                                                                     Obx(
                                                                      ()=>Row(
                                                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                       children: [
-                                                                        mutedText(text: "Make product public"),
+                                                                        Expanded(child: mutedText(text: "By switching on this product will be available to public users")),
                                                                         Switch(value: product.isPublic.value,activeColor: primaryColor, onChanged: (value){
                                                                           product.isPublic.value = value;
                                                                         productController.updateProduct(product.id, {"isPublic":value,"updatedAt":Timestamp.now()});
@@ -156,14 +183,15 @@ class _ProductSettingsState extends State<ProductSettings> {
                   var data = {
                       "lowAmount":double.parse(lowAmountController.text) ,
                       "measurement":measurementController.text.toLowerCase(),
-                      "offerPrice":double.parse(offerPriceController.text) 
+                      "offerPrice":double.parse(offerPriceController.text),
+                      "isCheap":double.parse(offerPriceController.text)>0?true:false 
                     };
+                    
                       productController.updateProduct(product.id,data).then((value) {
                         Get.back();
                       });
                    }),      
                    const SizedBox(height: 30,),
-          
               ],),
             ),
           ),

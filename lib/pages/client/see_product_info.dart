@@ -118,8 +118,9 @@ class _ProductInfoState extends State<ProductInfo> {
                         },
                         child: Obx(()=> gettingLink.value?Container(
                           height: 20,width: 20,
-                          child: CircularProgressIndicator(color: textColor,)):Icon(Icons.share,size: 20,))),
+                          child: CircularProgressIndicator(color: textColor,)):Icon(Icons.share,size: 20,color: mutedColor,))),
                      SizedBox(width: 15,),
+                     
               
                     ],
                   ),

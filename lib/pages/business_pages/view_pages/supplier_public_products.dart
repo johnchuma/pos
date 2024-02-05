@@ -160,7 +160,7 @@ class _SupplierPublicProductsState extends State<SupplierPublicProducts> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                      children: [
 
-               
+                 
                        SizedBox(height: 20,),
                        StreamBuilder(
                         stream: find.getSupplierPublicProducts(),
@@ -181,8 +181,14 @@ class _SupplierPublicProductsState extends State<SupplierPublicProducts> {
                                       children: [
                                         GestureDetector(
                                           onTap: (){
-                                      publicProductController.selectedProduct = product;
-                                          Get.to(()=>ProductInfo());
+                                             setState(() {
+                                              if(productId == product.id){
+                                                productId = "";
+                                              }else{
+                                              productId = product.id;
+                                              }
+                                            });
+                                     
                                           },
                                           child: Container(
                                             color: Colors.transparent,
@@ -214,13 +220,18 @@ class _SupplierPublicProductsState extends State<SupplierPublicProducts> {
                                         
                                         
                                                      AnimatedSize(
-                                                      duration: const Duration(milliseconds: 200),
+                                                      duration: const Duration(milliseconds: 500),
                                                       child: productId == product.id ? Column(
                                                         children: [
                                                           const SizedBox(height: 10,),                      
-                                                          expandedItem(title:"Add to shopping cart", iconData:Icons.add_shopping_cart,onClick:  (){
-                                                              find.selectedProduct.value = product;
-                                                             Get.bottomSheet(AddToCart());
+                                                          expandedItem(title:"View product details", iconData:Icons.remove_red_eye,onClick:  (){
+                                                           publicProductController.selectedProduct = product;
+                                                            Get.to(()=>ProductInfo());
+                                                          }),
+                                                          expandedItem(title:"Add product to my shop", iconData:Icons.copy,onClick:  (){
+                                                            find.copyProduct(product).then((value) {
+                                                              successNotification("Product is added to your business");
+                                                            });
                                                           }),
                                                                                                                                       
                                                         ],

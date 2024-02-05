@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pos/controllers/auth_controller.dart';
 import 'package:pos/controllers/business_controller.dart';
 import 'package:pos/controllers/store_controller.dart';
 import 'package:pos/utils/colors.dart';
@@ -31,7 +32,9 @@ class _AddBusinessState extends State<AddBusiness> {
    TextEditingController phoneController = TextEditingController();
    TextEditingController descriptionController = TextEditingController();
    BusinessController businessController = Get.find<BusinessController>();
+   AuthController authController = Get.find<AuthController>();
    DateTime? selectedDate = DateTime.now();
+   Rx<bool> isSampleBusiness = Rx<bool>(false);
    var imageFile;
   var path = "";
   bool loading = false;
@@ -93,7 +96,30 @@ class _AddBusinessState extends State<AddBusiness> {
                     ),
                   )),
               ),
-              
+             
+             if(authController.me.value?.role == "admin") Padding(
+               padding: const EdgeInsets.symmetric(vertical: 15),
+               child: ClipRRect(
+                borderRadius: BorderRadius.circular(15),
+                 child: Container(
+                  color: mutedBackground,
+                   child: Padding(
+                     padding: const EdgeInsets.symmetric(horizontal: 20),
+                     child: Obx(
+                        ()=>Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          mutedText(text: "Is sample business ?"),
+                          Switch(value: isSampleBusiness.value,activeColor: primaryColor, onChanged: (value){
+                            isSampleBusiness.value = value;
+                          // productController.updateProduct(product.id, {"isPublic":value,"updatedAt":Timestamp.now()});
+                          })
+                        ],),
+                      ),
+                   ),
+                 ),
+               ),
+             ),
              
               mutedText(text: translatedText("About business", "Kuhusu biashara")),
               const SizedBox(height: 10,),
@@ -210,7 +236,7 @@ class _AddBusinessState extends State<AddBusiness> {
                      setState(() {
                      loading = true;
                    });
-                  businessController.createBusiness(nameController.text,phoneController.text, descriptionController.text, imageFile).then((value) {
+                  businessController.createBusiness(nameController.text,phoneController.text,isSampleBusiness.value,descriptionController.text, imageFile).then((value) {
                     Get.back();
                   }); }
                }),      

@@ -12,9 +12,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:pos/utils/colors.dart';
 
 void main() async {
-  runApp(const MyApp());
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  runApp(const MyApp());
   
 }
 

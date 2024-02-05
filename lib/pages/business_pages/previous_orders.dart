@@ -133,7 +133,15 @@ class _PreviousOrdersState extends State<PreviousOrders> {
                                                          
                                                          ],),
                                                         ),
-                                                          Checkbox(value: productOrder.isDelivered.value,activeColor: Colors.green, onChanged: (value){
+                                                          Checkbox(value: productOrder.isDelivered.value,
+                                                           fillColor: MaterialStateColor.resolveWith((states) =>Colors.white ),
+                                                                splashRadius: 50,
+                                                                activeColor: Colors.green,
+                                                                hoverColor: primaryColor,
+                                                                checkColor: Colors.black,
+                                                                focusColor: Colors.black,
+                                                          
+                                                           onChanged: (value){
                                                             var data = {"isDelivered":!productOrder.isDelivered.value};
                                                             setState(() {
                                                            productOrder.isDelivered.value = !productOrder.isDelivered.value;

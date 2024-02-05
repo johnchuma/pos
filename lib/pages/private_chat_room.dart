@@ -17,8 +17,8 @@ import 'package:pos/widgets/muted_text.dart';
 import 'package:pos/widgets/translatedText.dart';
 
 class PrivateChatRoom extends StatefulWidget {
-  
-   PrivateChatRoom({super.key});
+   bool fromHome = true;
+   PrivateChatRoom(this.fromHome,{super.key});
 
   @override
   State<PrivateChatRoom> createState() => _PrivateChatRoomState();
@@ -31,6 +31,11 @@ class _PrivateChatRoomState extends State<PrivateChatRoom> {
   ClientsController clientController  = Get.find<ClientsController>();
   AppController appController = Get.find<AppController>();
   int index = 0;
+  @override
+  void dispose() {
+    clientController.selectedClient.value = null;
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -45,7 +50,7 @@ class _PrivateChatRoomState extends State<PrivateChatRoom> {
          leadingWidth: 1,
           title: Row(children: [
             
-          clientController.selectedClient.value != null ? Row(
+            widget.fromHome == false ? Row(
             children: [
               back(),
               SizedBox(width: 10,),

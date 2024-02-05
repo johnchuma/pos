@@ -115,7 +115,7 @@ class _ClientsPageState extends State<ClientsPage> {
                                                   const SizedBox(height: 10,),                      
                                                   expandedItem(title:"Chat with client", iconData:Icons.chat_bubble, onClick:  (){ 
                                                      find.selectedClient.value = client;
-                                                    Get.to(()=>PrivateChatRoom()); 
+                                                    Get.to(()=>PrivateChatRoom(false)); 
                                                   }),
                                                 
                                                    expandedItem(title:"View businesses", iconData:Icons.remove_red_eye, onClick:  (){ 

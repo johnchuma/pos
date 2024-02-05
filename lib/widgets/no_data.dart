@@ -11,7 +11,7 @@ Widget noData(){
                      child: Column(children: [
                       Container(child: Lottie.asset("assets/Animation - 1698840215085.json")),
                       const SizedBox(height:0),
-                      heading2(text: translatedText("No data found", "Inasubiria data"),color: mutedColor.withOpacity(0.8),fontSize: 13),
+                      mutedText(text: translatedText("No data found", "Inasubiria data"),color: mutedColor.withOpacity(0.5)),
                      ],),
       );
 }

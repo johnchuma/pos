@@ -59,8 +59,7 @@ class BusinessController extends GetxController{
         }
 
         Future<List<Register>> getStaffRegisters() async{
-          print("Running this");
-          print(selectedBusiness.value?.id);
+          
          QuerySnapshot querySnapshot =await firestore
               .collection("staffRegisters").where("staffId",isEqualTo: authController.user?.email).where("businessId",isEqualTo: selectedBusiness.value?.id)
               .get();
@@ -70,7 +69,7 @@ class BusinessController extends GetxController{
                   Register register = Register.fromDocumentSnapshot(documentSnapshot);
                   registers.add(register);
                 }
-                print("Finished running");
+               
            return registers;
         }
     Future<int> calculateRemainedSubscriptionDays({Business? business})async{
@@ -85,22 +84,28 @@ class BusinessController extends GetxController{
       return difference.inDays;
     }
      Future<StaffRegister?> getStaffRegister() async{
-  List<Register> registers =    await getStaffRegisters();
-    print(registers.length);
+         List<Register> registers =    await getStaffRegisters();
+         print("Registers");
+         print(registers.length);
+       StaffRegister? staffRegister;
        if(registers.isNotEmpty){
-        print("Is not empty");
-        if(selectedRegister.value == null){
+        print("After checking if there is register");
+        print(selectedRegister.value?.title);
+       
               selectedRegister.value = registers.first;
-          }
-        }
-         QuerySnapshot querySnapshot =await firestore
+              QuerySnapshot querySnapshot =await firestore
               .collection("staffRegisters").where("staffId",isEqualTo: authController.user?.email).where("registerId",isEqualTo: selectedRegister.value?.id)
               .get();
-              StaffRegister? staffRegister;
                 if(querySnapshot.docs.isNotEmpty){
                   staffRegister = StaffRegister.fromDocumentSnapshot(querySnapshot.docs.first);
+                  print("Staff permissions");
+                  print(staffRegister.permissions.length);
+                 return staffRegister;   
+
                 }
-            return staffRegister;   
+          }
+        
+     return null;
         }
          Future<Business> getBusiness(id)async{
                   DocumentSnapshot documentSnapshot = await firestore.collection("businesses").doc(id).get();
@@ -153,7 +158,7 @@ class BusinessController extends GetxController{
           });
         }
 
-     Future<void> createBusiness (name,phone,description,imageFile)async{
+     Future<void> createBusiness (name,phone,isSampleBusiness,description,imageFile)async{
           try {
             var id = Timestamp.now().toDate().toString();
              var imagelink =  await authController.getImageLink(imageFile);
@@ -165,6 +170,7 @@ class BusinessController extends GetxController{
               "phone":phone,
               "category":category.value,
               "role":role.value,
+              "isSampleBusiness":isSampleBusiness,
               "address":"",
               "latitude":0.0,
               "longitude":0.0,

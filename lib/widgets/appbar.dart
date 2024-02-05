@@ -3,9 +3,10 @@ import 'package:pos/utils/colors.dart';
 import 'package:pos/widgets/back.dart';
 import 'package:pos/widgets/heading2_text.dart';
 
-PreferredSizeWidget appbar({title}){
+PreferredSizeWidget appbar({title,actions}){
   return AppBar(leading:Container(),  backgroundColor: backgroundColor,elevation: 0.3,
       leadingWidth: 1,
+      actions: actions??[],
       title: Row(
         children: [
          back(),

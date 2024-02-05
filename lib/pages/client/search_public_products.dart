@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -29,6 +30,7 @@ ClientsController clientsController = Get.find<ClientsController>();
 
   @override
   Widget build(BuildContext context) {
+    
     return   Scaffold(
         backgroundColor: backgroundColor,
      
@@ -40,8 +42,8 @@ ClientsController clientsController = Get.find<ClientsController>();
                   return Column(
                     children: [
                       SizedBox(height: 40,),
-  Row(
-    children: [
+      Row(
+        children: [
       back(),
       SizedBox(width: 20,),
       Expanded(
@@ -59,14 +61,14 @@ ClientsController clientsController = Get.find<ClientsController>();
                         decoration:  InputDecoration(
                         icon: Icon(Icons.search,color: mutedColor,),
                         border: InputBorder.none,
-                       hintStyle: TextStyle(color: mutedColor),
+                        hintStyle: TextStyle(color: mutedColor),
                         hintText: translatedText("Search products here", "Tafuta bidhaa hapa")),
-                      style:  TextStyle(fontSize: 13,color: textColor)),
+                        style:  TextStyle(fontSize: 13,color: textColor)),
                     )),
                  ),
       ),
-    ],
-  ),
+        ],
+      ),
            SizedBox(height: 10,),
              
                       FutureBuilder(

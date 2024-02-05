@@ -50,7 +50,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     unreadMessages.bindStream(UnreadMessagesController().getUnreadMessages(messageType: "clientAdmin",to: authController.auth.currentUser?.email));
-
     Get.put(BusinessController());
     Get.put(ClientsController());
     Get.put(ConversationController());
@@ -80,7 +79,7 @@ class _HomePageState extends State<HomePage> {
               ),
               body: SingleChildScrollView(
                 child: AnimatedSize(
-                  duration: Duration(milliseconds: 300),
+                  duration: Duration(milliseconds: 280),
                   child: Stack(
                     children: [
                       Container(
@@ -134,75 +133,84 @@ class _HomePageState extends State<HomePage> {
           : Scaffold( 
         bottomNavigationBar: Container(
           color: backgroundColor,
-          child:   BottomNavigationBar(
-          backgroundColor: Colors.transparent,
-          landscapeLayout: BottomNavigationBarLandscapeLayout.spread,
-        
-          selectedLabelStyle: const TextStyle(color: Colors.black),
-          unselectedLabelStyle: const TextStyle(color: Colors.grey),
-          showUnselectedLabels: false,
-          type: BottomNavigationBarType.fixed,
-          showSelectedLabels: false,
-          items:  [
-             BottomNavigationBarItem(
-              icon: Icon(Icons.home,size: 30,),
-              label: '',
+          child:   Container(
+            height: 70,
+            child: Column(
+              children: [
+                // Container(width: double.infinity,color: mutedBackground,height: 1,),
+                BottomNavigationBar(
+                backgroundColor: Colors.transparent,
+                
+                landscapeLayout: BottomNavigationBarLandscapeLayout.spread,
+                  
+                selectedLabelStyle: const TextStyle(color: Colors.black),
+                unselectedLabelStyle: const TextStyle(color: Colors.grey),
+                showUnselectedLabels: false,
+                type: BottomNavigationBarType.fixed,
+                showSelectedLabels: false,
+                items:  [
+                   BottomNavigationBarItem(
+                    icon: Icon(Icons.home,size: 28,),
+                    label: '',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.person,size: 28,),
+                    label: '',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.people,size: 28,), // Example different icon and color
+                    label: '',
+                  ),
+                   BottomNavigationBarItem(
+                     icon: Obx(
+                       ()=> Stack(
+                         children: [
+                           Padding(
+                             padding: const EdgeInsets.all(5),
+                             child: Icon(Icons.chat_bubble,size: 23,),
+                           ),
+                          if(unreadMessages.value.length>0) Positioned(
+                            right: 1,top: 1,
+                             child: ClipOval(
+                                    child: Container(
+                                      color: Colors.red,
+                                      height: 15,
+                                      width: 15,
+                                      child: Center(child: Text("${unreadMessages.value.length}",style: TextStyle(color: textColor,fontSize: 11),)),),
+                                  ),
+                           ),
+                         ],
+                       ),
+                     ),  // Example different icon and color
+                    label: '',
+                  ),
+                  BottomNavigationBarItem(
+                     icon: Icon(Icons.settings,size: 28,),  // Example different icon and color
+                    label: '',
+                  ),
+                ],
+                selectedItemColor:textColor, // Set the color for the selected item
+                unselectedItemColor: mutedColor, // Set the color for unselected items
+                currentIndex: selectedTab, // You can set the current index here
+                elevation: 0,
+                iconSize: 25,
+                  
+                onTap: (int index) {
+                setState(() {
+                selectedTab = index;
+                });
+                if(index == 3){
+                  UnreadMessagesController().updateAllUnreadMessages(messages: unreadMessages.value);
+                }
+                },
+                ),
+              ],
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person,size: 30,),
-              label: '',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.people,size: 30,), // Example different icon and color
-              label: '',
-            ),
-             BottomNavigationBarItem(
-               icon: Obx(
-                 ()=> Stack(
-                   children: [
-                     Padding(
-                       padding: const EdgeInsets.all(5),
-                       child: Icon(Icons.chat_bubble,size: 25,),
-                     ),
-                    if(unreadMessages.value.length>0) Positioned(
-                      right: 1,top: 1,
-                       child: ClipOval(
-                              child: Container(
-                                color: Colors.red,
-                                height: 15,
-                                width: 15,
-                                child: Center(child: Text("${unreadMessages.value.length}",style: TextStyle(color: textColor,fontSize: 11),)),),
-                            ),
-                     ),
-                   ],
-                 ),
-               ),  // Example different icon and color
-              label: '',
-            ),
-            BottomNavigationBarItem(
-               icon: Icon(Icons.settings,size: 30,),  // Example different icon and color
-              label: '',
-            ),
-          ],
-          selectedItemColor:textColor, // Set the color for the selected item
-          unselectedItemColor: mutedColor.withOpacity(0.4), // Set the color for unselected items
-          currentIndex: selectedTab, // You can set the current index here
-          elevation: 0,
-          iconSize: 25,
-        
-          onTap: (int index) {
-          setState(() {
-          selectedTab = index;
-          });
-          if(index == 3){
-            UnreadMessagesController().updateAllUnreadMessages(messages: unreadMessages.value);
-          }
-          },
           ),
         ),
             body: Scaffold(
             backgroundColor: backgroundColor,
-            body:[ PublicPage(), Obx(()=>appController.isMainDashboardSelected.value?DashboardPage():WorkerDashboardPage()),InsightsPage(),PrivateChatRoom(),SettingsPage()][selectedTab] ,));
+            body:[ PublicPage(), Obx(()=>appController.isMainDashboardSelected.value?DashboardPage():WorkerDashboardPage()),InsightsPage(),PrivateChatRoom(true),SettingsPage()][selectedTab] ,));
         
       }
     );

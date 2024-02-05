@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -21,6 +22,7 @@ import 'package:pos/pages/client/see_product_info.dart';
 import 'package:pos/pages/my_product_requests.dart';
 import 'package:pos/utils/colors.dart';
 import 'package:pos/utils/money_format.dart';
+import 'package:pos/utils/notifications.dart';
 import 'package:pos/widgets/avatar.dart';
 import 'package:pos/widgets/custom_button.dart';
 import 'package:pos/widgets/dashboard_appbar.dart';
@@ -48,10 +50,10 @@ Rx<List<Message>> productRequestMessages = Rx<List<Message>>([]);
 @override
   void initState() {    
     Get.put(PublicProductsController());
-    
     unreadMessages.bindStream(UnreadMessagesController().getUnreadMessages(messageType: "clientBusiness",to: auth.auth.currentUser?.email));
     productRequestMessages.bindStream(UnreadMessagesController().getUnreadMessages(messageType: "productRequest",to: auth.auth.currentUser?.email));
     Get.lazyPut(()=>ConversationController());
+  
     super.initState();
   }
 
@@ -71,11 +73,70 @@ Rx<List<Message>> productRequestMessages = Rx<List<Message>>([]);
       leadingWidth: 1,
       backgroundColor: backgroundColor,elevation: 0.3,
        actions: [
+         Obx(
+                                                            ()=> GestureDetector(
+                                                              onTap: (){
+                                                                Get.to(()=>MyProductRequests());
+                                                              },
+                                                              child: Stack(
+                                                                  children: [
+                                                                    topIcon(
+                                                                      // backgroundColor: ,
+                                                                      padding: 0,
+                                                                      widget: Icon(Icons.help,color: mutedColor,size: 20,)),
+                                 
+                                                                    if(productRequestMessages.value.length>0) Positioned(
+                                                                      right: 0,
+                                                                        top:0,
+                                                                      child: ClipOval(
+                                                                                    child: Container(
+                                                                                      color: Colors.red,
+                                                                                      
+                                                                                      height: 20,
+                                                                                      width: 20,
+                                                                                      child: Center(child: Text("${productRequestMessages.value.length}",style: TextStyle(color: textColor),)),),
+                                                                                  ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                            ),
+                                                            ),
+                                                            SizedBox(width: 10,),
+         Obx(
+                                        ()=> GestureDetector(
+                                          onTap: (){
+                                          Get.to(()=>ConversationsWithBusinesses());
+                                                    
+                                          },
+                                          child: Stack(
+                                            children: [
+                                              topIcon(
+                                                padding: 0,
+                                                widget: Icon(Icons.notifications,color: mutedColor,size:20,)),
+                                             if(unreadMessages.value.length>0)  
+                                             Positioned(
+                                                  right: 0,
+                                                  top:0,
+                                                  child: ClipOval(
+                                          child: Container(
+                                            color: Colors.red,
+                                            height: 20,
+                                            width: 20,
+                                            child: Center(child: Text("${unreadMessages.value.length}",style: TextStyle(color: textColor),)),),
+                                        ),
+                                                ),
+                                             
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                                            SizedBox(width: 10,),
+
         GestureDetector(
           onTap: (){
             Get.to(()=>SearchPublicProducts());
           },
-          child: Icon(Icons.search)),
+          child: Icon(Icons.search,size: 20,color: mutedColor,)),
         SizedBox(width: 5,),
      
             SizedBox(width:10,),
@@ -100,7 +161,6 @@ Rx<List<Message>> productRequestMessages = Rx<List<Message>>([]);
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Row(children: [
-                                
                                 Expanded(
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -152,252 +212,132 @@ Rx<List<Message>> productRequestMessages = Rx<List<Message>>([]);
             child: Container(
               child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 0),
-              child: Column(children: [
-                SizedBox(height: 20,),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          heading2(text: "Offer products"),
-                         
-                        ],
-                      ),
-                      GestureDetector(
-                        onTap: (){
-                          Get.to(()=>MoreOffersProducts());
-                        },
-                        child: Icon(Icons.arrow_forward_ios,color: mutedColor,size: 20,))
-                    ],
-                  ),
-                ),
-                SizedBox(height: 20,),
-                Container(
-                  height: 250,
-                  child: FutureBuilder(
-                    future: find.getOfferPriceProducts(),
+              child: FutureBuilder(
+                    future:find.getCategoriesAndTheirProducts() ,
                     builder: (context,snapshot) {
-                      if(snapshot.connectionState == ConnectionState.waiting){
-                        return Center(child: CircularProgressIndicator(color: Colors.white,));
-                      }
-                      List<Product> products  = snapshot.requireData;
-                      return ListView(
+                       if(snapshot.connectionState == ConnectionState.waiting){
+                          return Center(child: CircularProgressIndicator(color: Colors.white,));
+                        }
+                      List<Store> categories = snapshot.requireData;
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                    SizedBox(height: 20,),
+                    Container(
+                      height: 80,
+                      child: ListView(
                         scrollDirection: Axis.horizontal,
-                        children:products.map((product) => GestureDetector(
+                        children:categories.map((item) =>  GestureDetector(
                           onTap: (){
-                            find.selectedProduct = product;
-                            Get.to(()=>ProductInfo());
+                             find.selectedCategory = item.name;
+                              find.searchKeyword.value = "";
+                              Get.to(()=>MoreCategoryProducts());
                           },
                           child: Padding(
                             padding: const EdgeInsets.only(left: 20),
                             child: Container(
-                              height: 250,
-                              width: 250,
+                              width: 60,
                               child: Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                
-                                children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(20),
-                                  child: Container(
-                                    height: 190,
-                                    width: 250,
-                                    child: CachedNetworkImage(imageUrl: product.image,fit: BoxFit.cover,)),
-                                ),
+                                      children: [
+                                        ClipOval(
+                                          child: Container(
+                                            height: 50,
+                                            width: 50,
+                                            child: avatar(image: item.image,)),
+                                        ),
                                         SizedBox(height: 10,),
-                          
-                              paragraph(text: product.name,fontSize: 15),
-                                mutedText(text: moneyFormat(product.offerPrice)+"TZS",fontSize: 13)
-                                                  ],),
+                                        paragraph(text: item.name.replaceAll("store", ""),fontSize: 13,maxLines: 1,color: mutedColor)
+                                                    
+                                      ],
+                                    ),
                             ),
                           ),
-                        )).toList());
-                    }
-                  ),
-                ),
-                SizedBox(height: 20,),
-                Container(
-                  height: 65,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: [
-                      SizedBox(width: 20,),
-                      GestureDetector(onTap: (){
-                                  Get.to(()=>ConversationsWithBusinesses());
-
-                      },
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: Container(
-                          // height: 70,
-                          width: 160,
-                          color: mutedBackground,
-                          
-                          
-                                            child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.center,
-                                              children: [
-                                               Obx(
-                                ()=> GestureDetector(
+                        )).toList())),
+                    SizedBox(height: 20,),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: heading2(text: "Beichee products"),
+                    ),
+                    SizedBox(height: 15,),
+                    Container(
+                      height: 400,
+                      child: FutureBuilder(
+                        future: find.getOfferPriceProducts(),
+                        builder: (context,snapshot) {
+                          if(snapshot.connectionState == ConnectionState.waiting){
+                            return Center(child: CircularProgressIndicator(color: Colors.white,));
+                          }
+                          List<Product> products  = snapshot.requireData;
+                          return CarouselSlider(
+                                items: products.map((product) => GestureDetector(
                                   onTap: (){
-                                  Get.to(()=>ConversationsWithBusinesses());
-                      
+                                    find.selectedProduct = product;
+                                    Get.to(()=>ProductInfo());
                                   },
                                   child: Stack(
                                     children: [
-                                      topIcon(
-                                        padding: 0,
-                                        widget: Icon(Icons.notifications,color: textColor,)),
-                                     if(unreadMessages.value.length>0)  
-                                     Positioned(
-                                          right: 0,
-                                          top:0,
-                                          child: ClipOval(
-                                  child: Container(
-                                    color: Colors.red,
-                                    height: 20,
-                                    width: 20,
-                                    child: Center(child: Text("${unreadMessages.value.length}",style: TextStyle(color: textColor),)),),
-                                ),
-                                        ),
-                                     
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(15),
+                                        child: Container(
+                                          height: 400,
+                                          width: double.infinity,
+                                          child: CachedNetworkImage(imageUrl: product.image,fit: BoxFit.cover,),)),
+                                      Container(height: 400,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(20),
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.end,
+                                          children: [
+                                                   Row(
+                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                      children: [
+                                                        Expanded(child: heading2(text: product.name,maxLines: 1)),
+                                                        paragraph(text: "${moneyFormat(product.sellingPrice)} TZS")
+                                                      ],
+                                                    ),
+                                                    SizedBox(height: 5,),
+                                                    Row(children: [
+                                                    Icon(Icons.star,color: Colors.orange,size: 16,),
+                                                    Icon(Icons.star,color: Colors.orange,size: 16,),
+                                                    Icon(Icons.star,color: Colors.orange,size: 16,),
+                                                    Icon(Icons.star,color: Colors.orange,size: 16,),
+                                                    Icon(Icons.star,color: Colors.orange,size: 16,), SizedBox(width: 10,),mutedText(text: "(best quality)")],),
+                                                   SizedBox(height: 10,),
+                                                    // Wrap(children: product.properties.map((item) =>pill(text: "${item["title"]}: ${item["value"]}") ).toList(),),  
+                                              
+                                          ],),
+                                      ),
+                                      decoration: BoxDecoration(gradient: LinearGradient(colors: [Colors.transparent,backgroundColor.withOpacity(0.9)],begin: Alignment.topCenter,end: Alignment.bottomCenter)),)
+                                   
                                     ],
                                   ),
-                                ),
-                              ),
-                                SizedBox(width: 10,),
-                                heading2(text: "My messages",fontSize: 14)],),
-                                            ),
-                        ),
-                      ),
-                      SizedBox(width: 20,)
-                      ,
-                           GestureDetector(
-                            onTap: (){
-                                                      Get.to(()=>MyProductRequests());
-
-                            },
-                             child: ClipRRect(
-                                                   borderRadius: BorderRadius.circular(20),
-                                                   child: Container(
-                                                  //  height: 60,
-                                                   width: 180,
-                                                   color: mutedBackground,
-                                                   
-                                                   
-                                            child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.center,
-                                              children: [
-                                                   Obx(
-                                                    ()=> GestureDetector(
-                                                      onTap: (){
-                                                        Get.to(()=>MyProductRequests());
-                                                      },
-                                                      child: Stack(
-                                                          children: [
-                                                            topIcon(
-                                                              // backgroundColor: ,
-                                                              padding: 0,
-                                                              widget: Icon(Icons.help,color: textColor,)),
-
-                                                            if(productRequestMessages.value.length>0) Positioned(
-                                                              right: 0,
-                                                                top:0,
-                                                              child: ClipOval(
-                                                                            child: Container(
-                                                                              color: Colors.red,
-                                                                              
-                                                                              height: 20,
-                                                                              width: 20,
-                                                                              child: Center(child: Text("${productRequestMessages.value.length}",style: TextStyle(color: textColor),)),),
-                                                                          ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                    ),
-                                                    ),
-                                                          SizedBox(width: 10,),
-
-                                                heading2(text: "Product requests",fontSize: 14)],),
-                                            ),
-                                                 ),
-                           ),SizedBox(width: 20,)
-                      
-                      ],),
-                ),
-                SizedBox(height: 20,),
-
-                FutureBuilder(
-                  future:find.getCategoriesAndTheirProducts() ,
-                  builder: (context,snapshot) {
-                     if(snapshot.connectionState == ConnectionState.waiting){
-                        return Center(child: CircularProgressIndicator(color: Colors.white,));
-                      }
-                    List<Store> categories = snapshot.requireData;
-                    return Obx(
-                      ()=> Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children:categories.map((category) =>Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,              
-                          children: [
-                           Padding(
-                             padding: const EdgeInsets.symmetric(horizontal: 20),
-                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                               children: [
-                                 heading2(text: category.name.replaceAll("store", "products")),
-                                               GestureDetector(
-                                                onTap: (){
-                                                  find.selectedCategory = category.name;
-                                                  find.searchKeyword.value = "";
-                                                  Get.to(()=>MoreCategoryProducts());
-                                                },
-                                                child: Icon(Icons.arrow_forward_ios,color: mutedColor,size: 20,))
-                                 
-                               ],
-                             ),
-                           ),
-                           SizedBox(height: 20,),
-                            Container(
-                              height: 200,
-                            
-                              child: ListView(
+                                )).toList(),
+                                options: CarouselOptions(
+                                    height: 400,
+                                    aspectRatio: 16/9,
+                                    viewportFraction: 0.9,
+                                    initialPage: 0,
+                                    enableInfiniteScroll: true,
+                                    reverse: false,
+                                    enlargeStrategy: CenterPageEnlargeStrategy.scale,
+                                    autoPlay: true,
+                                    
+                                    autoPlayInterval: Duration(seconds: 3),
+                                    autoPlayAnimationDuration: Duration(milliseconds: 800),
+                                    autoPlayCurve: Curves.fastOutSlowIn,
+                                    enlargeCenterPage: true,
+                                    enlargeFactor: 0.3,
+                                    // onPageChanged: callbackFunction,
                                     scrollDirection: Axis.horizontal,
-                                    children:category.products.value.map((product) => GestureDetector(
-                                      onTap: (){
-                                          find.selectedProduct = product;
-                                          Get.to(()=>ProductInfo());
-                                      },
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(left: 20),
-                                        child: Column(
-                                                     crossAxisAlignment: CrossAxisAlignment.start,
-                                        
-                                        children: [
-                                        ClipRRect(
-                                          borderRadius: BorderRadius.circular(15),
-                                          child: Container(
-                                            height:130,
-                                            width: 150,
-                                            child: CachedNetworkImage(imageUrl: product.image,fit: BoxFit.cover,)),
-                                        ),
-                                        SizedBox(height: 10,),
-                                        paragraph(text: product.name,fontSize: 13),
-                                        mutedText(text: moneyFormat(product.sellingPrice)+"TZS",fontSize: 11)
-                                                                        ],),
-                                      ),
-                                    )).toList())
-                                                     ),
-                                                     SizedBox(height: 10,)
-                           
-                      ],) ).toList(),),
-                    );
-                  }
-                )
-              ],),
+                                )
+                              );
+                        }
+                      ),
+                    ),
+                 
+                  ],);
+                }
+              ),
             ),),
           );
         }

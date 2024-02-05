@@ -40,22 +40,27 @@ Future<List<Product>> getSpecificBusinessPublicProducts({businessId})async {
           
         }
 Future<List<Product>> getOfferPriceProducts({limit})async {
-        QuerySnapshot querySnapshot =  await firestore
-              .collection("products").where("isPublic",isEqualTo: true).where("offerPrice",isNotEqualTo:0).limit(limit??10)
+          DateTime now = DateTime.now();
+          DateTime startOfWeek = now.subtract(Duration(days: now.weekday - 1));
+          DateTime endOfWeek = startOfWeek.add(Duration(days: 6));
+       QuerySnapshot querySnapshot = await firestore
+              .collection("products")
+              .where("isPublic", isEqualTo: true)
+              .where("isCheap",isEqualTo:true)
+              .where("updatedAt", isGreaterThanOrEqualTo: Timestamp.fromDate(startOfWeek))
+              .where("updatedAt", isLessThanOrEqualTo: Timestamp.fromDate(endOfWeek))
               .get();
                List<Product> products = [];
                   for (var element in querySnapshot.docs) {
                   Product product = Product.fromDocumentSnapshot(element);
                   products.add(product);
                 }
-                print(products.length);
             return products;    
-          
         }
 
   Future<List<Product>> getAllPublicProducts({limit})async {
         QuerySnapshot querySnapshot =  await firestore
-              .collection("products").where("isPublic",isEqualTo: true).limit(limit??200).orderBy("updatedAt",descending: true)
+              .collection("products").where("isPublic",isEqualTo: true).limit(limit).orderBy("updatedAt",descending: true)
               .get();
                List<Product> products = [];
                   for (var element in querySnapshot.docs) {
@@ -99,7 +104,7 @@ Future<List<Product>> getOfferPriceProducts({limit})async {
                   List<Store> stores = [];
                       for (var element in querySnapshot.docs) {
                       Store store = Store.fromDocumentSnapshot(element);
-                      store.products.value =  await getCategoryProducts(store.name,limit:limit??10 );
+                      // store.products.value =  await getCategoryProducts(store.name,limit:limit??10 );
                       stores.add(store);
                     }
                 return stores;    

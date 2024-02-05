@@ -5,12 +5,14 @@ class StaffRegister{
 
   late String id;
   late String staffId;
-  late String password;
+  late String password = "";
   late Register register;
   late List permissions = [];
   late Timestamp createdAt;
   late String registerId;
-  
+  late String businessId;
+
+
   StaffRegister();
   StaffRegister.fromDocumentSnapshot(DocumentSnapshot documentSnapshot){
     id = documentSnapshot["id"];
@@ -18,6 +20,8 @@ class StaffRegister{
     staffId = documentSnapshot["staffId"];
     permissions = documentSnapshot["permissions"];
     registerId = documentSnapshot["registerId"];
+    businessId = documentSnapshot["businessId"];
+
     password = documentSnapshot["password"];
     
 

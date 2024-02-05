@@ -28,17 +28,29 @@ Widget businessItem(business){
                                    ),
                                   Padding(
                                     padding: const EdgeInsets.symmetric(horizontal: 20),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                    child: Row(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
                                       
-                                    heading2(text: business.name,),
-                                    mutedText(text: business.description,maxLines: 1),
-                                        const SizedBox(height: 20,),
-                                  
+                                       
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            // mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                            
+                                          heading2(text: business.name,),
+                                          mutedText(text: business.description,maxLines: 1),
+                                          
+                                                                          
+                                            ],
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ),
+                                              const SizedBox(height: 20,),
+
                                 ],),
                               ),),
                           ),

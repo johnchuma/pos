@@ -32,7 +32,7 @@ ClientsController clientsController = Get.find<ClientsController>();
         Expanded(child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            heading2(text:translatedText("Conversations", "Maulizo ya bidhaa")),
+            heading2(text:translatedText("Messages", "Jumbe")),
           
 
           ],

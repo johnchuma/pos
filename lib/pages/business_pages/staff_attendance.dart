@@ -104,21 +104,18 @@ class _StaffAttendanceState extends State<StaffAttendance> {
                           findCurrentLocation().then((value) {
                             if(value != null){
                               final Distance distance = new Distance();
-                             double meters=  distance(LatLng( value.latitude!, value.longitude!),LatLng(business.latitude, business.longitude) );
-                           print(meters);
-                           print("Meters");
-                           if(meters <250 && meters>0){
-                            AttendanceController().checkIn().then((value) {
-                            successNotification("Checked in successfully");
-                            });
+                              double meters=  distance(LatLng( value.latitude!, value.longitude!),LatLng(business.latitude, business.longitude));
+                            if(meters <250 && meters>0){
+                              AttendanceController().checkIn().then((value){
+                                successNotification("Checked in successfully");
+                              });
                             }
-                           else{
-                            failureNotification("Sorry! you are not around, you can not check In");
-                           }
-                          
-                            setState(() {
-                            loading = false;
-                          });
+                            else{
+                              failureNotification("Sorry! you are not around, you can not check In.");
+                            }
+                            // setState((){
+                            //   loading = false;
+                            // });
                             }
                           });
                         }),
