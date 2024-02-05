@@ -9,6 +9,6 @@ Widget mutedText({var text,color,maxLines, double? fontSize,TextAlign? textAlign
     textAlign: textAlign??TextAlign.start,
     maxLines:maxLines??50,
     overflow: TextOverflow.ellipsis,
-    style: TextStyle(color:color??mutedColor,fontSize: fontSize??14 )),
+    style: TextStyle(color:color??mutedColor,fontSize: fontSize??16 )),
   );
 }

@@ -8,5 +8,5 @@ Widget back (){
           },
           child: Container(
           color: Colors.transparent,
-            child:  Icon(Icons.arrow_back,color:mutedColor,size: 20,)));
+            child:  Icon(Icons.arrow_back,color:mutedColor,size: 25,)));
 }

@@ -55,7 +55,7 @@ bool loading2 = false;
         latitude = business.latitude;
         longitude = business.longitude;
     }
-  
+
     nameController.text = business.name;
     descriptionController.text = business.description;
     phoneController.text = business.phone;
@@ -193,58 +193,9 @@ bool loading2 = false;
              TextForm(hint: "Eg. Dar es salaam, Makumbusho",textEditingController: addressController,onChanged:(value){
               business.address = value;
              }),
+            
+     
              SizedBox(height: 10,),
-             paragraph(text: "Address coordinates"),
-             SizedBox(height: 5,),
-             ClipRRect(
-              borderRadius: BorderRadius.circular(15),
-               child: Container(
-                color: mutedBackground,
-                child: Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                     business.latitude != 0? Container(
-                      width: double.infinity,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          heading2(text:"Longitude: ${business.longitude}" ,fontSize: 13),
-                          heading2(text:"Latitude: ${business.latitude}" ,fontSize: 13),
-                        ],
-                      ),
-                    ):  mutedText(text: "Are you on the business location, if yes you can click button bellow to pick the business coordinates"),
-                 
-                 SizedBox(height: 10,),
-                  
-                     customButton(text: business.latitude != 0?"Refresh":"Find coordinates",loading: loading, color: Colors.green[500],onClick: (){
-                      setState(() {
-                        loading= true;
-                      });
-                      findCurrentLocation().then((value) {
-                       
-                          if(value != null){
-                       setState(() {
-                           business.latitude = value.latitude!;
-                           business.longitude = value.longitude!;
-                           loading = false;
-                         
-                       });
-                           businessController.updateBusiness(data: {"longitude":value.longitude,"latitude":value.latitude});
-                       
-                       }
-                       
-                        
-                       
-      
-                      });
-                     })
-                    ],
-                  ),
-                )),
-             ),
-             SizedBox(height: 20,),
 
               paragraph(text: "Business description"),
              SizedBox(height: 5,),

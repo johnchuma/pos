@@ -117,7 +117,7 @@ class _PosterRequestsState extends State<PosterRequests> {
                                       child: Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                        heading2(text: request.request,fontSize: 14),
+                                        heading2(text: request.request,fontSize:18),
                                         mutedText(text:timeago.format(request.createdAt.toDate())),
                                        
                                       ],),

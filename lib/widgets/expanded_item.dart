@@ -14,7 +14,7 @@ Widget expandedItem({String? title,IconData? iconData, onClick,double? elevation
               const SizedBox(width: 10),
               Icon(iconData, color: mutedColor.withOpacity(0.4),size: 20,),
               const SizedBox(width: 20),
-              paragraph(text: title,)
+              paragraph(text: title,fontSize: 18 )
               ],),
             ),
           ),

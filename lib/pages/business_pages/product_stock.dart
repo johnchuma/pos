@@ -7,7 +7,9 @@ import 'package:pos/controllers/product_controller.dart';
 import 'package:pos/controllers/stock_controller.dart';
 import 'package:pos/pages/business_pages/add_stock.dart';
 import 'package:pos/utils/colors.dart';
+import 'package:pos/utils/delete_confirmation.dart';
 import 'package:pos/utils/format_date.dart';
+import 'package:pos/utils/notifications.dart';
 import 'package:pos/widgets/avatar.dart';
 import 'package:pos/widgets/back.dart';
 import 'package:pos/widgets/custom_button.dart';
@@ -93,13 +95,25 @@ class _ProductStockState extends State<ProductStock> {
                             children: [
                               avatar(image:productController.selectedProduct.value.image,size: 30 ),
                               const SizedBox(width: 20,),
-                              Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                               children: [
-                                 heading2(text: stock.amount),
-                                 mutedText(text: formatDate(stock.createdAt.toDate()))
-                               ],
-                                                 ),
+                              Expanded(
+                                child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                 children: [
+                                   heading2(text: stock.amount),
+                                   mutedText(text: formatDate(stock.createdAt.toDate()))
+                                 ],
+                                
+                                                   ),
+                              ),
+                                                 GestureDetector(
+                                                  onTap: (){
+                                                    confirmDelete(context,onClick: (){
+                                                    find.deleteStock(stock.id);
+                                                    },onSuccess: (){
+                                                      successNotification("Deleted successfully");
+                                                    });
+                                                  },
+                                                  child: Icon(Icons.delete,color: mutedColor,))
                             ],
                           ),
                         ),),

@@ -88,7 +88,7 @@ class _MyProductRequestsState extends State<MyProductRequests> {
                                             child: Column(
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
-                                              heading2(text: productrequest.request,fontSize: 14),
+                                              heading2(text: productrequest.request,fontSize:18),
                                               mutedText(text:timeago.format(productrequest.createdAt.toDate()) ),
                                              
                                             ],),

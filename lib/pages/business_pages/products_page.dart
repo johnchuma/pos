@@ -12,6 +12,7 @@ import 'package:pos/pages/business_pages/edit_pages/edit_product.dart';
 import 'package:pos/pages/business_pages/edit_pages/product_settings.dart';
 import 'package:pos/pages/business_pages/product_sales_main.dart';
 import 'package:pos/pages/business_pages/product_stock.dart';
+import 'package:pos/pages/business_pages/view_pages/view_image.dart';
 import 'package:pos/utils/colors.dart';
 import 'package:pos/utils/delete_confirmation.dart';
 import 'package:pos/utils/format_date.dart';
@@ -43,10 +44,10 @@ class _ProductsPageState extends State<ProductsPage> {
     Get.put(ProductSaleController());
     super.initState();
   }
+  // BusinessController find = Get.find<BusinessController>();
   @override
   Widget build(BuildContext context) {
-    ProductSaleController productSaleController = Get.find<ProductSaleController>();
-    BusinessController find = Get.find<BusinessController>();
+
     return  Scaffold(
       backgroundColor: backgroundColor,
       appBar: AppBar(leading: back(),backgroundColor: backgroundColor,elevation: 0.3,
@@ -59,7 +60,12 @@ class _ProductsPageState extends State<ProductsPage> {
    
 
           ],
-        ))
+        )),
+        GestureDetector(
+          onTap: (){
+            Get.to(()=>AddProduct());
+          },
+          child: Icon(Icons.add,size: 30,color: mutedColor,))
       ],) 
       ,),
       body: GetX<ProductController>(
@@ -88,58 +94,10 @@ class _ProductsPageState extends State<ProductsPage> {
                   border: InputBorder.none,
                  hintStyle: TextStyle(color: mutedColor),
                   hintText: translatedText("Search products here", "Tafuta bidhaa hapa")),
-                style:  TextStyle(fontSize: 13,color: mutedColor)),
+                style:  TextStyle(fontSize: 15,color: mutedColor)),
               )),
            ),
-                       if(find.searchKeyword.value == "")   const SizedBox(height: 10,),
-             
-             if(find.searchKeyword.value == "") ClipRRect(
-                    borderRadius: BorderRadius.circular(15),
-                     child: Container(
-                      color: mutedBackground,
-                      child: Padding(
-                       padding: const EdgeInsets.all(20),
-                       child: Column
-                       (
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                        headingText(text:translatedText("Add new products", "Weka bidhaa mpya") ,),
-                        const SizedBox(height: 5,),
-                        
-                        mutedText(text: translatedText("Add, edit and delete products here", "Ongeza, futa, au badilisha taarifa za bidhaa")),
-                        const SizedBox(height: 20,),
-                        customButton(text:translatedText("Add product", "Ongeza bidhaa") ,onClick: (){
-                          Get.bottomSheet(bottomSheetTemplate(widget: Column(children: [
-                            //  heading2(text: "How to proceed ?"),
-                             customButton(text: "Add product manually",onClick: (){
-                              Get.back();
-                                       Get.to(()=>AddProduct());
-                             }),
-                             SizedBox(height: 10,),
-                             mutedText(text: "Or"),
-                             SizedBox(height: 10,),
-                             GestureDetector(
-                              onTap: (){
-                                Get.back();
-                                Get.to(()=>AddProductsFromSampleStore());
-                              },
-                              child: heading2(text: "Find products from our store",color: primaryColor2)),
-                             SizedBox(height: 20,),
-
-                          ],)));
-                        }),
-                        SizedBox(height: 10,),
-                      
-                        
-                       ],),
-                     ),),
-                   ),
-                   const SizedBox(height: 20,),
-                   Row(
-                     children: [
-                       heading2(text: translatedText("Products list (${find.products.where((element) => element.name.toLowerCase().contains(find.searchKeyword.value.toLowerCase())).length}) ", "Orodha ya bidhaa zote")),
-                     ],
-                   ),
+              
                    const SizedBox(height: 10),
                      find.products.isEmpty ?noData():  Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -167,17 +125,17 @@ class _ProductsPageState extends State<ProductsPage> {
                                           child: Container(
                                             color: Colors.transparent,
                                             child: Row(children:  [
-                                              ClipOval(
-                                              child: Container(height: 50,width: 50,child: CachedNetworkImage(
-                                                fit: BoxFit.cover,
-                                                imageUrl:product.image),),
-                                            ),
+                                            //   ClipOval(
+                                            //   child: Container(height: 50,width: 50,child: CachedNetworkImage(
+                                            //     fit: BoxFit.cover,
+                                            //     imageUrl:product.image),),
+                                            // ),
                                             const SizedBox(width: 10,),
                                             Expanded(
                                               child: Column(
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
-                                                heading2(text: product.name,fontSize: 14),
+                                                heading2(text: product.name,fontSize:18),
                                                 mutedText(text: "${translatedText("Created at", "Imewekwa")} ${formatDate(product.createdAt.toDate())}"),
                                               ],),
                                             ),
@@ -191,13 +149,25 @@ class _ProductsPageState extends State<ProductsPage> {
                                                         children: [
                                                           const SizedBox(height: 10,),            
                                                      
-                                                           
-                                                          expandedItem(title:translatedText("Product stock", "Mzigo wa bidhaa"), iconData:Icons.add,onClick:  (){
+                                                           GestureDetector(
+                                                            onTap: (){
+                                                              Get.to(()=>ViewImage(product.image,));
+                                                            },
+                                                             child: ClipRRect(
+                                                              borderRadius: BorderRadius.circular(10),
+                                                              child: Container(child: CachedNetworkImage(imageUrl: product.image,fit: BoxFit.cover,),height: 200,width: double.infinity,)),
+                                                           )
+                                                         , 
+                                                          const SizedBox(height: 10,),            
+                                                         
+                                                         expandedItem(title:translatedText("Product stock", "Mzigo wa bidhaa"), iconData:Icons.add,onClick:  (){
                                                               find.selectedProduct.value = product;
                                                               Get.to(()=>const ProductStock());
                                                           }),
                                                            expandedItem(title:translatedText("Product sales", "Mauzo ya bidhaa"),iconData: Icons.bar_chart,onClick:  (){
+                                                               ProductSaleController productSaleController = Get.find<ProductSaleController>();
                                                               productSaleController.selectedProduct.value = product;
+                                                          
                                                               Get.to(()=>const ProductsSalesMain());
                                                           },elevation: 0),  
 

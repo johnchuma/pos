@@ -146,7 +146,7 @@ class _LowStockLevelProductsState extends State<LowStockLevelProducts> {
                                                      child: Column(
                                                        crossAxisAlignment: CrossAxisAlignment.start,
                                                        children: [
-                                                        heading2(text: product.name,fontSize: 14,color: Colors.white),
+                                                        heading2(text: product.name,fontSize:18,color: Colors.white),
                                                        mutedText(text: "Amount: ${product.onCartAmount}",color: Colors.white70),
                                                        SizedBox(height: 20,),
                                                      
@@ -223,7 +223,7 @@ class _LowStockLevelProductsState extends State<LowStockLevelProducts> {
                                               child: Column(
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
-                                                heading2(text: product.name,fontSize: 14),
+                                                heading2(text: product.name,fontSize:18),
                                                 mutedText(text: "${product.availableStock} in stock"),
                                               ],),
                                             ),

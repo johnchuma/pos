@@ -11,51 +11,63 @@ import 'package:pos/models/business_subscription.dart';
 
 class BusinessSubscriptionController extends GetxController{
        FirebaseFirestore firestore = FirebaseFirestore.instance;
-        Rx<List<Business>> businessesReceiver = Rx<List<Business>>([]);
-        List<Business> get businesses => businessesReceiver.value;
+        Rx<List<BusinessSubscription>> businessesSubscriptionReceiver = Rx<List<BusinessSubscription>>([]);
+        List<BusinessSubscription> get businessesSubscriptions => businessesSubscriptionReceiver.value;
         AuthController authController = Get.find<AuthController>();
         BusinessController businessController = Get.find<BusinessController>();
         Rx<Business?> selectedBusiness = Rx<Business?>(null);
         Rx<double> subscriptionAmount = Rx<double>(10000.0);
         
-        Stream<List<Business>> getBusinessSubscriptions() {
+    
+        Stream<List<BusinessSubscription>> getBusinessSubscriptions() {
           return firestore
-              .collection("businesses").where("userId",isEqualTo: authController.user?.email)
+              .collection("businessSubscriptions").where("businessId",isEqualTo: businessController.selectedBusiness.value?.id)
               .snapshots()
-              .asyncMap((QuerySnapshot querySnapshot) async{
-               List<Business> businesses = [];
-                  for (var element in querySnapshot.docs) {
-                    QuerySnapshot businesssubscriptionSnapshots = await firestore.collection("businessSubscriptions").where("businessId",isEqualTo: element["id"]).get();
-                  List<BusinessSubscription> businessSubscriptions = [];
-                  for (var subscriptionDoc in businesssubscriptionSnapshots.docs) {
-                    businessSubscriptions.add(BusinessSubscription.fromDocumentSnapshot(subscriptionDoc));
-                  }
-                  Business business = Business.fromDocumentSnapshot(element);
-                  business.businesSubscriptions = businessSubscriptions;
-                  businesses.add(business);
+              .asyncMap((QuerySnapshot querySnapshot) async {
+                List<BusinessSubscription> businessSubscriptions = [];
+                for (var element in querySnapshot.docs) {
+                 BusinessSubscription businessSubscription = BusinessSubscription.fromDocumentSnapshot(element);
+                 businessSubscriptions.add(businessSubscription);
                 }
-            return businesses;    
+                return businessSubscriptions;    
           });
         }
+
+
         Future<List<BusinessSubscription>> getSubscriptionHistory({businessId})async{
           print(businessId);
-        QuerySnapshot querySnapshot = await firestore.collection("businessSubscription").where("businessId",isEqualTo: businessId?? businessController.selectedBusiness.value?.id).get();
+        QuerySnapshot querySnapshot = await firestore.collection("businessSubscriptions").where("businessId",isEqualTo: businessId?? businessController.selectedBusiness.value?.id).get();
          List<BusinessSubscription> businessSubscriptions = [];
          for (var subscription in querySnapshot.docs) {
            businessSubscriptions.add(BusinessSubscription.fromDocumentSnapshot(subscription));
          }
-
          return businessSubscriptions;
         }
 
 
-     Future<void> addBusinessSubscription ()async{
+     Future<int> checkRemainedDays()async{
+        QuerySnapshot querySnapshot = await firestore.collection("businessSubscriptions")
+        .where("businessId",isEqualTo:businessController.selectedBusiness.value?.id).get();
+         List<BusinessSubscription> businessSubscriptions = [];
+         for (var subscription in querySnapshot.docs) {
+           businessSubscriptions.add(BusinessSubscription.fromDocumentSnapshot(subscription));
+         }
+         int days = 0;
+         print(days);
+         businessSubscriptions.forEach((element) {
+            days = element.remainedDays()+days;
+          });
+         return days;
+        }
+
+
+     Future<void> addBusinessSubscription (amount)async{
           try {
             var id = Timestamp.now().toDate().toString();
-            int days = subscriptionAmount.value*30~/10000;
+            int days = amount*30~/15000;
            await  firestore.collection("businessSubscriptions").doc(id).set({
-              "businessId":selectedBusiness.value?.id,
-              "amount":subscriptionAmount.value,
+              "businessId":businessController.selectedBusiness.value?.id,
+              "amount":amount,
               "expiresAt":Timestamp.fromDate(DateTime.now().add(Duration(days: days))),
               "createdAt":Timestamp.now()
             });
@@ -74,7 +86,7 @@ class BusinessSubscriptionController extends GetxController{
        
         @override
         void onInit() {
-        businessesReceiver.bindStream(getBusinessSubscriptions());
+         businessesSubscriptionReceiver.bindStream(getBusinessSubscriptions());
           super.onInit();
         }
 }

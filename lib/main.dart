@@ -2,6 +2,7 @@ import 'package:flutter/services.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:pos/controllers/app_controller.dart';
 import 'package:pos/controllers/auth_controller.dart';
+import 'package:pos/controllers/new_attribute_controller.dart';
 import 'package:pos/controllers/register_controller.dart';
 import 'package:pos/pages/splash_screen.dart';
 import 'package:pos/pages/way_page.dart';
@@ -37,11 +38,11 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Trade Point',
+      title: 'Powered POS',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
-        textTheme: GoogleFonts.dmSansTextTheme()
+        textTheme: GoogleFonts.openSansTextTheme()
       ),
       home: AnnotatedRegion(
         value: SystemUiOverlayStyle(
@@ -52,7 +53,7 @@ class _MyAppState extends State<MyApp> {
           future: Firebase.initializeApp(),
           builder: (context, snapshot) {
             if(snapshot.connectionState == ConnectionState.waiting){
-                  return Container();
+                  return SplashScreen();
             }
             Get.put(AuthController()); 
             return FutureBuilder(

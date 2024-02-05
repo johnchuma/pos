@@ -52,7 +52,12 @@ class _RegistersPageState extends State<RegistersPage> {
           
 
           ],
-        ))
+        )),
+        GestureDetector(
+          onTap: (){
+                      Get.to(()=>AddRegister());
+          },
+          child: Icon(Icons.add,size: 30, color: mutedColor,))
       ],) 
       ,),
       body: Padding(
@@ -60,31 +65,8 @@ class _RegistersPageState extends State<RegistersPage> {
         child: ListView(
           
           children: [
-                      const SizedBox(height: 20,),
-
-           ClipRRect(
-                borderRadius: BorderRadius.circular(15),
-                 child: Container(
-                  color: mutedBackground,
-                  child: Padding(
-                   padding: const EdgeInsets.all(20),
-                   child: Column
-                   (
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                    headingText(text: translatedText("Add new register", "Ongeza dirisha jipya"),),
-                    const SizedBox(height: 5,),
-                    mutedText(text: translatedText("Add, remove and manage registers", "Ongeza, futa au boresha dirisha jipya")),
-                    const SizedBox(height: 20,),
-                    customButton(text: translatedText("Add register", "Ongeza dirisha"),onClick: (){
-                      Get.to(()=>AddRegister());
-                    }) 
-                   ],),
-                 ),),
-               ),
-               const SizedBox(height: 20,),
-               heading2(text: translatedText("Available registers", "Madirisha yaliyopo")),
-               const SizedBox(height: 20),
+            SizedBox(height: 20,),
+               
                  GetX<RegisterController>(
                 init: RegisterController(),
                  builder: (find) {
@@ -116,7 +98,7 @@ class _RegistersPageState extends State<RegistersPage> {
                                       child: Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                        heading2(text: register.title,fontSize: 14),
+                                        heading2(text: register.title,fontSize:18),
                                         mutedText(text: register.description),
                                        
                                       ],),

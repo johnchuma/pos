@@ -11,7 +11,7 @@ Future sendNotification({
         data: {
           "app_id": "b7029800-f6e6-4ce5-a312-438e0d2ea029",
           "include_player_ids": tokenIdList,
-          "headings": {"en": heading??"Welcome to the Trade Point"},
+          "headings": {"en": heading??"Welcome to the Powered POS"},
           "contents": {"en": contents??"We are excited to have you onboard"},
         });
   } on DioError catch (e) {

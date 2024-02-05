@@ -92,7 +92,7 @@ class _BusinessThatMadeOfferState extends State<BusinessThatMadeOffer> {
                                               child: Column(
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
-                                                heading2(text: business.name,fontSize: 14),
+                                                heading2(text: business.name,fontSize:18),
                                                 business.messages.value.length >0?mutedText(text:business.messages.value.first.message ):   mutedText(text:"Click to view offer" ), 
                                               ],),
                                             ),

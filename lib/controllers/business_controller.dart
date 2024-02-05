@@ -17,21 +17,29 @@ class BusinessController extends GetxController{
        FirebaseFirestore firestore = FirebaseFirestore.instance;
         Rx<List<Business>> businessesReceiver = Rx<List<Business>>([]);
         List<Business> get businesses => businessesReceiver.value;
+        Rx<List<Business>> allbusinessesReceiver = Rx<List<Business>>([]);
+        List<Business> get allbusinesses => allbusinessesReceiver.value;
         Rx<bool?> canAccessRegister = Rx<bool?>(false);
           Rx<List<Business>> staffBusinessesReceiver = Rx<List<Business>>([]);
         List<Business> get staffBusinesses => staffBusinessesReceiver.value;
         AppController appController= Get.find<AppController>();
         Rx<Business?> selectedBusiness = Rx<Business?>(null);
         Rx<Business?> selectedSupplier = Rx<Business?>(null);
-
+        var searchKeyword = "".obs;
         Rx<Business> selectedSender = Rx<Business>(Business());
         AuthController authController = Get.find<AuthController>();
         Rx<Register?> selectedRegister = Rx<Register?>(null);
         Rx<String> role = Rx<String>("reseller");
         Rx<String> category = Rx<String>("");
         Rx<bool> noAccess= Rx<bool>(false);
-
+        int daysRemained = 0;
+        StaffRegister? selectedStaffRegister ;
+        var loading = false.obs;
+        bool isOwner(){
+          return selectedBusiness.value?.userId == authController.auth.currentUser?.email;
+        }
         Stream<List<Business>> getBusinesses() {
+          loading.value = true;
           return firestore
               .collection("businesses").where("userId",isEqualTo: authController.user?.email).orderBy("createdAt",descending: true)
               .snapshots()
@@ -54,20 +62,42 @@ class BusinessController extends GetxController{
                   business.businesSubscriptions = businessSubscriptions;
                   businesses.add(business);
                 }
+                if(businesses.isNotEmpty){
+                  selectedBusiness.value = businesses.first;
+                }
+          loading.value = false;
+
             return businesses;    
           });
         }
 
-        Future<List<Register>> getStaffRegisters() async{
+
+ Stream<List<Business>> getAllBusinesses() {
+          return firestore
+              .collection("businesses").orderBy("createdAt",descending: true)
+              .snapshots()
+              .asyncMap((QuerySnapshot querySnapshot) async{
+               List<Business> businesses = [];
+                   for (var element in querySnapshot.docs) {
+                  Business business = Business.fromDocumentSnapshot(element);
+                  businesses.add(business);
+                }
+            return businesses;    
+          });
+        }
+
+        Future<List<StaffRegister>> getStaffRegisters() async{
           
          QuerySnapshot querySnapshot =await firestore
               .collection("staffRegisters").where("staffId",isEqualTo: authController.user?.email).where("businessId",isEqualTo: selectedBusiness.value?.id)
               .get();
-                List<Register> registers = [];
+                List<StaffRegister> registers = [];
                   for (var element in querySnapshot.docs) {
+                    StaffRegister staffRegister = StaffRegister.fromDocumentSnapshot(element);
                     DocumentSnapshot documentSnapshot = await firestore.collection("registers").doc(element["registerId"]).get();
                   Register register = Register.fromDocumentSnapshot(documentSnapshot);
-                  registers.add(register);
+                  staffRegister.register = register;
+                  registers.add(staffRegister);
                 }
                
            return registers;
@@ -84,13 +114,11 @@ class BusinessController extends GetxController{
       return difference.inDays;
     }
      Future<StaffRegister?> getStaffRegister() async{
-         List<Register> registers =    await getStaffRegisters();
-         print("Registers");
-         print(registers.length);
+         List<Register> registers =    [];
+       
        StaffRegister? staffRegister;
        if(registers.isNotEmpty){
-        print("After checking if there is register");
-        print(selectedRegister.value?.title);
+       
        
               selectedRegister.value = registers.first;
               QuerySnapshot querySnapshot =await firestore
@@ -139,20 +167,12 @@ class BusinessController extends GetxController{
                List<Business> businesses = [];
                   for (var element in querySnapshot.docs) {
                   DocumentSnapshot documentSnapshot = await firestore.collection("businesses").doc(element["businessId"]).get();
-                  QuerySnapshot staffRegisterSnapshots = await firestore.collection("staffRegisters").where("staffId",isEqualTo:authController.user?.email).get();
-                  List<StaffRegister> staffRegisters = [];
                   if(documentSnapshot.exists){
                   Business business = Business.fromDocumentSnapshot(documentSnapshot);
-                  for (var staffRegisterSnapshot in staffRegisterSnapshots.docs) {
-                    StaffRegister staffRegister = StaffRegister.fromDocumentSnapshot(staffRegisterSnapshot);
-                    DocumentSnapshot registerSnapshot =  await firestore.collection("registers").doc(staffRegister.registerId).get();
-                    staffRegister.register = Register.fromDocumentSnapshot(registerSnapshot);
-                    staffRegisters.add(staffRegister);
-                  }    
-                  business.staffRegisters = staffRegisters;          
+                  if(business.userId != authController.auth.currentUser?.email){
                   businesses.add(business);
                   }
-                 
+                  }
                 }
             return businesses;    
           });
@@ -198,7 +218,7 @@ class BusinessController extends GetxController{
       void onInit() {
       
       businessesReceiver.bindStream(getBusinesses());
-      
+      allbusinessesReceiver.bindStream(getAllBusinesses());
       staffBusinessesReceiver.bindStream(getStaffBusinesses());
       
         super.onInit();

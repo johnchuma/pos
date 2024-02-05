@@ -6,6 +6,8 @@ import 'package:pos/widgets/avatar.dart';
 import 'package:pos/widgets/heading2_text.dart';
 import 'package:pos/widgets/muted_text.dart';
 
+import '../widgets/paragraph.dart';
+
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
 
@@ -17,8 +19,7 @@ class SplashScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          
-          heading2(text: "Trade Point",fontSize: 45)
+          heading2(text: "POS",fontSize: 45)
         ],),),),);
   }
 }

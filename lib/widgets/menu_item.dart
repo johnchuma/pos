@@ -4,7 +4,7 @@ import 'package:pos/widgets/heading2_text.dart';
 import 'package:pos/widgets/muted_text.dart';
 import 'package:pos/widgets/paragraph.dart';
 
-Widget menuItem({icon,title,onTap,trailing, subtitle,double? paddingTop,double iconSize = 30,double? verticalPadding,Color? titleColor,bool? expandable=false, Widget? expandedItem}){
+Widget menuItem({icon,title,onTap,trailing, titleFontWeight, subtitle,double? paddingTop,double iconSize = 30,double? verticalPadding,Color? titleColor,bool? expandable=false, Widget? expandedItem}){
   return Padding(
             padding:  EdgeInsets.only(top:paddingTop?? 10),
             child: GestureDetector(
@@ -23,8 +23,8 @@ Widget menuItem({icon,title,onTap,trailing, subtitle,double? paddingTop,double i
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                        heading2(text: title,color: titleColor??textColor),
-                       if(subtitle != null) mutedText(text:subtitle??"" ),
+                        heading2(text: title,color: titleColor??textColor,fontWeight: titleFontWeight??FontWeight.bold),
+                       if(subtitle != null) mutedText(text:subtitle??"",color: mutedColor ),
                        AnimatedSize(
                         duration: Duration(milliseconds: 300),
                          child: expandable == false ?Container(): Container(

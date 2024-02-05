@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:pos/controllers/business_controller.dart';
 import 'package:pos/controllers/product_controller.dart';
 import 'package:pos/controllers/product_sales_controller.dart';
+import 'package:pos/controllers/sell_controller.dart';
 import 'package:pos/controllers/staff_sales_controller.dart';
 import 'package:pos/controllers/sales_controller.dart';
 import 'package:pos/pages/business_pages/product_sales.dart';
@@ -29,11 +30,10 @@ class _ProductsSalesMainState extends State<ProductsSalesMain> {
   String selectedOption = "Today";
   @override
   void initState() {
-   Get.put(ProductController());
+   Get.put(SellController());
     super.initState();
   }
     int currentfunction = 0;
-
   @override
   Widget build(BuildContext context) {
     BusinessController find = Get.find<BusinessController>();

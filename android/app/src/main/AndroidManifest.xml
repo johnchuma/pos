@@ -5,7 +5,7 @@
     
    <application
     
-        android:label="Trade Point"
+        android:label="Powered POS"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
 

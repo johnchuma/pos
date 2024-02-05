@@ -133,7 +133,7 @@ class _OrdersPageState extends State<OrdersPage> {
                                       child: Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                        heading2(text: item.inAppOrder == true? "In app order": "Order to ${item.supplier.name}",fontSize: 14,maxLines: 1),
+                                        heading2(text: item.inAppOrder == true? "In app order": "Order to ${item.supplier.name}",fontSize:18,maxLines: 1),
                                        item.unreadMessages.value.isNotEmpty?mutedText(text: item.unreadMessages.value.last.message): mutedText(text:"Ordered ${timeago.format(item.createdAt.toDate()) }",maxLines: 1),
                                       ],),
                                     ),
@@ -160,7 +160,7 @@ class _OrdersPageState extends State<OrdersPage> {
                                                   crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
                                                      SizedBox(height: 20,),
-                                                     heading2(text: "Ordered products",fontSize: 14,color: mutedColor),
+                                                     heading2(text: "Ordered products",fontSize:18,color: mutedColor),
                                                      SizedBox(height: 20,),
                                                      Obx(
                                                        ()=> Column(children:item.productOrders.value.map((productOrder)=>
@@ -179,7 +179,7 @@ class _OrdersPageState extends State<OrdersPage> {
                                                              crossAxisAlignment: CrossAxisAlignment.start,
                                                              mainAxisAlignment: MainAxisAlignment.center,
                                                              children: [
-                                                              heading2(text: productOrder.product.value!.name,fontSize: 14),
+                                                              heading2(text: productOrder.product.value!.name,fontSize:18),
                                                              Obx(()=> mutedText(text: "Quantity: ${productOrder.amount}")),
                                                            ],),
                                                           ),

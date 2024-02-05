@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pos/controllers/product_controller.dart';
+import 'package:pos/controllers/sell_controller.dart';
 import 'package:pos/models/product.dart';
 import 'package:pos/utils/colors.dart';
 import 'package:pos/widgets/custom_button.dart';
@@ -19,12 +20,19 @@ class AddToCart extends StatefulWidget {
 }
 
 class _AddToCartState extends State<AddToCart> {  
-ProductController  productController =  Get.find<ProductController>();
+SellController  productController =  Get.find<SellController>();
+
   bool addDiscount =  false;
   double onCartAmount = 1;
   @override
+  void dispose() {
+   
+    super.dispose();
+  }
+  @override
   Widget build(BuildContext context) {
     var product = productController.selectedProduct.value;
+
     return  SingleChildScrollView(
       child: ClipRRect(
             borderRadius: const BorderRadius.only(topRight: Radius.circular(15),topLeft: Radius.circular(15)),
@@ -33,7 +41,7 @@ ProductController  productController =  Get.find<ProductController>();
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                   const SizedBox(height: 10,),
                    Row(
@@ -42,23 +50,34 @@ ProductController  productController =  Get.find<ProductController>();
                       borderRadius: BorderRadius.circular(15),
                       child: Container(width: 80,height: 5,color: backgroundColor,))],),
                   const SizedBox(height: 20,),
-                  heading2(text: "Add to cart"),
-                  SizedBox(height: 20),
+                 
+                
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(15),
-                      child: Container(width: 100,height: 100,child: CachedNetworkImage(imageUrl:product.image,fit: BoxFit.cover, ),)),
-                SizedBox(width: 20,),
+                    
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                     heading2(text: product.name),
-                    mutedText(text: "Price: ${product.sellingPrice*onCartAmount} TZS"),
+                     Row(
+                       children: [
+                       
+                         Expanded(
+                           child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                             children: [
+                               heading2(text: product.name,fontSize: 25),
+                          mutedText(text: "Price: ${product.sellingPrice*onCartAmount} TZS"),
+                             ],
+                           ),
+                         ),
+                       ],
+                     ),
                     SizedBox(height: 10,),
-                   Row(children: [
+                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
                       GestureDetector(
                         onTap: (){
                            setState(() {
@@ -73,10 +92,10 @@ ProductController  productController =  Get.find<ProductController>();
                         },
                         child: ClipOval(
                           child: Container(
-                            color:mutedColor,
+                            color:primaryColor,
                             child: Padding(
                               padding: const EdgeInsets.all(3),
-                              child: Icon(Icons.remove,color: Colors.black,),
+                              child: Icon(Icons.remove,color: textColor,),
                             )),
                         ),
                       ),
@@ -86,7 +105,7 @@ ProductController  productController =  Get.find<ProductController>();
                        GestureDetector(
                         onTap: (){
                           setState(() {
-                            if(product.availableStock.value-onCartAmount>0){
+                            if(product.availableStock.value-onCartAmount>=0){
                                onCartAmount++;
                              product.availableStock.value--;
                             }
@@ -94,10 +113,10 @@ ProductController  productController =  Get.find<ProductController>();
                         },
                          child: ClipOval(
                           child: Container(
-                            color:mutedColor,
+                            color:primaryColor,
                             child: Padding(
                               padding: const EdgeInsets.all(3),
-                              child: Icon(Icons.add,color: Colors.black,),
+                              child: Icon(Icons.add,color: textColor,),
                             )),
                                              ),
                        ),
@@ -115,13 +134,17 @@ ProductController  productController =  Get.find<ProductController>();
                   ClipRRect(
                     borderRadius: BorderRadius.circular(15),
                     child: Container(
-                      color: Colors.green.withOpacity(0.5),
+                      color: backgroundColor,
                       child: Padding(
                         padding: const EdgeInsets.all(10),
                         child: Column(
                           children: [
                             Row(children: [
-                            Checkbox(value: addDiscount, activeColor: Colors.green, onChanged: (value){
+                            Checkbox(value: addDiscount, activeColor: Colors.green, 
+                              fillColor: MaterialStateColor.resolveWith((states) =>Colors.white ),
+                                checkColor: Colors.black,
+                                 
+                            onChanged: (value){
                               setState(() {
                                 addDiscount = value!;
                               });
@@ -159,12 +182,9 @@ ProductController  productController =  Get.find<ProductController>();
                   }),
                   
                   const SizedBox(height: 20,),
-                  
-                ],),
+                ]),
               ),
             )),
     );
-      
-    
   }
 }

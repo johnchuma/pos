@@ -10,9 +10,13 @@ import 'package:pos/controllers/product_controller.dart';
 
 import 'package:pos/controllers/register_controller.dart';
 import 'package:pos/controllers/worker_controller.dart';
+import 'package:pos/models/business.dart';
 import 'package:pos/pages/add_worker.dart';
 import 'package:pos/pages/admin/view_client_businesses.dart';
+import 'package:pos/pages/business_page.dart';
 import 'package:pos/pages/business_pages/assign_register.dart';
+import 'package:pos/pages/business_pages/payment_page.dart';
+import 'package:pos/pages/checking_for_payment.dart';
 import 'package:pos/pages/private_chat_room.dart';
 
 import 'package:pos/utils/colors.dart';
@@ -24,6 +28,8 @@ import 'package:pos/widgets/expanded_item.dart';
 import 'package:pos/widgets/heading2_text.dart';
 import 'package:pos/widgets/heading_text.dart';
 import 'package:pos/widgets/muted_text.dart';
+import 'package:pos/widgets/translatedText.dart';
+import "package:timeago/timeago.dart" as timeago;
 
 class ClientsPage extends StatefulWidget {
   const ClientsPage({super.key});
@@ -52,88 +58,116 @@ class _ClientsPageState extends State<ClientsPage> {
         children: [
          back(),
          SizedBox(width: 20,),
-          heading2(text: "Trade Point clients"),
+          heading2(text: "Businesses"),
         ],
       ) 
       ,),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: ListView(
-          
           children: [
-                      const SizedBox(height: 0,),
-
+              const SizedBox(height: 0,),
                const SizedBox(height: 20),
-                 GetX<ClientsController>(
-                init: ClientsController(),
+                 GetX<BusinessController>(
+                init: BusinessController(),
                  builder: (find) {
-                   return Column(children:find.clients.map((client) => Padding(
-                     padding: const EdgeInsets.only(bottom: 10),
-                     child: ClipRRect(
-                        borderRadius: BorderRadius.circular(15),
-                        child: Container(
-                          color: mutedBackground,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 20),
-                            child: Column(
-                              children: [
-                                GestureDetector(
-                                  onTap: (){
-                                  setState(() {
-                                    if(clientId == client.id){
-                                       clientId = "";
-                                      }else{
-                                       clientId = client.id;
-                                      }
-                                    });
-                                  },
-                                  child: Container(
-                                    color: Colors.transparent,
-                                    child: Row(children:  [
-                                      ClipOval(
-                                      child: SizedBox(height: 50,width: 50,child: CachedNetworkImage(
-                                        fit: BoxFit.cover,
-                                        imageUrl:client.profileImageUrl),),
+                   return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                     children: [
+                      ClipRRect(
+                      borderRadius: BorderRadius.circular(15),
+                      child: Container(
+                        color: mutedBackground,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: TextFormField(
+                            cursorColor: primaryColor,
+                            onChanged: (value){
+                              find.searchKeyword.value = value;
+                            },
+                          
+                            decoration:  InputDecoration(
+                            icon: Icon(Icons.search,color: mutedColor),
+                            border: InputBorder.none,
+                          hintStyle: TextStyle(color: mutedColor),
+                            hintText: translatedText("Search businesses here", "Tafuta bidhaa hapa")),
+                          style:  TextStyle(fontSize: 13,color: textColor)),
+                        )),
+                    ),
+                                    SizedBox(height: 10,),
+
+                    mutedText(text: "${find.allbusinesses.length} registered businesses"),
+                                    SizedBox(height: 5,),
+
+                       Column(children:find.allbusinesses.where((element) => element.name.toLowerCase().contains(find.searchKeyword.value.toLowerCase()))
+                       .map((business) => Padding(
+                         padding: const EdgeInsets.only(bottom: 10),
+                         child: ClipRRect(
+                            borderRadius: BorderRadius.circular(15),
+                            child: Container(
+                              color: mutedBackground,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 20),
+                                child: Column(
+                                  children: [
+                                    GestureDetector(
+                                      onTap: (){
+                                      setState(() {
+                                        if(clientId == business.id){
+                                           clientId = "";
+                                          }else{
+                                           clientId = business.id;
+                                          }
+                                        });
+                                      },
+                                      child: Container(
+                                        color: Colors.transparent,
+                                        child: Row(children:  [
+                                          ClipOval(
+                                          child: SizedBox(height: 50,width: 50,child: CachedNetworkImage(
+                                            fit: BoxFit.cover,
+                                            imageUrl: business.image),),
+                                        ),
+                                        const SizedBox(width: 10,),
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                            heading2(text: business.name,fontSize:18),
+                                            mutedText(text: timeago.format(business.createdAt.toDate())),
+                                           
+                                          ],),
+                                        ),
+                                                    ],),
+                                      ),
                                     ),
-                                    const SizedBox(width: 10,),
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                        heading2(text: client.name,fontSize: 14),
-                                        mutedText(text: client.email),
-                                       
-                                      ],),
-                                    ),
-                                                ],),
-                                  ),
+                                     AnimatedSize(
+                                                  duration: const Duration(milliseconds: 200),
+                                                  child:clientId == business.id ? Column(
+                                                    children: [
+                                                      const SizedBox(height: 10,),                      
+                                                     
+                                                       expandedItem(title:"View business", iconData:Icons.remove_red_eye, onClick:  (){ 
+                                                        find.selectedBusiness.value = business; 
+                                                        Get.to(()=>CheckingForPayment()); 
+                                                      }),
+                                                   expandedItem(title:"Payments", iconData:Icons.done_all_sharp, onClick:  (){ 
+                                                        find.selectedBusiness.value = business; 
+                                                        Get.to(()=>PaymentsPage()); 
+                                                      }),
+                                                                                                                               
+                                                    ],
+                                                  ):Container(),
+                                                )
+                                             
+                                  ],
                                 ),
-                                 AnimatedSize(
-                                              duration: const Duration(milliseconds: 200),
-                                              child:clientId == client.id ? Column(
-                                                children: [
-                                                  const SizedBox(height: 10,),                      
-                                                  expandedItem(title:"Chat with client", iconData:Icons.chat_bubble, onClick:  (){ 
-                                                     find.selectedClient.value = client;
-                                                    Get.to(()=>PrivateChatRoom(false)); 
-                                                  }),
-                                                
-                                                   expandedItem(title:"View businesses", iconData:Icons.remove_red_eye, onClick:  (){ 
-                                                     find.selectedClient.value = client;
-                                                    Get.to(()=>ViewClientBusinesses()); 
-                                                  }),
-                                               
-                                                                                                                           
-                                                ],
-                                              ):Container(),
-                                            )
-                                         
-                              ],
-                            ),
-                            
-                          ),),
-                      ),
-                   ) ).toList());
+                                
+                              ),),
+                          ),
+                       ) ).toList()),
+                     ],
+                   );
                  }
                )
         ],)

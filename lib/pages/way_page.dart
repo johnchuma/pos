@@ -25,16 +25,7 @@ class WayPage extends StatelessWidget {
     return GetX<AuthController>(
           init: AuthController(),
           builder: (find){
-               return find.user != null? const HomePage():FutureBuilder(
-                future: SharedPreferencesUtil.getShowOnboarding(),
-                 builder: (context,snapshot) {
-                  if(snapshot.connectionState == ConnectionState.waiting){
-                    return Container(child: Lottie.asset("assets/Animation - 1698840602659.json"),);
-                  }
-                  var preference = snapshot.requireData;
-                   return preference? const OnboardingScreen():LoginPage();
-                 }
-               );
+               return find.user != null? const HomePage():LoginPage();
         });
       }
     

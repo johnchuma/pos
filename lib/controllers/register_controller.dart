@@ -29,13 +29,13 @@ class RegisterController extends GetxController{
         }
 
 
-     Future<void> addRegister (name,description)async{
+     Future<void> addRegister (name,description,{String? businessId})async{
           try {
             var id = Timestamp.now().toDate().toString();
            await  firestore.collection("registers").doc(id).set({
               "id":id,
               "title":name,
-              "businessId":businessController.selectedBusiness.value?.id,
+              "businessId": businessId?? businessController.selectedBusiness.value?.id,
               "description":description,
               "createdAt":Timestamp.now()
             });

@@ -203,7 +203,7 @@ class _SupplierPublicProductsState extends State<SupplierPublicProducts> {
                                               child: Column(
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
-                                                heading2(text: product.name,fontSize: 14),
+                                                heading2(text: product.name,fontSize:18),
                                                 mutedText(text: "Click to view more")
                                                 
                                               ],),

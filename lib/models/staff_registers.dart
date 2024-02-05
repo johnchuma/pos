@@ -6,7 +6,7 @@ class StaffRegister{
   late String id;
   late String staffId;
   late String password = "";
-  late Register register;
+  late Register? register;
   late List permissions = [];
   late Timestamp createdAt;
   late String registerId;

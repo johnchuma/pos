@@ -113,7 +113,7 @@ class _AddProductsFromSampleStoreState extends State<AddProductsFromSampleStore>
                                   return Center(child: CircularProgressIndicator(color: textColor,));
                                 }
                                products  = snapshot.requireData;
-                                 return Column(children:products.where((product) => find.products.map((e) => e.name).contains(product.name) == false).where((product)=>product.name.toLowerCase().contains(find.searchKeyword.value.toLowerCase())).map((product) => Padding(
+                                 return Column(children:products.where((product) => products.map((e) => e.name).contains(product.name) == false).where((product)=>product.name.toLowerCase().contains(find.searchKeyword.value.toLowerCase())).map((product) => Padding(
                                    padding: const EdgeInsets.only(bottom: 15),
                                    child: ClipRRect(
                                       borderRadius: BorderRadius.circular(15),
@@ -142,7 +142,7 @@ class _AddProductsFromSampleStoreState extends State<AddProductsFromSampleStore>
                                                     child: Column(
                                                       crossAxisAlignment: CrossAxisAlignment.start,
                                                       children: [
-                                                      heading2(text: product.name,fontSize: 14),
+                                                      heading2(text: product.name,fontSize:18),
                                                       mutedText(text: "Click to add this product")
                                                       
                                                     ],),

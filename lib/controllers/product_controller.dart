@@ -24,7 +24,6 @@ class ProductController extends GetxController{
           Rx<String> searchKeyword = Rx<String>("");
           Rx<bool> loading = Rx<bool>(false);
         AuthController authController = Get.find<AuthController>();
-        ProductVariantsController  productVariantsController = Get.find<ProductVariantsController>();
         BusinessController businessController = Get.find<BusinessController>();
         Stream<List<Product>> getProducts() {
           return firestore
@@ -58,29 +57,7 @@ class ProductController extends GetxController{
          
             return products;  
         }
-  Future populateProductVariants({Product? product})async{
-        Product productToBeUsed = product??selectedProduct.value;
-           QuerySnapshot querySnapshot =await  firestore.collection("products").doc(productToBeUsed.id).collection("variantsCategories").get();
-          List<ProductsVariantsCategory> categories = [];
-          for (var doc in querySnapshot.docs) {
-              ProductsVariantsCategory category = await productVariantsController.getCategory(doc["categoryId"]);
-             QuerySnapshot querySnapshot2 = await firestore.collection("products").doc(productToBeUsed.id).collection("variantsCategories").doc(doc["id"]).collection("variants").get();
-               for (var doc2 in querySnapshot2.docs) {
-                 VariantItem variant = await productVariantsController.getVariant(category.id, doc2["variantId"]);
-                 category.variants.value.add(variant);
-               }
-               categories.add(category);
-          }
-        
-          if(product != null){
-           product.variantCategories.value = categories;
-          }
-          else{
-          selectedProduct.value.variantCategories.value = categories;
 
-          }
-         
-      }
          Stream<List<Product>> getSupplierPublicProducts() {
         
           return firestore
@@ -218,7 +195,7 @@ class ProductController extends GetxController{
         @override
         void onInit() {
           productsReceiver.bindStream(getProducts());
-          productsWithStockReceiver.bindStream(getProductsWithStock());
+          // productsWithStockReceiver.bindStream(getProductsWithStock());
           super.onInit();
         }
 }

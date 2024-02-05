@@ -11,7 +11,7 @@ class ClientsController extends GetxController{
        FirebaseFirestore firestore = FirebaseFirestore.instance;
         Rx<List<Client>> clientsReceiver = Rx<List<Client>>([]);
         List<Client> get clients => clientsReceiver.value;
-       
+         Rx<String> searchKeyword = "".obs;
         Rx<Client?> selectedClient = Rx<Client?>(null);
         Rx<Client?> selectedStaff = Rx<Client?>(null);
         

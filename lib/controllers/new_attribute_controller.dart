@@ -5,9 +5,9 @@ class NewAttributeController{
 
    Future<void> addNewAttribute () async{
           try {
-           QuerySnapshot querySnapshot =await  firestore.collection("businesses").get();
+           QuerySnapshot querySnapshot =await  firestore.collection("products").get();
            for (var doc in querySnapshot.docs) {
-           await firestore.collection("businesses").doc(doc["id"]).update({"isSampleBusiness":false});      
+           await firestore.collection("products").doc(doc["id"]).update({"isCheap":false});      
            }
           } catch (e) {
           }

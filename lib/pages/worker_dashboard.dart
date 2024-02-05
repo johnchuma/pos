@@ -80,7 +80,7 @@ String businessId = "";
                       find.selectedBusiness.value = business;
                       Get.to(()=>BusinessPage());
                     },
-                    child: businessItem(business)) ).toList());
+                    child: businessItem(business,find)) ).toList());
                  }
                )
           ],),

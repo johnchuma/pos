@@ -40,7 +40,7 @@ String status = "Trying state";
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                   const SizedBox(height: 10,),
                    Row(
@@ -49,7 +49,7 @@ String status = "Trying state";
                       borderRadius: BorderRadius.circular(10),
                       child: Container(width: 80,height: 5,color: backgroundColor,))],),
                   const SizedBox(height: 20,),
-                  heading2(text: "Assign registers to a staff member"),
+                  heading2(text: "Assign registers to a staff member",textAlign: TextAlign.center),
 
                   const SizedBox(height: 10,),
                   Column(children: registerController.registers.map((item){
@@ -59,15 +59,13 @@ String status = "Trying state";
                     return Container(child: Column(
                     children: [
                       Container(
-                        child: Row(children: [
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
                           Container(
                             child: Checkbox(                           
                                 splashRadius: 50,
-                               fillColor: MaterialStateColor.resolveWith((states) =>Colors.white ),
-                                activeColor: Colors.green,
-                                hoverColor: primaryColor,
-                                checkColor: Colors.black,
-                                focusColor: Colors.black,
+                              
                                 value: find.staffRegisters.map((item) => item.registerId).toList().contains(item.id)?true:false, onChanged: (value){
                                 if(value == true){  
                                     var list = find.selectedStaffRegisterIds.value ;
@@ -95,13 +93,15 @@ String status = "Trying state";
                   find.staffRegisters.map((item) => item.registerId).toList().contains(item.id) == false? Container():
                     
                     Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                   SizedBox(height: 20,),
         
-                  heading2(text: "Give permissions",fontSize: 14),
+                  heading2(text: "Give permissions",fontSize:18),
                   SizedBox(height: 10,),
-                  Wrap(children: ["Sell products","Manage products","Manage orders", "View reports","Manage staffs","Request posters","Manage suppliers","Manage registers","Check in & out","View sales reports","View settings"].map((permission) => 
+                  Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                    children: ["Sell products","Manage products","Manage orders", "View reports","Manage staffs","Manage customers","Manage debts","Manage payouts","Request posters","Manage suppliers","Manage registers","Check in & out","View sales reports","View settings"].map((permission) => 
                   GestureDetector(
                     onTap: (){
                     
@@ -114,8 +114,7 @@ String status = "Trying state";
                       currentpermissions.add(permission);
                       }
                       var data ={"permissions":currentpermissions};
-                        find.updateStaffRegisterDoc(staffRegister.id, data);    
-
+                      find.updateStaffRegisterDoc(staffRegister.id, data);    
                     },
                     child:  Padding(
                       padding: const EdgeInsets.only(right: 3,bottom: 10),
@@ -125,13 +124,13 @@ String status = "Trying state";
                           color:  find.staffRegisters.where((staffRegister) => staffRegister.registerId ==item.id).toList().first.permissions.contains(permission)==true?primaryColor:backgroundColor,
                           child: Padding(
                             padding: const EdgeInsets.all(10),
-                            child: heading2(text: permission, color: find.staffRegisters.where((staffRegister) => staffRegister.registerId ==item.id).toList().first.permissions.contains(permission)==false?textColor:Colors.white,fontSize: 12,),
+                            child: heading2(text: permission, color: find.staffRegisters.where((staffRegister) => staffRegister.registerId ==item.id).toList().first.permissions.contains(permission)==false?textColor:Colors.white,fontSize: 14,),
                           ),),
                       ),
                     ),
                   )).toList(),),
                   SizedBox(height: 20,),
-                  heading2(text: "Staff password",fontSize: 14),
+                  heading2(text: "Staff password",fontSize:18),
                   const SizedBox(height: 10,),
                   TextForm(hint: "Create password",color: backgroundColor,isPassword: !find.showPassword.value,suffixIcon: GestureDetector(
                     onTap: (){

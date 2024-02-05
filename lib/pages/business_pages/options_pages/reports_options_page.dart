@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:pos/controllers/Product_controller.dart';
 import 'package:pos/controllers/business_controller.dart';
 import 'package:pos/controllers/register_controller.dart';
+import 'package:pos/controllers/sell_controller.dart';
 import 'package:pos/controllers/suppliers_conversations_controller.dart';
 import 'package:pos/controllers/tutorial_controller.dart';
 import 'package:pos/controllers/unread_messages_controller.dart';
@@ -59,7 +60,6 @@ class _ReportsOptionsPageState extends State<ReportsOptionsPage> {
 
   @override
   void initState() {
-
     super.initState();
   }
   @override
@@ -89,7 +89,7 @@ class _ReportsOptionsPageState extends State<ReportsOptionsPage> {
           Get.bottomSheet(bottomSheetTemplate(widget: Padding(
             padding: const EdgeInsets.all(20),
             child: StreamBuilder(
-              stream: ProductController().getProductsWithStock(),
+              stream: SellController().getProductsWithStock(),
               builder: (context,snapshot) {
                 if(snapshot.connectionState == ConnectionState.waiting){
                   return Padding(

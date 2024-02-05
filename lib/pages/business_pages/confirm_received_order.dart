@@ -67,7 +67,7 @@ TextEditingController passwordController = TextEditingController();
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          heading2(text: find.selectedProductOrder.value!.product.value?.name,fontSize: 14),
+                          heading2(text: find.selectedProductOrder.value!.product.value?.name,fontSize:18),
                           mutedText(text:"Quantity ordered: ${find.selectedProductOrder.value!.amount}" )
                         ],
                       ),

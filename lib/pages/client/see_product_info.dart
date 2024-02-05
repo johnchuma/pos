@@ -10,6 +10,7 @@ import 'package:pos/controllers/public_products_controller.dart';
 import 'package:pos/models/business.dart';
 import 'package:pos/models/conversation.dart';
 import 'package:pos/models/product.dart';
+import 'package:pos/pages/business_pages/view_pages/view_image.dart';
 import 'package:pos/pages/client/client_business_chat_page.dart';
 import 'package:pos/utils/colors.dart';
 import 'package:pos/utils/dynamic_links.dart';
@@ -144,12 +145,17 @@ class _ProductInfoState extends State<ProductInfo> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: Container(
-                            width: double.infinity,
-                            height: 300,
-                            child: CachedNetworkImage(imageUrl: product.image,fit: BoxFit.cover,)),
+                        GestureDetector(
+                          onTap: (){
+                            Get.to(()=>ViewImage(product.image));
+                          },
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: Container(
+                              width: double.infinity,
+                              height: 300,
+                              child: CachedNetworkImage(imageUrl: product.image,fit: BoxFit.cover,)),
+                          ),
                         ),
               SizedBox(height: 20,),
 

@@ -139,13 +139,12 @@ class _StaffSalesState extends State<StaffSales> {
                                             child: Container(
                                               color: Colors.transparent,
                                               child: Row(children:  [
-                                               avatar(image: sales.product.image),
-                                              const SizedBox(width: 10,),
+                                               
                                               Expanded(
                                                 child: Column(
                                                   crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
-                                                  heading2(text: sales.product.name,fontSize: 14),
+                                                  heading2(text: sales.product.name,fontSize:18),
                                                   mutedText(text: "Qantity: ${sales.amount}"),
                                                  
                                                 ],),
@@ -153,7 +152,7 @@ class _StaffSalesState extends State<StaffSales> {
                                               Column(
                                                 children: [
                                                   mutedText(text: "Sold for",color: mutedColor.withOpacity(0.5)),
-                                              heading2(text: "${moneyFormat(sales.totalPrice)}TZS",fontSize: 14)
+                                              heading2(text: "${moneyFormat(sales.totalPrice)}TZS",fontSize:18)
     
                                                 ],
                                               ),

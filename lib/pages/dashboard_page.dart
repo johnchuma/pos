@@ -72,7 +72,7 @@ String language = appController.language.value;
                               find.selectedBusiness.value = business;
                               Get.to(()=>const BusinessPage());
                             },
-                             child: businessItem(business),
+                             child: businessItem(business,find),
                            ) ).toList());
                          }
                        ),

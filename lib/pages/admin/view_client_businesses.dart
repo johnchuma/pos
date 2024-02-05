@@ -8,14 +8,14 @@ import 'package:pos/controllers/app_controller.dart';
 import 'package:pos/controllers/auth_controller.dart';
 import 'package:pos/controllers/business_controller.dart';
 import 'package:pos/controllers/clients_controller.dart';
-import 'package:pos/controllers/register_controller.dart';
+// import 'package:pos/controllers/register_controller.dart';
 import 'package:pos/models/client.dart';
-import 'package:pos/pages/add_business.dart';
+// import 'package:pos/pages/add_business.dart';
 import 'package:pos/pages/business_page.dart';
-import 'package:pos/pages/update_profile_details.dart';
+// import 'package:pos/pages/update_profile_details.dart';
 import 'package:pos/utils/colors.dart';
-import 'package:pos/utils/notifications.dart';
-import 'package:pos/utils/onesignal_notification.dart';
+// import 'package:pos/utils/notifications.dart';
+// import 'package:pos/utils/onesignal_notification.dart';
 import 'package:pos/widgets/avatar.dart';
 import 'package:pos/widgets/back.dart';
 import 'package:pos/widgets/business_item.dart';
@@ -93,7 +93,7 @@ Client client = clientsController.selectedClient.value!;
                                   find.selectedBusiness.value = business;
                                   Get.to(()=>const BusinessPage());
                                 },
-                                 child: businessItem(business),
+                                 child: businessItem(business,find),
                                ) ).toList());
                              }
                            );

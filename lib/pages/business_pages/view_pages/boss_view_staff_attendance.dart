@@ -138,7 +138,7 @@ class _BossViewStaffAttendanceState extends State<BossViewStaffAttendance> {
                                           child: Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
-                                            heading2(text: formatDateHumans(attendance.createdAt.toDate()),fontSize: 14),
+                                            heading2(text: formatDateHumans(attendance.createdAt.toDate()),fontSize:18),
                                             
                                             Row(
                                               children: [

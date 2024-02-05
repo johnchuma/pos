@@ -7,5 +7,5 @@ Widget heading2({var text,maxLines, TextAlign? textAlign,double? fontSize,Color?
   textAlign: textAlign??TextAlign.start,
   maxLines: maxLines??5,
   overflow: TextOverflow.ellipsis,
-  style: TextStyle(fontWeight: fontWeight??FontWeight.w900,fontSize: fontSize??16,color: color??textColor  ),);
+  style: TextStyle(fontWeight: fontWeight??FontWeight.w900,fontSize: fontSize??20,color: color??textColor  ),);
 }

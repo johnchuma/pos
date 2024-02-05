@@ -100,7 +100,7 @@ class _ProductRequestsFromClientsState extends State<ProductRequestsFromClients>
                                             child: Column(
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
-                                              heading2(text: productrequest.request,fontSize: 14),
+                                              heading2(text: productrequest.request,fontSize:18),
                                              productrequest.messages.value.length>0?mutedText(text: productrequest.messages.value.first.message): mutedText(text:timeago.format(productrequest.createdAt.toDate()),maxLines: 2 ),
                                              
                                             ],),

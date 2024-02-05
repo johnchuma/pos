@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:pos/controllers/business_controller.dart';
 import 'package:pos/controllers/product_controller.dart';
 import 'package:pos/controllers/product_sales_controller.dart';
+import 'package:pos/controllers/sell_controller.dart';
 import 'package:pos/controllers/staff_sales_controller.dart';
 import 'package:pos/controllers/sales_controller.dart';
 import 'package:pos/pages/business_pages/staff_sales.dart';
@@ -27,7 +28,7 @@ class _StaffSalesMainState extends State<StaffSalesMain> {
   String selectedOption = "Today";
   @override
   void initState() {
-   Get.put(ProductController());
+   Get.put(SellController());
     super.initState();
   }
     int currentfunction = 0;

@@ -79,7 +79,7 @@ class _OrderChatPageState extends State<OrderChatPage> {
                                                                  crossAxisAlignment: CrossAxisAlignment.start,
                                                                  mainAxisAlignment: MainAxisAlignment.center,
                                                                  children: [
-                                                                  heading2(text: productOrder.product.value!.name,fontSize: 14),
+                                                                  heading2(text: productOrder.product.value!.name,fontSize:18),
                                                                  Obx(()=> mutedText(text: "Quantity: ${productOrder.amount}")),
                                                                ],),
                                                               ),

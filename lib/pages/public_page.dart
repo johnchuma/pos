@@ -180,7 +180,7 @@ Rx<List<Message>> productRequestMessages = Rx<List<Message>>([]);
                           Get.back();
                           AuthController().logout();
                         },
-                        child: heading2(text:translatedText("Sign out", "Toka kwenye account yako"),color: Colors.red,fontSize: 14)),
+                        child: heading2(text:translatedText("Sign out", "Toka kwenye account yako"),color: Colors.red,fontSize:18)),
                                SizedBox(height: 10,),
 
                             ],

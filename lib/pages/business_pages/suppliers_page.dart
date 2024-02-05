@@ -124,7 +124,7 @@ class _SuppliersPageState extends State<SuppliersPage> {
                                       child: Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                        heading2(text: item.supplier.name,fontSize: 14),
+                                        heading2(text: item.supplier.name,fontSize:18),
                                         mutedText(text: item.supplier.description,maxLines: 1),
                                        
                                       ],),

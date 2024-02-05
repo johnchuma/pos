@@ -3,6 +3,7 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:pos/controllers/auth_controller.dart';
 import 'package:pos/pages/way_page.dart';
 
@@ -58,40 +59,30 @@ bool loading = false;
                          child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Hero(
-                              tag: "logo",
-                              child: ClipOval(
-                                child: Container(
-                                    height: 100,
-                                    width: 100,
-                                    child: Image.asset("assets/icons/1024.png")),
-                              ),
-                            ),
-                            // mutedText(text: "Trade point",fontSize: 25),
+                            // Hero(
+                            //   tag: "logo",
+                            //   child: ClipOval(
+                            //     child: Container(
+                            //         height: 100,
+                            //         width: 100,
+                            //         child: Image.asset("assets/icons/1024.png")),
+                            //   ),
+                            // ),
+                            // mutedText(text: "Powered POS",fontSize: 25),
                         
                        
                        const SizedBox(height: 40,),
-                        headingText(text: "Sign in to continue", textAlign: TextAlign.center,color: Colors.white,
-                                fontSize: 20
+                        headingText(text: "Login to continue", textAlign: TextAlign.center,
+                                fontSize: 30
                                 ),
                                 const SizedBox(height: 5,),
-                                 mutedText(text: "To access all Trade Point features, please log in now. Press the button below to get started.",
+                                 mutedText(text: "To access all Powered POS features, please log in now. Press the button below to get started.",
                                  textAlign: TextAlign.center,
-                                 color: Colors.white70,
+                                
                                  
                                  ),
                                  SizedBox(height: 20,),
-                                //  ClipRRect(
-                                //   borderRadius: BorderRadius.circular(0),
-                                //    child: Container(
-                                    
-                                //     child: Padding(
-                                //       padding: const EdgeInsets.all(0),
-                                //       child: Wrap(children: ["Manage your businesses","Connect with customers","Connect with suppliers","Send & receive orders","Get business reports", "Share your products online","Online support"].map((item) => 
-                                //       Container(child:mutedText(text: item),)).toList(),),
-                                //     ),),
-                                //  ),
-                         
+                               
                               const SizedBox(height: 60,),
                                GestureDetector(
                                  onTap: (){
@@ -108,30 +99,24 @@ bool loading = false;
                                  child: ClipRRect(
                                    borderRadius: BorderRadius.circular(15),
                                    child: Container(
-                                                      decoration: BoxDecoration(gradient:LinearGradient(colors: [primaryColor,primaryColor2])),
+                                                      color: primaryColor2,
                                                          child: Padding(
                                                            padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 25),
                                                            child: loading? Center(child: SizedBox(
                                                              height: 25,
                                                              width: 25,
-                                                             child: CircularProgressIndicator(color: textColor))): Row(
+                                                             child: CircularProgressIndicator(color: backgroundColor))): Row(
                                                              mainAxisAlignment: MainAxisAlignment.center,
                                                              
                                                              children: [
+                                                           
+                                                           
                                                            Container(
-                                                            
-                                                           height: 20,
-                                                           width: 20,
-                                                           child: Row(
-                                                             children: [
-                                                               CachedNetworkImage(imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1024px-Google_%22G%22_Logo.svg.png"),
-                                                            
-                                                             ],
-                                                           )),
-                                                           
-                                                           
+                                                            height: 30,
+                                                            width: 30,
+                                                            child: Image.asset("assets/google.png",)),
                                        const SizedBox(width: 15,),
-                                                               heading2(text: "Continue with google",color: textColor,fontSize: 13,)
+                                                               heading2(text: "Continue with google",color: backgroundColor,fontSize: 13,)
                                                            
                                                            ],),
                                                          ),),
@@ -147,10 +132,10 @@ bool loading = false;
                                   text: TextSpan(
                                 
                                   children: [
-                                  TextSpan(text: "By pressing continue button, you agree with our",style: TextStyle(color: mutedColor,fontSize: 12)),
-                                   TextSpan(text: " Terms & conditions ",  style: TextStyle(fontSize: 12,color: secondaryColor)),
-                                   TextSpan(text: "and our",style: TextStyle(color: mutedColor,fontSize: 12)),
-                                   TextSpan(text: " Privacy policy",style: TextStyle(fontSize: 12,color: secondaryColor))
+                                  TextSpan(text: "By pressing continue button, you agree with our",style: GoogleFonts.openSans (color: mutedColor,fontSize: 16)),
+                                   TextSpan(text: " Terms & conditions ",  style: GoogleFonts.openSans (fontSize: 16,color: primaryColor)),
+                                   TextSpan(text: "and our",style: GoogleFonts.openSans (color: mutedColor,fontSize: 16)),
+                                   TextSpan(text: " Privacy policy",style: GoogleFonts.openSans (fontSize: 16,color: primaryColor))
                                 ])),
                               )
                                ],),

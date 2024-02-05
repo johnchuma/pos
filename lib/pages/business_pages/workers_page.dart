@@ -63,7 +63,12 @@ class _WorkersPageState extends State<WorkersPage> {
             
 
           ],
-        ))
+        )),
+        GestureDetector(
+          onTap: (){
+                      Get.to(()=>AddWorker());
+          },
+          child: Icon(Icons.add,size: 30, color: mutedColor,))
       ],) 
       ,),
       body: Padding(
@@ -71,31 +76,7 @@ class _WorkersPageState extends State<WorkersPage> {
         child: ListView(
           
           children: [
-                      const SizedBox(height: 20,),
-
-           ClipRRect(
-                borderRadius: BorderRadius.circular(15),
-                 child: Container(
-                  color: mutedBackground,
-                  child: Padding(
-                   padding: const EdgeInsets.all(20),
-                   child: Column
-                   (
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                    headingText(text:translatedText("Add new worker", "Ongeza mfanyakazi"),),
-                    const SizedBox(height: 5,),
-                    mutedText(text: translatedText("Add, remove and manage workers here", "Ongeza, futa au badilisha taarifa")),
-                    const SizedBox(height: 20,),
-                    customButton(text: translatedText("Add worker", "Ongeza mfanyakazi"),onClick: (){
-                      Get.to(()=>AddWorker());
-                    }) 
-                   ],),
-                 ),),
-               ),
-               const SizedBox(height: 20,),
-               heading2(text: translatedText("Workers list", "Wanyakazi waliopo")),
-               const SizedBox(height: 20),
+            SizedBox(height: 20,),
                  GetX<StaffsController>(
                 init: StaffsController(),
                  builder: (find) {
@@ -132,7 +113,7 @@ class _WorkersPageState extends State<WorkersPage> {
                                       child: Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                        heading2(text: staff.details.name,fontSize: 14),
+                                        heading2(text: staff.details.name,fontSize: 18),
                                         mutedText(text:  "${translatedText("Created", "Ameongezwa")} ${formatDate(staff.createdAt.toDate())}"),
                                        
                                       ],),

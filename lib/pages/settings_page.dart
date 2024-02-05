@@ -9,18 +9,22 @@ import 'package:pos/controllers/business_controller.dart';
 import 'package:pos/pages/add_business.dart';
 import 'package:pos/pages/admin/unapproved_product_requests.dart';
 import 'package:pos/pages/business_page.dart';
+import 'package:pos/pages/business_pages/conversations/clients_conversation.dart';
 import 'package:pos/pages/business_pages/payment_page.dart';
 import 'package:pos/pages/changeLanguage.dart';
 import 'package:pos/pages/clients_page.dart';
 import 'package:pos/pages/manage_password.dart';
+import 'package:pos/pages/private_chat_room.dart';
 import 'package:pos/pages/update_profile_details.dart';
 import 'package:pos/utils/colors.dart';
 import 'package:pos/widgets/avatar.dart';
 import 'package:pos/widgets/custom_button.dart';
+import 'package:pos/widgets/enter_password.dart';
 import 'package:pos/widgets/heading2_text.dart';
 import 'package:pos/widgets/heading_text.dart';
 import 'package:pos/widgets/menu_item.dart';
 import 'package:pos/widgets/muted_text.dart';
+import 'package:pos/widgets/paragraph.dart';
 import 'package:pos/widgets/translatedText.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -30,17 +34,7 @@ AppController appController = Get.find<AppController>();
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
-      backgroundColor: backgroundColor,
-         appBar: AppBar(
-        leading: Container(),
-        leadingWidth: 10,
-        title: heading2(text:translatedText("Settings", "Mipangilio")),
-        backgroundColor: backgroundColor,
-        elevation: 0.3,
-       
-        
-      ),
-
+      backgroundColor: Colors.transparent,
       body:Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: SingleChildScrollView(
@@ -51,30 +45,37 @@ AppController appController = Get.find<AppController>();
                AnimatedSize(
                 duration: Duration(milliseconds: 300),
                  child: ClipRRect(
-                  borderRadius: BorderRadius.circular(15),
+                  borderRadius: BorderRadius.only(topRight: Radius.circular(40),bottomRight: Radius.circular(40)),
                    child: Container(
                   
                     child: Padding(
                      padding: const EdgeInsets.all(20),
                      child: Column
                      (
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                      Obx(
                        ()=> appController.isMainDashboardSelected.value? avatar(size: 100,image: auth.auth.currentUser?.photoURL): Container(
                         height: 100,
                           child: Image.asset("assets/29845426_7265372-removebg-preview.png")),
                      ),
+                     SizedBox(height: 10,),
+                      heading2(text:auth.auth.currentUser?.displayName),
+                      mutedText(text:auth.auth.currentUser?.email),
+                      mutedText(text:"${businessController.daysRemained} days remained",color: Colors.green),
+
+
                       const SizedBox(height: 20,),
-                      Obx(()=> headingText(text:appController.isMainDashboardSelected.value? translatedText("You are in main dashboard", "Upo kwenye dashibodi kuu"):translatedText("You are in workers dashboard", "Upo kwenye dashibodi ya mfanyakazi"),fontSize: 20,textAlign: TextAlign.center)),
-                      const SizedBox(height: 5,),
-                      mutedText(text: translatedText("You can change the app dashboards here", "Unaweza kubadili dashibodi hapa")),
-                      const SizedBox(height: 20,),
-                      Obx(()=> customButton(text: appController.isMainDashboardSelected.value?translatedText("Change to workers dashboard", "Tumia dashibodi ya mfanyakazi"):translatedText("Back to main dashboard", "Rudi kwenye dashibodi kuu"), onClick: (){
-                          appController.isMainDashboardSelected.value = ! appController.isMainDashboardSelected.value;
-                          auth.updateClientInfo({"selectedDashboard":appController.isMainDashboardSelected.value? "main":"worker"});
-                        }),
-                      )
+                      // Row(children: [
+                      //   Expanded(child: paragraph(text: "Is main dashboard ?")),
+                      //   Obx(
+                      //   ()=> Switch(value:appController.isMainDashboardSelected.value , onChanged:(value){
+                      //                         appController.isMainDashboardSelected.value = ! appController.isMainDashboardSelected.value;
+                      //       auth.updateClientInfo({"selectedDashboard":appController.isMainDashboardSelected.value? "main":"worker"});
+                      //     }),
+                      //   )
+                      // ],),
+                     
                       
                      ],),
                    ),),
@@ -85,31 +86,33 @@ AppController appController = Get.find<AppController>();
                heading2(text: translatedText("Settings options", "Machaguo ya mipangilio")),
                const SizedBox(height: 5,),
                Column(children: [
-                   menuItem(icon:"assets/credit-card_726488.png",title: translatedText("Payments", "Malipo") ,onTap: (){
-                    Get.to(()=>PaymentsPage());
-                } ),
-                //   menuItem(icon:"assets/icons8-contact-details-96.png",title: "Update profile details",onTap: (){
-                //     Get.to(()=> UpdateProfileDetails());
-                // } ),
-                menuItem(icon:"assets/icons8-language-94.png",title: translatedText("Change language", "Badilisha lugha"),onTap: (){
-                    Get.bottomSheet(const ChangeLanguage());
-                } ),
-              
-                menuItem(icon:"assets/icons8-fingerprint-accepted-94.png",title: translatedText("Security", "Usalama"),onTap: (){
-                    Get.to(()=> ManagePassword());
-                } ),
-
-               if(appController.isAdmin.value)  menuItem(icon:"assets/staff.png",title: translatedText("Trade Point Clients", "Wateja wa P owered POS"),onTap: (){
+                   if(!appController.isAdmin.value)
+                   menuItem(titleFontWeight: FontWeight.w400, title: translatedText("All businesses", "Wateja wa P owered POS"),onTap: (){
                     Get.to(()=> ClientsPage());
                 } ),
-                if(appController.isAdmin.value)  menuItem(icon:"assets/order.png",title: translatedText("Products requests", "Maulizo ya bidhaa"),onTap: (){
+                   if(appController.isAdmin.value)
+                 menuItem(titleFontWeight: FontWeight.w400,title: translatedText("Conversations", "Malipo") ,onTap: (){
+                    Get.to(()=>PrivateChatRoom(true));
+                } ),
+                   menuItem(titleFontWeight: FontWeight.w400,title: translatedText("Payments", "Malipo") ,onTap: (){
+                    Get.to(()=>PaymentsPage());
+                } ),
+                menuItem(titleFontWeight: FontWeight.w400,title: translatedText("My businesses", "Biashara zangu") ,onTap: (){
+                    Get.back();
+                    Get.back();
+                    Get.back();
+                } ),
+              
+                if(appController.isAdmin.value)  menuItem(titleFontWeight: FontWeight.w400,title: translatedText("Products requests", "Maulizo ya bidhaa"),onTap: (){
                     Get.to(()=> UnapprovedProductsRequests());
                 } ),
             
              
               
                ],),
-               const SizedBox(height: 30,),
+               const SizedBox(height: 60,),
+            
+
             
           ],),
         ),

@@ -29,10 +29,7 @@ class _AddProductState extends State<AddProduct> {
    TextEditingController nameController = TextEditingController();
    TextEditingController titleController = TextEditingController();
    TextEditingController valueController = TextEditingController();
-
    TextEditingController descriptionController = TextEditingController();
-  
-
    DateTime? selectedDate = DateTime.now();
    bool expanded = false;
    var imageFile;

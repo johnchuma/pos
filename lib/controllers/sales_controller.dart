@@ -5,7 +5,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:pos/controllers/auth_controller.dart';
 import 'package:pos/controllers/business_controller.dart';
+import 'package:pos/controllers/customer_controller.dart';
+import 'package:pos/controllers/debt_controller.dart';
+import 'package:pos/controllers/payout_controller.dart';
 import 'package:pos/controllers/product_controller.dart';
+import 'package:pos/controllers/sell_controller.dart';
 import 'package:pos/models/product.dart';
 
 import 'package:pos/models/sale.dart';
@@ -22,9 +26,11 @@ class SaleController extends GetxController{
 
       BusinessController businessController = Get.find<BusinessController>();
 
-
+        CustomerController customerController = Get.find<CustomerController>();
         AuthController authController = Get.find<AuthController>();
-        ProductController productController = Get.find<ProductController>();
+        SellController productController = Get.find<SellController>();
+        // ProductController productController = Get.find<ProductController>();
+
     
       
         Future<List<Sale>> getTodaySales()async {
@@ -223,16 +229,20 @@ print(sales);
       double productsProfit (List<Sale> sales){
       return totalSales(sales)- productsCapital(sales);
      }
-     Future<void> addSale ()async{
+     Future<void> addSale ({bool? withCustomer = false,bool? isDebt = false,bool? isPayout = false})async{
           try {
             List<Product> products = productController.onCartProducts.value;
             print(products.length);
             for (var product in products) {
               var id = Timestamp.now().toDate().toString();
               DateTime now = DateTime.now();
+              if(isDebt == true){
+                DebtController().addDebt(id);
+              }
+              if(isPayout== true){
+                PayoutController().addPayout(id);
+              }
               var createdAt = Timestamp.fromDate(DateTime(now.year,now.month,now.day));
-  
-
                await firestore.collection("sales").doc(id).set({
                 "id":id,
                 "businessId":businessController.selectedBusiness.value?.id,
@@ -240,11 +250,11 @@ print(sales);
                 "staffId":authController.user?.email,
                 "productId":product.id,
                 "amount":product.onCartAmount,
-                "price":product.sellingPrice - product.discount,
-                "buyingPrice":product.buyingPrice,                
-                "totalPrice":product.onCartAmount * product.sellingPrice - product.discount,
+                "price": product.sellingPrice - product.discount,
+                "customerId":withCustomer==true?customerController.selectedCustomer.value?.id:"",
+                "buyingPrice":product.buyingPrice,   
+                "totalPrice":isDebt == true || isPayout == true? 0.0: product.onCartAmount * product.sellingPrice - product.discount,
                 "description":"",
-                "customerId":"",
                 "discount":product.discount,
                 "paid":true,
                 "createdAt":createdAt

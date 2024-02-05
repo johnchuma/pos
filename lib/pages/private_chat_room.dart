@@ -88,7 +88,7 @@ class _PrivateChatRoomState extends State<PrivateChatRoom> {
                               reverse: true,
                               children:find.messages.map((item) => GestureDetector(
                                 onLongPress: (){
-                                  find.deleteMessage(item?.id);
+                                  // find.deleteMessage(item?.id);
                                 },
                                 child: chatItem(item: item))).toList(),
                               ),

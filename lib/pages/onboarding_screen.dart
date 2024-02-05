@@ -49,12 +49,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         pageIndicatorStyle: PageIndicatorStyle(activeColor: Colors.white,inactiveColor: Colors.white30,width: 200, activeSize: Size(30,30),inactiveSize: Size(15,15)),
         onBoardData: [
             const OnBoardModel(
-      title: "Welcome to Trade Point",
+      title: "Welcome to Powered POS",
       description: "Empowering Your Business with Smart Point of Sale Solutions",
       imgUrl: "assets/8690519_3951453-removebg-preview.png",
       ),
          const OnBoardModel(
-      title: "Endless Possibilities with Trade Point",
+      title: "Endless Possibilities with Powered POS",
       description: "Effortlessly Manage Sales, Inventory, Staff, and More",
       imgUrl: "assets/22378347_6595412-removebg-preview.png",
       ),

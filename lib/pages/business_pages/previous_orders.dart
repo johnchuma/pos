@@ -92,7 +92,7 @@ class _PreviousOrdersState extends State<PreviousOrders> {
                                       child: Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                        heading2(text: item.inAppOrder == true? "In app order": "An order to ${item.supplier.name}",fontSize: 14),
+                                        heading2(text: item.inAppOrder == true? "In app order": "An order to ${item.supplier.name}",fontSize:18),
                                         mutedText(text:"${item.createdAt.toDate()}"),
                                       ],),
                                     ),
@@ -109,7 +109,7 @@ class _PreviousOrdersState extends State<PreviousOrders> {
                                                   crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
                                                      SizedBox(height: 20,),
-                                                     heading2(text: "Ordered products",fontSize: 14,color:mutedColor),
+                                                     heading2(text: "Ordered products",fontSize:18,color:mutedColor),
                                                      SizedBox(height: 20,),
                                                      Column(children:item.productOrders.value.map((productOrder)=>
                                                       Padding(
@@ -127,7 +127,7 @@ class _PreviousOrdersState extends State<PreviousOrders> {
                                                            crossAxisAlignment: CrossAxisAlignment.start,
                                                            mainAxisAlignment: MainAxisAlignment.center,
                                                            children: [
-                                                            heading2(text: productOrder.product.value!.name,fontSize: 14),
+                                                            heading2(text: productOrder.product.value!.name,fontSize:18),
                                                            mutedText(text: "Amount: ${productOrder.amount}"),
                                                           
                                                          
