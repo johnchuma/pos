@@ -62,7 +62,10 @@ AppController appController = Get.find<AppController>();
                      SizedBox(height: 10,),
                       heading2(text:auth.auth.currentUser?.displayName),
                       mutedText(text:auth.auth.currentUser?.email),
-                      mutedText(text:"${businessController.daysRemained} days remained",color: Colors.green),
+                     SizedBox(height: 10,),
+                      heading2(text:"${businessController.daysRemained} days remained",
+                      fontSize: 14,
+                      color: Colors.green),
 
 
                       const SizedBox(height: 20,),
@@ -86,26 +89,26 @@ AppController appController = Get.find<AppController>();
                heading2(text: translatedText("Settings options", "Machaguo ya mipangilio")),
                const SizedBox(height: 5,),
                Column(children: [
-                   if(!appController.isAdmin.value)
+                   if(appController.isAdmin.value)
                    menuItem(titleFontWeight: FontWeight.w400, title: translatedText("All businesses", "Wateja wa P owered POS"),onTap: (){
                     Get.to(()=> ClientsPage());
                 } ),
-                   if(appController.isAdmin.value)
-                 menuItem(titleFontWeight: FontWeight.w400,title: translatedText("Conversations", "Malipo") ,onTap: (){
-                    Get.to(()=>PrivateChatRoom(true));
-                } ),
+                //    if(appController.isAdmin.value)
+                //  menuItem(titleFontWeight: FontWeight.w400,title: translatedText("Conversations", "Malipo") ,onTap: (){
+                //     Get.to(()=>PrivateChatRoom(true));
+                // } ),
                    menuItem(titleFontWeight: FontWeight.w400,title: translatedText("Payments", "Malipo") ,onTap: (){
                     Get.to(()=>PaymentsPage());
                 } ),
-                menuItem(titleFontWeight: FontWeight.w400,title: translatedText("My businesses", "Biashara zangu") ,onTap: (){
+                menuItem(titleFontWeight: FontWeight.w400,title: translatedText("Go back home", "Biashara zangu") ,onTap: (){
                     Get.back();
                     Get.back();
                     Get.back();
                 } ),
               
-                if(appController.isAdmin.value)  menuItem(titleFontWeight: FontWeight.w400,title: translatedText("Products requests", "Maulizo ya bidhaa"),onTap: (){
-                    Get.to(()=> UnapprovedProductsRequests());
-                } ),
+                // if(appController.isAdmin.value)  menuItem(titleFontWeight: FontWeight.w400,title: translatedText("Products requests", "Maulizo ya bidhaa"),onTap: (){
+                //     Get.to(()=> UnapprovedProductsRequests());
+                // } ),
             
              
               

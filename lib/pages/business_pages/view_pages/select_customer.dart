@@ -83,7 +83,7 @@ class _SelectCustomerState extends State<SelectCustomer> {
                             border: InputBorder.none,
                           hintStyle: TextStyle(color: mutedColor),
                             hintText: translatedText("Search products here", "Tafuta bidhaa hapa")),
-                          style:  TextStyle(fontSize: 13,color: mutedColor)),
+                          style:  TextStyle(fontSize:15,color: mutedColor)),
                         )),
                     ),
              SizedBox(height: 10,),  

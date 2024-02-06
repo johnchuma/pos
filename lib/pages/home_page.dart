@@ -62,7 +62,7 @@ class _HomePageState extends State<HomePage> {
     unreadMessages.bindStream(UnreadMessagesController().getUnreadMessages(messageType: "clientAdmin",to: authController.auth.currentUser?.email));
     Get.put(BusinessController());
     Get.put(ClientsController());
-    Get.put(ConversationController());
+  
     super.initState();
   }
   
@@ -87,63 +87,71 @@ class _HomePageState extends State<HomePage> {
           init: BusinessController(),
           builder: (find) {
     
-            return find.loading.value?Scaffold(
-              backgroundColor: backgroundColor,
-              body: Center(child: CircularProgressIndicator(color: textColor,))): find.businesses.isEmpty?Scaffold(body:
-            Padding(
-              padding: const EdgeInsets.all(30),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                heading2(text: "Register your business",fontSize: 30,textAlign: TextAlign.center),
-                SizedBox(height: 10,),
-                mutedText(text: "Let's register your business to get started, you can register more than one business",
-                textAlign: TextAlign.center),
-                SizedBox(height: 20,),
-                customButton(text: "Add business",onClick: (){
-                  Get.to(()=>AddBusiness());
-                })
-              ],),
-            ),): StreamBuilder(
+            return StreamBuilder(
                         stream: find.getStaffBusinesses(),
                         builder: (context,snapshot) {
                           if(snapshot.connectionState==ConnectionState.waiting){
-                            return Scaffold(backgroundColor: backgroundColor,);
+                            return Scaffold(backgroundColor: backgroundColor,body: Center(child: CircularProgressIndicator(color:textColor,),),);
                           }
                           List<Business> businesses = snapshot.requireData;
-                return Scaffold(
+                return find.loading.value?Scaffold(
                   backgroundColor: backgroundColor,
-                  appBar: AppBar(title: heading2(text: "Select business"),
-                  backgroundColor: backgroundColor,
-                  elevation: 0.3,
-                  actions: [
-                    GestureDetector(
-                      onTap: (){
-                        
+                  body: Center(child: CircularProgressIndicator(color: textColor,))): find.businesses.isEmpty && businesses.isEmpty?Scaffold(body:
+                Padding(
+                  padding: const EdgeInsets.all(30),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                    heading2(text: "Register your business",fontSize: 30,textAlign: TextAlign.center),
+                    SizedBox(height: 10,),
+                    mutedText(text: "Let's register your business to get started, you can register more than one business",
+                    textAlign: TextAlign.center),
+                    SizedBox(height: 20,),
+                    customButton(text: "Add business",onClick: (){
                       Get.to(()=>AddBusiness());
-                      },
-                      child: Icon(Icons.add,color: mutedColor,size: 30,)) 
-                    ,SizedBox(width: 20,)]),
-                       body: SingleChildScrollView(
-                         child: Padding(
-                           padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 20),
-                           child: Column(children: [
-                         
-                            //my businesses
-                            ...find.businesses.map((item) => businessItem(item, find)).toList(),
+                    })
+                  ],),
+                ),):  Scaffold(
+                      backgroundColor: backgroundColor,
+                      appBar: AppBar(title: heading2(text: "Select business"),
+                      leading: Container(),
+                      leadingWidth: 5,
+                      backgroundColor: backgroundColor,
+                      elevation: 0.3,
+                      actions: [
+                        GestureDetector(
+                          onTap: (){
                             
-                              //Staff busniesses;
-                            ...businesses.map((item)=>businessItem(item, find)).toList(),
-                            ],),
-                         ),
-                       ),
+                          Get.to(()=>AddBusiness());
+                          },
+                          child: Icon(Icons.add,color: mutedColor,size: 30,)) 
+                    ,SizedBox(width: 20,)]),
+                        body: StreamBuilder(
+                          stream: find.businessesReceiver.stream,
+                          builder: (context,snapshot) {
+                            return SingleChildScrollView(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 20),
+                                child: Column(children: [
+                              
+                                //my businesses
+                                ...find.businesses.map((item) => businessItem(item, find)).toList(),
+                                
+                                  //Staff busniesses;
+                                ...businesses.map((item)=>businessItem(item, find)).toList(),
+                                ],),
+                              ),
+                            );
+                          }
+                        ),
                 );
+          }
+        );
               }
             ) ;
           }
         );
         
-      }
-    );
+      
   }
 }

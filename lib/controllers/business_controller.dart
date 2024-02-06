@@ -135,6 +135,8 @@ class BusinessController extends GetxController{
         
      return null;
         }
+
+        
          Future<Business> getBusiness(id)async{
                   DocumentSnapshot documentSnapshot = await firestore.collection("businesses").doc(id).get();
             Business business = Business.fromDocumentSnapshot(documentSnapshot);
@@ -147,7 +149,8 @@ class BusinessController extends GetxController{
                   });
             return business;
         }
-          Future<List<Business>> getUserBusinesses()async{
+
+      Future<List<Business>> getUserBusinesses()async{
         ClientsController clientsController = Get.find<ClientsController>();
 
                   QuerySnapshot querySnapshot = await firestore.collection("businesses").where("userId",isEqualTo:clientsController.selectedClient.value?.id).get();
@@ -208,19 +211,19 @@ class BusinessController extends GetxController{
           } catch (e) {
           }
       }
+
        Future<void> updateBusiness ({data}) async{
           try {
            await  firestore.collection("businesses").doc(selectedBusiness.value?.id).update(data);
           } catch (e) {
           }
       }
+
       @override
       void onInit() {
-      
-      businessesReceiver.bindStream(getBusinesses());
-      allbusinessesReceiver.bindStream(getAllBusinesses());
-      staffBusinessesReceiver.bindStream(getStaffBusinesses());
-      
+        staffBusinessesReceiver.bindStream(getStaffBusinesses());
+        businessesReceiver.bindStream(getBusinesses());
+        allbusinessesReceiver.bindStream(getAllBusinesses());
         super.onInit();
       }
 }

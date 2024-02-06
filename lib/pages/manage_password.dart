@@ -85,7 +85,7 @@ class _ManagePasswordState extends State<ManagePassword> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            heading2(text: translatedText("You have set password, you won't be able to use the app without password confirmation now", "Umefanikiwa kutengeneza neno la siri, sasa haitawezekana kutumia mfumo bila neno la siri"),fontSize: 13),
+                            heading2(text: translatedText("You have set password, you won't be able to use the app without password confirmation now", "Umefanikiwa kutengeneza neno la siri, sasa haitawezekana kutumia mfumo bila neno la siri"),fontSize:15),
                             GestureDetector(
                               onTap: (){
                                   var data = {"password":""};

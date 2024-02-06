@@ -168,7 +168,7 @@ class _ProductsSalesMainState extends State<ProductsSalesMain> {
                                     color:item["function"]==salesController.selectedFunction.value? primaryColor:backgroundColor,
                                     child: Padding(
                                       padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),
-                                      child: heading2(text: item["title"],color: item["function"]==salesController.selectedFunction.value?Colors.white:textColor,fontSize: 12),
+                                      child: heading2(text: item["title"],color: item["function"]==salesController.selectedFunction.value?Colors.white:textColor,fontSize: 14),
                                     ),),
                                                        ),
                                 ),

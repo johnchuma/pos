@@ -91,7 +91,7 @@ class _ClientsPageState extends State<ClientsPage> {
                             border: InputBorder.none,
                           hintStyle: TextStyle(color: mutedColor),
                             hintText: translatedText("Search businesses here", "Tafuta bidhaa hapa")),
-                          style:  TextStyle(fontSize: 13,color: textColor)),
+                          style:  TextStyle(fontSize:15,color: textColor)),
                         )),
                     ),
                                     SizedBox(height: 10,),

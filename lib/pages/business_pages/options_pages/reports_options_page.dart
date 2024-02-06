@@ -34,6 +34,7 @@ import 'package:pos/widgets/expanded_item.dart';
 import 'package:pos/widgets/heading2_text.dart';
 import 'package:pos/widgets/heading_text.dart';
 import 'package:pos/widgets/menu_item.dart';
+import 'package:pos/widgets/muted_text.dart';
 import 'package:pos/widgets/translatedText.dart';
 import '../../../models/message_model.dart';
 
@@ -51,6 +52,7 @@ class _ReportsOptionsPageState extends State<ReportsOptionsPage> {
    TextEditingController nameController = TextEditingController();
    TextEditingController descriptionController = TextEditingController();
    BusinessController businessController = Get.find<BusinessController>();
+   SellController sellController = SellController();
   int currentPage= 0;
   var path = "";
   bool loading = false;
@@ -89,12 +91,19 @@ class _ReportsOptionsPageState extends State<ReportsOptionsPage> {
           Get.bottomSheet(bottomSheetTemplate(widget: Padding(
             padding: const EdgeInsets.all(20),
             child: StreamBuilder(
-              stream: SellController().getProductsWithStock(),
+              stream: sellController.getProductsWithStock(),
               builder: (context,snapshot) {
                 if(snapshot.connectionState == ConnectionState.waiting){
                   return Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: Center(child: CircularProgressIndicator(color: textColor,)),
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Obx(()=> Center(child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        heading2(text: "${sellController.inventoryCalculationProgress.value}%",fontSize: 30),
+                        SizedBox(height: 5,),
+                        mutedText(text: "Calculating...")
+                      ],
+                    ))),
                   );
                 }
                 List<Product> products = snapshot.requireData;
@@ -112,20 +121,20 @@ class _ReportsOptionsPageState extends State<ReportsOptionsPage> {
                 return Container(
                   width: MediaQuery.of(context).size.width,
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                    headingText(text: "Stock count",color: primaryColor2),
+                    headingText(text: "Stock count",color: Colors.green[600]),
                     headingText(text: totalStock.toString(),fontSize: 30),
                     SizedBox(height: 20,),
-                    headingText(text: "All stocks value",color: primaryColor2),
+                    headingText(text: "All stocks value",color: Colors.green[600]),
                     headingText(text: moneyFormat(totalStockValue)+"TZS",fontSize: 30),
                     SizedBox(height: 20,),
                     
-                    headingText(text: "Estimated sales",color: primaryColor2),
+                    headingText(text: "Estimated sales",color: Colors.green[600]),
                     headingText(text: moneyFormat(estimatedSales)+"TZS",fontSize: 30),
                     SizedBox(height: 20,),
                     
-                    headingText(text: "Estimated profit",color: primaryColor2),
+                    headingText(text: "Estimated profit",color: Colors.green[600]),
                     headingText(text: moneyFormat(estimatedProfit)+"TZS",fontSize: 30),
 
                           

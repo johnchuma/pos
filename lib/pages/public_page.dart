@@ -246,7 +246,7 @@ Rx<List<Message>> productRequestMessages = Rx<List<Message>>([]);
                                             child: avatar(image: item.image,)),
                                         ),
                                         SizedBox(height: 10,),
-                                        paragraph(text: item.name.replaceAll("store", ""),fontSize: 13,maxLines: 1,color: mutedColor)
+                                        paragraph(text: item.name.replaceAll("store", ""),fontSize:15,maxLines: 1,color: mutedColor)
                                                     
                                       ],
                                     ),

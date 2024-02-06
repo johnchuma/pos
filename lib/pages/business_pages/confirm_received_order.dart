@@ -97,7 +97,7 @@ TextEditingController passwordController = TextEditingController();
                                       show = value!;
                                     });
                               }),
-                              Expanded(child: mutedText(text: "Received quantity is different from what was ordered ?",fontSize: 13))
+                              Expanded(child: mutedText(text: "Received quantity is different from what was ordered ?",fontSize:15))
                             ],),
                           AnimatedSize(
                             duration: Duration(milliseconds: 300),
@@ -106,7 +106,7 @@ TextEditingController passwordController = TextEditingController();
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    heading2(text: "Enter amount your recieived",fontSize: 13,color: textColor),
+                                    heading2(text: "Enter amount your recieived",fontSize:15,color: textColor),
                                     SizedBox(height: 15,),
                                         Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -187,7 +187,7 @@ TextEditingController passwordController = TextEditingController();
                               successNotification("Removed successfully!");
                             });
                           },
-                          child: heading2(text: "Not available on delivery, delete ?",fontSize: 13,color: mutedColor.withOpacity(0.6))),
+                          child: heading2(text: "Not available on delivery, delete ?",fontSize:15,color: mutedColor.withOpacity(0.6))),
                       ],
                     ),
                     SizedBox(height: 20,),

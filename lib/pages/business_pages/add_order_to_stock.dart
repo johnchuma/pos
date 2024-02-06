@@ -78,7 +78,7 @@ TextEditingController passwordController = TextEditingController();
                                          
                                     }),
                                   ),
-                                  Expanded(child: mutedText(text: "Use previous buying price of ${stock?.buyingPrice} TZS and selling price of ${stock?.sellingPrice} TZS ",fontSize: 13))
+                                  Expanded(child: mutedText(text: "Use previous buying price of ${stock?.buyingPrice} TZS and selling price of ${stock?.sellingPrice} TZS ",fontSize:15))
                                 ],),
                               AnimatedSize(
                                 duration: Duration(milliseconds: 300),

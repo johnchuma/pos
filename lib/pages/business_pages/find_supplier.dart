@@ -210,7 +210,7 @@ class _FindSupplierState extends State<FindSupplier> {
                                         //               onTap: (){
                                         //                 Get.back();
                                         //               },
-                                        //               child: heading2(text: "cancel",fontSize: 13,color: mutedColor.withOpacity(0.7)))
+                                        //               child: heading2(text: "cancel",fontSize:15,color: mutedColor.withOpacity(0.7)))
                                         //         ,
                                         //              const SizedBox(height: 30,),
                                                 

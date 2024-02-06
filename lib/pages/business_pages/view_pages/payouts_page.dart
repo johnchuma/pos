@@ -73,7 +73,7 @@ class _PayoutsPageState extends State<PayoutsPage> {
                             border: InputBorder.none,
                           hintStyle: TextStyle(color: mutedColor),
                             hintText: translatedText("Search name here", "Tafuta payout hapa")),
-                          style:  TextStyle(fontSize: 13,color: mutedColor)),
+                          style:  TextStyle(fontSize:15,color: mutedColor)),
                         )),
                        ),
                        SizedBox(height: 10),

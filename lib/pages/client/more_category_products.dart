@@ -68,7 +68,7 @@ ClientsController clientsController = Get.find<ClientsController>();
                       border: InputBorder.none,
                      hintStyle: TextStyle(color: mutedColor),
                       hintText: translatedText("Search products here", "Tafuta bidhaa hapa")),
-                    style:  TextStyle(fontSize: 13,color: textColor)),
+                    style:  TextStyle(fontSize:15,color: textColor)),
                   )),
                ),
                SizedBox(height: 20,),
@@ -111,7 +111,7 @@ ClientsController clientsController = Get.find<ClientsController>();
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
                                                 paragraph(text: product.name,fontSize: 15),
-                                             mutedText(text: moneyFormat(product.offerPrice)+"TZS",fontSize: 13)
+                                             mutedText(text: moneyFormat(product.offerPrice)+"TZS",fontSize:15)
                                                                       
                                               ],
                                             ),

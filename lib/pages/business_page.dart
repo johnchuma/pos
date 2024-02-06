@@ -49,7 +49,6 @@ class BusinessPage extends StatefulWidget {
 }
 
 class _BusinessPageState extends State<BusinessPage> {
-   ConversationController conversationController = Get.find<ConversationController>();
     BusinessController find = Get.find<BusinessController>();
     Rx<bool> loading  = Rx<bool>(false);
   Rx<List<Message>> unreadOrderMessages = Rx<List<Message>>([]);
@@ -57,6 +56,7 @@ class _BusinessPageState extends State<BusinessPage> {
    @override
   void initState() {
     Get.put(CustomerController());
+    // Get.put(SellController());
     super.initState();
   }
    
@@ -97,14 +97,12 @@ class _BusinessPageState extends State<BusinessPage> {
                 ),
       body:   Obx(
         ()=> find.canAccessRegister.value == false && businessController.selectedStaffRegister != null&&
-         businessController.selectedStaffRegister?.password != "" ? enterPassword(context,find)
-                      :
+         businessController.selectedStaffRegister?.password != "" ? enterPassword(context,find):
                       SingleChildScrollView(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child:  Column(
                             children: [
-
                           if(permissions!.contains("Sell products") || find.selectedStaffRegister?.register == null  )  
                           menuItem(title:translatedText("My register", "Dirisha la mauzo"),onTap: (){
                             if(find.selectedStaffRegister?.register == null){
@@ -114,8 +112,6 @@ class _BusinessPageState extends State<BusinessPage> {
                               Get.to(()=>SaleProducts());
                             }
                             }, subtitle:translatedText("Sell products on your register here", "Uza bidhaa kwenye dirisha lako la mauzo")),
-        
-                            
                                      if(permissions.contains("Manage products") || find.selectedStaffRegister?.register == null)    
                                      menuItem(title: translatedText("Products", "Bidhaa"),
                                                          onTap: (){
@@ -147,26 +143,27 @@ class _BusinessPageState extends State<BusinessPage> {
                               Get.to(()=>const RegistersPage());
                             },
                             subtitle:translatedText("Add, delete, update registers details here", "Ongeza, futa au rekebisha taarifa hapa")),
-                          if(permissions.contains("Request posters") || find.selectedStaffRegister?.register == null)   
-                            menuItem(title: translatedText("Posters requests","Maagizo ya matangazo"),
-                            onTap: (){
-                              Get.to(()=> PosterRequests());
-                            },
-                            subtitle:translatedText("See posters requests", "Ona maagizo ya matangazo")),
-                             permissions.contains("Manage staffs") == true || find.selectedStaffRegister?.register == null? menuItem(title:translatedText("Staffs", "Wafanyakazi"),
+                          // if(permissions.contains("Request posters") || find.selectedStaffRegister?.register == null)   
+                          //   menuItem(title: translatedText("Posters requests","Maagizo ya matangazo"),
+                          //   onTap: (){
+                          //     Get.to(()=> PosterRequests());
+                          //   },
+                          //   subtitle:translatedText("See posters requests", "Ona maagizo ya matangazo")),
+                             permissions.contains("Manage staffs") == true || find.selectedStaffRegister?.register == null? 
+                             menuItem(title:translatedText("Staffs", "Wafanyakazi"),
                                 onTap: (){
                                   Get.to(()=>const WorkersPage());
                                 },
                                 subtitle: translatedText("Add, delete and manage staffs here", "Ongeza, futa au rekebisha taarifa hapa")):Container(),
                             
                           
-                          if(permissions.contains("Manage suppliers") || find.selectedStaffRegister?.register == null)  
-                          menuItem(title:translatedText("Suppliers", "Wasambazaji") ,
-                            onTap: (){
-                              Get.to(()=>const SuppliersPage());
-                            },
-                            subtitle:  translatedText("Add, delete and manage suppliers here", "Ongeza, futa au rekebisha taarifa hapa")
-                          ),
+                          // if(permissions.contains("Manage suppliers") || find.selectedStaffRegister?.register == null)  
+                          // menuItem(title:translatedText("Suppliers", "Wasambazaji") ,
+                          //   onTap: (){
+                          //     Get.to(()=>const SuppliersPage());
+                          //   },
+                          //   subtitle:  translatedText("Add, delete and manage suppliers here", "Ongeza, futa au rekebisha taarifa hapa")
+                          // ),
           
                           if(permissions.contains("Manage customers") || find.selectedStaffRegister?.register == null)  
                            menuItem(title:translatedText("Customers", "Wateja") ,
@@ -176,51 +173,51 @@ class _BusinessPageState extends State<BusinessPage> {
                             subtitle:  translatedText("Add, delete and manage customers here", "Ongeza, futa au rekebisha taarifa hapa")
                           ),
           
-                          if(permissions.contains("Manage debts") || find.selectedStaffRegister?.register == null)  
-                          menuItem(title:translatedText("Debts", "Madeni") ,
-                            onTap: (){
-                              // print("Debts page");
-                              Get.to(()=>const DebtsPage());
-                            },
-                            subtitle:  translatedText("Add, delete and manage suppliers here", "Ongeza, futa au rekebisha taarifa hapa")
-                          ),
+                        //   if(permissions.contains("Manage debts") || find.selectedStaffRegister?.register == null)  
+                        //   menuItem(title:translatedText("Debts", "Madeni") ,
+                        //     onTap: (){
+                        //       // print("Debts page");
+                        //       Get.to(()=>const DebtsPage());
+                        //     },
+                        //     subtitle:  translatedText("Add, delete and manage suppliers here", "Ongeza, futa au rekebisha taarifa hapa")
+                        //   ),
           
-                         if(permissions.contains("Manage payouts") || find.selectedStaffRegister?.register == null)  
-                          menuItem(title:translatedText("Payouts", "Malipo") ,
-                            onTap: (){
-                              // print("Payouts page");
-                              Get.to(()=>const PayoutsPage());
-                            },
-                            subtitle:  translatedText("Add, delete and manage suppliers here", "Ongeza, futa au rekebisha taarifa hapa")
-                          ),
-                              if(permissions.contains("Check in & out") || find.selectedStaffRegister?.register == null) 
-                              menuItem(title:translatedText("Staff attendance", "Mahudhurio ya mfanyakazi") ,
-                                onTap: (){
-                                  if(find.selectedBusiness.value?.latitude == 0){
-                                    Get.bottomSheet(forbiddenMessage(title: "You can not use this feature",message: "Because this business did not register its location yet, register the business location on business settings first to start using"));
-                                  }
-                                  else{
-                                  Get.to(()=>StaffAttendance());
-                                  }
-                                },
-                            subtitle: translatedText("Daily Check in and out here", "Rekodi mahudhurio yako ya kila siku")),
-                          if(permissions.contains("Manage orders") || find.selectedStaffRegister?.register == null) 
-                            menuItem(title:translatedText("Orders", "Agiza bidhaa"),
-                             trailing: unreadOrderMessages.value.length <1?Container():  ClipOval(
-                                child: Container(
-                                  color: Colors.red,
-                                  height: 20,
-                                  width: 20,
-                                  child: Center(child: Text("${unreadOrderMessages.value.length}",style: TextStyle(color: textColor),)),),
-                              ),
-                              onTap: (){
-                                Get.to(()=>OrdersPage());
-                              },
-                              subtitle:  translatedText("Create and manage orders here", "Agiza bidhaa kutoka kwa wasambazaji wako") ),
-                           
-                                     if(permissions.contains("View reports") || find.selectedStaffRegister?.register == null)   
-                                     
-                                     menuItem(title: translatedText("Reports", "Ripoti mbalimbali"),
+                        //  if(permissions.contains("Manage payouts") || find.selectedStaffRegister?.register == null)  
+                        //   menuItem(title:translatedText("Payouts", "Malipo") ,
+                        //     onTap: (){
+                        //       // print("Payouts page");
+                        //       Get.to(()=>const PayoutsPage());
+                        //     },
+                        //     subtitle:  translatedText("Add, delete and manage suppliers here", "Ongeza, futa au rekebisha taarifa hapa")
+                        //   ),
+                            //   if(permissions.contains("Check in & out") || find.selectedStaffRegister?.register == null) 
+                            //   menuItem(title:translatedText("Staff attendance", "Mahudhurio ya mfanyakazi") ,
+                            //     onTap: (){
+                            //       if(find.selectedBusiness.value?.latitude == 0){
+                            //         Get.bottomSheet(forbiddenMessage(title: "You can not use this feature",message: "Because this business did not register its location yet, register the business location on business settings first to start using"));
+                            //       }
+                            //       else{
+                            //       Get.to(()=>StaffAttendance());
+                            //       }
+                            //     },
+                            // subtitle: translatedText("Daily Check in and out here", "Rekodi mahudhurio yako ya kila siku")),
+                         
+                         
+                          // if(permissions.contains("Manage orders") || find.selectedStaffRegister?.register == null) 
+                          //   menuItem(title:translatedText("Orders", "Agiza bidhaa"),
+                          //    trailing: unreadOrderMessages.value.length <1?Container():  ClipOval(
+                          //       child: Container(
+                          //         color: Colors.red,
+                          //         height:20,
+                          //         width: 20,
+                          //         child: Center(child: Text("${unreadOrderMessages.value.length}",style: TextStyle(color: textColor),)),),
+                          //     ),
+                          //     onTap: (){
+                          //       Get.to(()=>OrdersPage());
+                          //     },
+                          //     subtitle:  translatedText("Create and manage orders here", "Agiza bidhaa kutoka kwa wasambazaji wako") ),
+                          if(permissions.contains("View reports") || find.selectedStaffRegister?.register == null)             
+                           menuItem(title: translatedText("Reports", "Ripoti mbalimbali"),
                             onTap: (){
                               Get.to(()=>ReportsOptionsPage());
                             },

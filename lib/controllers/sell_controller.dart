@@ -18,6 +18,7 @@ class SellController extends GetxController{
           Rx<List<Product>> onCartProducts = Rx<List<Product>>([]);
           Rx<double> totalCartAmount = Rx<double>(0.0);
           Rx<String> searchKeyword = Rx<String>("");
+          var inventoryCalculationProgress = 0.obs;
           Rx<bool> loading = Rx<bool>(false);
         AuthController authController = Get.find<AuthController>();
         BusinessController businessController = Get.find<BusinessController>();
@@ -83,6 +84,8 @@ class SellController extends GetxController{
               .snapshots()
               .asyncMap((QuerySnapshot querySnapshot) async{
                List<Product> products = [];
+               inventoryCalculationProgress.value = 0;
+               int number = 0;
                   for (var element in querySnapshot.docs) {
                   Product product = Product.fromDocumentSnapshot(element);
               firestore.collection("stocks").where("productId",isEqualTo: element["id"]).get().then((querySnapshot) {
@@ -102,7 +105,10 @@ class SellController extends GetxController{
                           
            });
          });
+         number++;
+        print("it is going");
                       products.add(product);
+
                   }
         loading.value = false;
 
@@ -118,11 +124,12 @@ class SellController extends GetxController{
               .snapshots()
               .asyncMap((QuerySnapshot querySnapshot) async{
                List<Product> products = [];
+               int number = 0;
+               int length = querySnapshot.docs.length;
                   for (var element in querySnapshot.docs) {
                   Product product = Product.fromDocumentSnapshot(element);
                  
          QuerySnapshot querySnapshot =    await  firestore.collection("stocks").where("productId",isEqualTo: element["id"]).get();
-
            var salesQuerySnapshot =      await firestore.collection("sales").where("productId",isEqualTo: element["id"]).get();
          double totalStocks = 0;
                   double totalSoldStocks = 0;
@@ -138,10 +145,17 @@ class SellController extends GetxController{
                   if(product.availableStock.value>0){
                       products.add(product);
                   }
-
+                    number++;
+                      print(number);
+                      print(length);
+                      // print((number/length))
+                      inventoryCalculationProgress.value = ((number/length)*100).round();
+                 
                 }
-        loading.value = false;
 
+              
+        loading.value = false;
+        
             return products;    
           });
         }

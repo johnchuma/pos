@@ -247,7 +247,7 @@ bool loading2 = false;
                     successNotification("Business is deleted successfully");
                   });
                 },
-                child: heading2(text: "Delete business",fontSize: 13,color: Colors.red[500])),
+                child: heading2(text: "Delete business",fontSize:18,color: Colors.red[500])),
              ],
            )
           ],),

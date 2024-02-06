@@ -63,7 +63,7 @@ class _ProductsSettingsState extends State<ProductsSettings> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      heading2(text: "Products variants categories",fontSize: 13),
+                      heading2(text: "Products variants categories",fontSize:15),
                       GestureDetector(
                         onTap: (){
                            Get.bottomSheet(SingleChildScrollView(
@@ -125,7 +125,7 @@ class _ProductsSettingsState extends State<ProductsSettings> {
                               Row(
                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                              heading2(text: item.title,fontSize: 13),
+                              heading2(text: item.title,fontSize:15),
                               Row(
                                 children: [
                                   GestureDetector(
@@ -172,7 +172,7 @@ class _ProductsSettingsState extends State<ProductsSettings> {
                                   ));
 
                                     },
-                                    child: heading2(text: "Add variant",color: primaryColor,fontSize: 13)),
+                                    child: heading2(text: "Add variant",color: primaryColor,fontSize:15)),
                                     SizedBox(width: 10,),
                                     GestureDetector(
                                       onTap: (){

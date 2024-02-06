@@ -77,7 +77,7 @@ ClientsController clientsController = Get.find<ClientsController>();
                               crossAxisAlignment: CrossAxisAlignment.start,
                                children: [
                                  paragraph(text: item.unreadMessages.value.first.message,maxLines: 1),
-                                //  mutedText(text: timeago.format(item.unreadMessages.value.first.createdAt.toDate()),fontSize: 12)
+                                //  mutedText(text: timeago.format(item.unreadMessages.value.first.createdAt.toDate()),fontSize: 14)
                                ],
                              ),
                               ],

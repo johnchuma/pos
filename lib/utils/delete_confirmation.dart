@@ -24,7 +24,7 @@ import 'package:pos/widgets/muted_text.dart';
                   child: Image.asset("assets/cancel_753345.png")),
             const SizedBox(height: 10,),
 
-              heading2(text: "Are sure, you want to delete ?"),
+              heading2(text: "Are sure, you want to delete ?",textAlign: TextAlign.center),
             const SizedBox(height: 20,),
                 GestureDetector(
                    onTap:(){

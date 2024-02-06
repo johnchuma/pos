@@ -95,7 +95,7 @@ SellController  productController =  Get.find<SellController>();
                             color:primaryColor,
                             child: Padding(
                               padding: const EdgeInsets.all(3),
-                              child: Icon(Icons.remove,color: textColor,),
+                              child: Icon(Icons.remove,color: backgroundColor,),
                             )),
                         ),
                       ),
@@ -116,7 +116,7 @@ SellController  productController =  Get.find<SellController>();
                             color:primaryColor,
                             child: Padding(
                               padding: const EdgeInsets.all(3),
-                              child: Icon(Icons.add,color: textColor,),
+                              child: Icon(Icons.add,color: backgroundColor,),
                             )),
                                              ),
                        ),
@@ -140,10 +140,8 @@ SellController  productController =  Get.find<SellController>();
                         child: Column(
                           children: [
                             Row(children: [
-                            Checkbox(value: addDiscount, activeColor: Colors.green, 
-                              fillColor: MaterialStateColor.resolveWith((states) =>Colors.white ),
-                                checkColor: Colors.black,
-                                 
+                            Checkbox(value: addDiscount, 
+                             
                             onChanged: (value){
                               setState(() {
                                 addDiscount = value!;

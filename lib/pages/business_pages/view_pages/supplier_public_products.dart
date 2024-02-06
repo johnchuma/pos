@@ -107,7 +107,7 @@ class _SupplierPublicProductsState extends State<SupplierPublicProducts> {
                                                     onTap: (){
                                                       Get.back();
                                                     },
-                                                    child: heading2(text: "cancel",fontSize: 13,color: mutedColor.withOpacity(0.7)))
+                                                    child: heading2(text: "cancel",fontSize:15,color: mutedColor.withOpacity(0.7)))
                                               ,
                                                    const SizedBox(height: 30,),
                                               
@@ -148,7 +148,7 @@ class _SupplierPublicProductsState extends State<SupplierPublicProducts> {
                   border: InputBorder.none,
                  hintStyle: TextStyle(color: mutedColor),
                   hintText: translatedText("Search products here", "Tafuta bidhaa hapa")),
-                style:  TextStyle(fontSize: 13,color: mutedColor)),
+                style:  TextStyle(fontSize:15,color: mutedColor)),
               )),
            ),
              
@@ -211,8 +211,8 @@ class _SupplierPublicProductsState extends State<SupplierPublicProducts> {
                                             Column(
                                               crossAxisAlignment: CrossAxisAlignment.end,
                                               children: [
-                                              mutedText(text: "selling price",fontSize: 12,color: textColor.withOpacity(0.4)),
-                                              heading2(text: "${moneyFormat(product.sellingPrice)}TZS",fontSize: 13),
+                                              mutedText(text: "selling price",fontSize: 14,color: textColor.withOpacity(0.4)),
+                                              heading2(text: "${moneyFormat(product.sellingPrice)}TZS",fontSize:15),
                                             ],),
                                                         ],),
                                           ),

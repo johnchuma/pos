@@ -39,7 +39,7 @@ bool loading = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: backgroundColor,
+      backgroundColor: backgroundColor2,
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: SingleChildScrollView(
@@ -59,19 +59,19 @@ bool loading = false;
                          child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            // Hero(
-                            //   tag: "logo",
-                            //   child: ClipOval(
-                            //     child: Container(
-                            //         height: 100,
-                            //         width: 100,
-                            //         child: Image.asset("assets/icons/1024.png")),
-                            //   ),
-                            // ),
+                            Hero(
+                              tag: "logo",
+                              child: ClipOval(
+                                child: Container(
+                                    height: 150,
+                                    width: 150,
+                                    child: Image.asset("assets/icons/1024.png")),
+                              ),
+                            ),
                             // mutedText(text: "Powered POS",fontSize: 25),
                         
                        
-                       const SizedBox(height: 40,),
+                       const SizedBox(height: 30,),
                         headingText(text: "Login to continue", textAlign: TextAlign.center,
                                 fontSize: 30
                                 ),
@@ -116,7 +116,7 @@ bool loading = false;
                                                             width: 30,
                                                             child: Image.asset("assets/google.png",)),
                                        const SizedBox(width: 15,),
-                                                               heading2(text: "Continue with google",color: backgroundColor,fontSize: 13,)
+                                                               heading2(text: "Continue with google",color: backgroundColor,fontSize:15,)
                                                            
                                                            ],),
                                                          ),),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
+import 'package:pos/controllers/app_controller.dart';
 import 'package:pos/controllers/business_controller.dart';
 import 'package:pos/controllers/business_subscription_controller.dart';
 import 'package:pos/controllers/private_chat_controller.dart';
@@ -18,6 +19,7 @@ class CheckingForPayment extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 BusinessController businessController = Get.find();
+AppController appController = Get.find();
     return Scaffold(body:FutureBuilder(
       future: BusinessSubscriptionController().checkRemainedDays(),
       builder: (context,snapshot) {
@@ -27,7 +29,7 @@ BusinessController businessController = Get.find();
         int days = snapshot.requireData;
         print(days);
         businessController.daysRemained = days;
-        return days >0?SelectRegister():Container(
+        return days >0 || appController.isAdmin.value ?SelectRegister():Container(
           width: double.infinity,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30),

@@ -88,14 +88,14 @@ class _StaffSalesState extends State<StaffSales> {
                                        Row(
                                          children: [
                                          
-                                           mutedText(text: "Capital: ${moneyFormat(salesController.productsCapital(sales))}TZS",fontSize: 12),
+                                           mutedText(text: "Capital: ${moneyFormat(salesController.productsCapital(sales))}TZS",fontSize: 14),
                                          ],
                                        ),
                                        Row(
                                          children: [
                                          
                                                                            
-                                           mutedText(text: "profit: ${moneyFormat(salesController.productsProfit(sales))}TZS",fontSize: 12),
+                                           mutedText(text: "profit: ${moneyFormat(salesController.productsProfit(sales))}TZS",fontSize: 14),
                                          ],
                                        ),
                                       ],

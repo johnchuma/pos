@@ -54,38 +54,18 @@ class _CustomersPageState extends State<CustomersPage> {
           
 
           ],
-        ))
+        )),
+        GestureDetector(
+          onTap: (){
+            Get.to(()=>AddCustomer());
+          },
+          child: Icon(Icons.add,size: 30,color: textColor,))
       ],) 
       ,),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: ListView(
-          
           children: [
-                      const SizedBox(height: 20,),
-
-           ClipRRect(
-                borderRadius: BorderRadius.circular(15),
-                 child: Container(
-                  color: mutedBackground,
-                  child: Padding(
-                   padding: const EdgeInsets.all(20),
-                   child: Column
-                   (
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                    headingText(text: translatedText("Add new customer", "Ongeza mteja mpya"),),
-                    const SizedBox(height: 5,),
-                    mutedText(text: translatedText("Add, remove and manage customers", "Ongeza, futa au boresha taarifa")),
-                    const SizedBox(height: 20,),
-                    customButton(text: translatedText("Add customer", "Ongeza mteja"),onClick: (){
-                      Get.to(()=>AddCustomer());
-                    }) 
-                   ],),
-                 ),),
-               ),
-               const SizedBox(height: 20,),
-               heading2(text: translatedText("My customer", "Wateja wangu")),
                const SizedBox(height: 20),
                  GetX<CustomerController>(
                 init: CustomerController(),
@@ -110,7 +90,7 @@ class _CustomersPageState extends State<CustomersPage> {
                             border: InputBorder.none,
                           hintStyle: TextStyle(color: mutedColor),
                             hintText: translatedText("Search products here", "Tafuta bidhaa hapa")),
-                          style:  TextStyle(fontSize: 13,color: mutedColor)),
+                          style:  TextStyle(fontSize:15,color: mutedColor)),
                         )),
                        ),
                        SizedBox(height: 10),

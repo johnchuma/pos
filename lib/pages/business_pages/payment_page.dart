@@ -87,7 +87,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
                                                         Column(
                                                           crossAxisAlignment: CrossAxisAlignment.start,
                                                           children: [
-                                                          heading2(text: "You paid ${item.amount} TZS",fontSize: 16),
+                                                          heading2(text: "You paid ${item.amount} TZS",fontSize: 18),
                                                           mutedText(text: "at ${formatDate(item.createdAt.toDate())}"),
                                                           
                                                           ],)

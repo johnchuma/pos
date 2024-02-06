@@ -91,7 +91,7 @@ class _OrdersPageState extends State<OrdersPage> {
                     onTap: (){
                          Get.to(()=>const PreviousOrders());
                     },
-                    child: mutedText(text: "Completed orders ",color: mutedColor,fontSize: 13))
+                    child: mutedText(text: "Completed orders ",color: mutedColor,fontSize:15))
                  ],
                ),
 

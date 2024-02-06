@@ -72,7 +72,7 @@ class _DebtsPageState extends State<DebtsPage> {
                             border: InputBorder.none,
                           hintStyle: TextStyle(color: mutedColor),
                             hintText: translatedText("Search name here", "Tafuta debt hapa")),
-                          style:  TextStyle(fontSize: 13,color: mutedColor)),
+                          style:  TextStyle(fontSize:15,color: mutedColor)),
                         )),
                        ),
                        SizedBox(height: 10),

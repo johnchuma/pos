@@ -45,7 +45,7 @@ Widget chatItem({var item}){
                                           child: Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
-                                             if(!isMe)heading2(text: item.name,fontSize: 13),
+                                             if(!isMe)heading2(text: item.name,fontSize:15),
                                               paragraph(text: item.message,color: isMe?Colors.white:textColor),
                                             ],
                                           ),
@@ -55,7 +55,7 @@ Widget chatItem({var item}){
                     const SizedBox(height: 3,),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 5),
-                        child: mutedText(text: timeago.format(item.createdAt.toDate()),fontSize: 13),
+                        child: mutedText(text: timeago.format(item.createdAt.toDate()),fontSize:15),
                       )
                   ],
                 ),

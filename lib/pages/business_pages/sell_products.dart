@@ -65,7 +65,7 @@ class _SaleProductsState extends State<SaleProducts> {
           borderRadius: BorderRadius.circular(20),
           child: Container(decoration: BoxDecoration(gradient: LinearGradient(colors: [primaryColor,primaryColor2])),child: Padding(
             padding: const EdgeInsets.all(16),
-            child: Badge(child: Icon(Icons.shopping_bag),label: Text(productController.onCartProducts.value.length.toString(),style: TextStyle(color: Colors.white,fontSize: 8),)),
+            child: Badge(child: Icon(Icons.shopping_bag),label: Text(productController.onCartProducts.value.length.toString(),style: TextStyle(color: textColor,fontSize: 8),)),
           ),),
         ),),
       ),
@@ -102,7 +102,7 @@ class _SaleProductsState extends State<SaleProducts> {
                   border: InputBorder.none,
                  hintStyle: TextStyle(color: mutedColor),
                   hintText: translatedText("Search products here", "Tafuta bidhaa hapa")),
-                style:  TextStyle(fontSize: 13,color: mutedColor)),
+                style:  TextStyle(fontSize:15,color: mutedColor)),
               )),
            ),
              
@@ -118,7 +118,7 @@ class _SaleProductsState extends State<SaleProducts> {
                       duration: Duration(milliseconds: 300),
                        child: Container(child: find.loading.value ? Padding(
                          padding: const EdgeInsets.all(50),
-                         child: Center(child: CircularProgressIndicator(color: Colors.white,)),
+                         child: Center(child: CircularProgressIndicator(color: textColor,)),
                        ):  find.onCartProducts.value.isEmpty ?Container():   find.searchKeyword.value.isNotEmpty ?Container():  Column(
                            children: [
                                     const SizedBox(height: 20,),
@@ -135,12 +135,12 @@ class _SaleProductsState extends State<SaleProducts> {
                                             Row(
                                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                               children: [
-                                                heading2(text: translatedText("Selected products", "Bidhaa zilizochaguliwa"),color: Colors.white),
+                                                heading2(text: translatedText("Selected products", "Bidhaa zilizochaguliwa"),color: textColor),
                                                
                    
                                               ],
                                             ),
-                                            mutedText(text:translatedText("Here is the list of selected products", "Orodha ya bidhaa zilizochaguliwa"),color: Colors.white70),
+                                            mutedText(text:translatedText("Here is the list of selected products", "Orodha ya bidhaa zilizochaguliwa"),color: textColor),
                                             SizedBox(height: 20,),
                                             AnimatedSize(
                                               duration: Duration(milliseconds: 300),
@@ -160,14 +160,14 @@ class _SaleProductsState extends State<SaleProducts> {
                                                      child: Column(
                                                        crossAxisAlignment: CrossAxisAlignment.start,
                                                        children: [
-                                                        heading2(text: product.name,fontSize:18,color: Colors.white),
-                                                       mutedText(text: "${translatedText("Price", "Bei")}: ${(moneyFormat(product.sellingPrice*product.onCartAmount))} TZS",color: Colors.white70),
+                                                        heading2(text: product.name,fontSize:18,color: textColor),
+                                                       mutedText(text: "${translatedText("Price", "Bei")}: ${(moneyFormat(product.sellingPrice*product.onCartAmount))}TZS",color: textColor),
                                                       if(product.discount> 0.0)
                                                        Column(
                                                         crossAxisAlignment: CrossAxisAlignment.start,
                                                          children: [
-                                                           mutedText(text: "${translatedText("Discount", "Punguzo")}: ${product.discount} TZS",color: Colors.white70),
-                                                       mutedText(text: "${translatedText("Final offer", "Bei ya mwisho")}: ${moneyFormat((product.sellingPrice*product.onCartAmount)-product.discount)} TZS",fontSize: 13,color: Colors.white),
+                                                           mutedText(text: "${translatedText("Discount", "Punguzo")}: ${product.discount} TZS",color: textColor),
+                                                       mutedText(text: "${translatedText("Final offer", "Bei ya mwisho")}: ${moneyFormat((product.sellingPrice*product.onCartAmount)-product.discount)} TZS",fontSize:15,color: textColor),
                                                         
                                                          ],
                                                        ),
@@ -189,7 +189,7 @@ class _SaleProductsState extends State<SaleProducts> {
                                                       product.availableStock.value = product.availableStock.value + product.onCartAmount;
                                                       });
                                                     },
-                                                    child: Icon(Icons.remove_circle,color:Colors.white70,))
+                                                    child: Icon(Icons.remove_circle,color:textColor,))
                                                                            ])
                                                   ),
                                                 )
@@ -200,8 +200,8 @@ class _SaleProductsState extends State<SaleProducts> {
                                             Row(
                                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                               children: [
-                                                mutedText(text: translatedText("Total price", "Jumla ya gharama"),color: Colors.white70),
-                                               heading2(text: "${moneyFormat(find.totalCartAmount.value)} TZS",color: Colors.white)
+                                                mutedText(text: translatedText("Total price", "Jumla ya gharama"),color: textColor),
+                                               heading2(text: "${moneyFormat(find.totalCartAmount.value)}TZS",color: textColor)
                                               ],
                                             ),
                                             SizedBox(height: 20,),
@@ -209,116 +209,134 @@ class _SaleProductsState extends State<SaleProducts> {
                                             customButton(text:translatedText("Continue", "Endelea"), loading: loading, onClick: (){
                                              
                                              Get.bottomSheet(bottomSheetTemplate(widget: Column(children: [
-                                              customButton(text: "Sell with payout payments",color: backgroundColor,onClick: (){
-                                                  Get.back();
-                                                    Get.bottomSheet(bottomSheetTemplate(widget: Column(
-                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                              // customButton(text: "Sell with payout payments",color: backgroundColor,onClick: (){
+                                              //     Get.back();
+                                              //       Get.bottomSheet(bottomSheetTemplate(widget: Column(
+                                              //           crossAxisAlignment: CrossAxisAlignment.start,
                                                     
-                                                      children: [
-                                                   Obx(()=>
-                                                      customerController.selectedCustomer.value != null?  Row(
-                                                        children: [
-                                                          ClipOval(child: Container(
-                                                           color: Colors.orange.withOpacity(0.1),
-                                                          child: Padding(
-                                                            padding: const EdgeInsets.all(8),
-                                                            child: Center(child: Icon(Icons.person,color: Colors.orange,)),
-                                                          ),)),
-                                                          SizedBox(width: 15,),
-                                                          Expanded(
-                                                            child: Column(
-                                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                                              children: [
-                                                              mutedText(text: "Selected customer is",),
-                                                              heading2(text: customerController.selectedCustomer.value?.name),
-                                                             ],),
-                                                          ),
-                                                           GestureDetector(
-                                                            onTap: (){
-                                                                Get.to(()=>SelectCustomer());
-                                                            },
-                                                            child: Icon(Icons.change_circle,color: mutedColor,))
-                                                        ],
+                                              //         children: [
+                                              //      Obx(()=>
+                                              //         customerController.selectedCustomer.value != null?  Row(
+                                              //           children: [
+                                              //             ClipOval(child: Container(
+                                              //              color: Colors.orange.withOpacity(0.1),
+                                              //             child: Padding(
+                                              //               padding: const EdgeInsets.all(8),
+                                              //               child: Center(child: Icon(Icons.person,color: Colors.orange,)),
+                                              //             ),)),
+                                              //             SizedBox(width: 15,),
+                                              //             Expanded(
+                                              //               child: Column(
+                                              //                 crossAxisAlignment: CrossAxisAlignment.start,
+                                              //                 children: [
+                                              //                 mutedText(text: "Selected customer is",),
+                                              //                 heading2(text: customerController.selectedCustomer.value?.name),
+                                              //                ],),
+                                              //             ),
+                                              //              GestureDetector(
+                                              //               onTap: (){
+                                              //                   Get.to(()=>SelectCustomer());
+                                              //               },
+                                              //               child: Icon(Icons.change_circle,color: mutedColor,))
+                                              //           ],
                                                         
-                                                      ):Container(),
-                                                   ),
-                                                      SizedBox(height: 20,),
-                                                       Obx(
-                                                         ()=> customerController.selectedCustomer.value != null? customButton(text:"Sell with payout",onClick: (){
-                                                              setState(() {
-                                                                loading = true;
-                                                              });
-                                                              Get.back();
+                                              //         ):Container(),
+                                              //      ),
+                                              //         SizedBox(height: 20,),
+                                              //          Obx(
+                                              //            ()=> customerController.selectedCustomer.value != null? customButton(text:"Sell with payout",onClick: (){
+                                              //                 setState(() {
+                                              //                   loading = true;
+                                              //                 });
+                                              //                 Get.back();
                                                           
-                                                                SaleController().addSale(withCustomer: true,isPayout: true).then((value) {
-                                                                find.onCartProducts.value = [];
-                                                                successNotification(translatedText("Debt is recorded successfully", "Deni limewekwa kikamilifu"));
-                                                                setState(() {
-                                                                  loading = false;
-                                                                });
-                                                              });
+                                              //                   SaleController().addSale(withCustomer: true,isPayout: true).then((value) {
+                                              //                   find.onCartProducts.value = [];
+                                              //                   successNotification(translatedText("Debt is recorded successfully", "Deni limewekwa kikamilifu"));
+                                              //                   setState(() {
+                                              //                     loading = false;
+                                              //                   });
+                                              //                 });
                                                               
-                                                             }): customButton(text: "Select customer",onClick: (){
-                                                                   Get.to(()=>SelectCustomer());
-                                                         }),
-                                                       )
-                                                    ],)));
-                                              }),
-                                              SizedBox(height: 10,),
-                                                customButton(text: "Sell with debt",color: backgroundColor,onClick: (){
-                                                  Get.back();
-                                                    Get.bottomSheet(bottomSheetTemplate(widget: Column(
-                                                      crossAxisAlignment: CrossAxisAlignment.start,      
-                                                      children: [
-                                                       Obx(()=>
-                                                       customerController.selectedCustomer.value != null?  Row(
-                                                        children: [
-                                                          ClipOval(child: Container(
-                                                           color: Colors.orange.withOpacity(0.1),
-                                                          child: Padding(
-                                                            padding: const EdgeInsets.all(8),
-                                                            child: Center(child: Icon(Icons.person,color: Colors.orange,)),
-                                                          ),)),
-                                                          SizedBox(width: 15,),
-                                                          Expanded(
-                                                            child: Column(
-                                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                                              children: [
-                                                              mutedText(text: "Selected customer is",),
-                                                              heading2(text: customerController.selectedCustomer.value?.name),
-                                                             ],),
-                                                          ),
-                                                           GestureDetector(
-                                                            onTap: (){
-                                                                Get.to(()=>SelectCustomer());
-                                                            },
-                                                            child: Icon(Icons.change_circle,color: mutedColor,))
-                                                        ],
+                                              //                }): customButton(text: "Select customer",onClick: (){
+                                              //                      Get.to(()=>SelectCustomer());
+                                              //            }),
+                                              //          )
+                                              //       ],)));
+                                              // }),
+                                              // SizedBox(height: 10,),
+                                              //   customButton(text: "Sell with debt",color: backgroundColor,onClick: (){
+                                              //     Get.back();
+                                              //       Get.bottomSheet(bottomSheetTemplate(widget: Column(
+                                              //         crossAxisAlignment: CrossAxisAlignment.start,      
+                                              //         children: [
+                                              //          Obx(()=>
+                                              //          customerController.selectedCustomer.value != null?  Row(
+                                              //           children: [
+                                              //             ClipOval(child: Container(
+                                              //              color: Colors.orange.withOpacity(0.1),
+                                              //             child: Padding(
+                                              //               padding: const EdgeInsets.all(8),
+                                              //               child: Center(child: Icon(Icons.person,color: Colors.orange,)),
+                                              //             ),)),
+                                              //             SizedBox(width: 15,),
+                                              //             Expanded(
+                                              //               child: Column(
+                                              //                 crossAxisAlignment: CrossAxisAlignment.start,
+                                              //                 children: [
+                                              //                 mutedText(text: "Selected customer is",),
+                                              //                 heading2(text: customerController.selectedCustomer.value?.name),
+                                              //                ],),
+                                              //             ),
+                                              //              GestureDetector(
+                                              //               onTap: (){
+                                              //                   Get.to(()=>SelectCustomer());
+                                              //               },
+                                              //               child: Icon(Icons.change_circle,color: mutedColor,))
+                                              //           ],
                                                         
-                                                      ):Container(),
-                                                   ),
-                                                      SizedBox(height: 20,),
-                                                       Obx(
-                                                         ()=> customerController.selectedCustomer.value != null? customButton(text:"Sell with debt",onClick: (){
-                                                              setState(() {
-                                                                loading = true;
-                                                              });
-                                                              Get.back();
-                                                              SaleController().addSale(withCustomer: true,isDebt: true).then((value) {
-                                                                find.onCartProducts.value = [];
-                                                                successNotification(translatedText("Debt is recorded successfully", "Deni limewekwa kikamilifu"));
-                                                                setState(() {
-                                                                  loading = false;
-                                                                });
-                                                              });
-                                                         }): customButton(text: "Select customer",onClick: (){
-                                                          Get.to(()=>SelectCustomer());
-                                                                                                             }),
-                                                       )
-                                                    ],)));
+                                              //         ):Container(),
+                                              //      ),
+                                              //         SizedBox(height: 20,),
+                                              //          Obx(
+                                              //            ()=> customerController.selectedCustomer.value != null? customButton(text:"Sell with debt",onClick: (){
+                                              //                 setState(() {
+                                              //                   loading = true;
+                                              //                 });
+                                              //                 Get.back();
+                                              //                 SaleController().addSale(withCustomer: true,isDebt: true).then((value) {
+                                              //                   find.onCartProducts.value = [];
+                                              //                   successNotification(translatedText("Debt is recorded successfully", "Deni limewekwa kikamilifu"));
+                                              //                   setState(() {
+                                              //                     loading = false;
+                                              //                   });
+                                              //                 });
+                                              //            }): customButton(text: "Select customer",onClick: (){
+                                              //             Get.to(()=>SelectCustomer());
+                                              //                                                                }),
+                                              //          )
+                                              //       ],)));
+                                              //   }),
+                                              //   SizedBox(height: 10,),
+                                                 
+                                                customButton(text: "Sell without customer info",onClick: (){
+                                                 setState(() {
+                                                  loading = true;
+                                                 });
+                                                  Get.back();
+                                                 SaleController().addSale().then((value) {
+                                                    find.onCartProducts.value = [];
+                                                    successNotification(translatedText("Sold successfully", "Bidhaa zimiuzwa kikamilifu"));
+
+                                                    setState(() {
+                                                      loading = false;
+                                                    });
+                                                  });
                                                 }),
+
                                                 SizedBox(height: 10,),
-                                                  customButton(text: "Sell with customer information",color: backgroundColor,onClick: (){
+
+                                                 customButton(text: "Sell with customer info",color: backgroundColor,textColor: Colors.black, onClick: (){
                                                   Get.back();
                                                     Get.bottomSheet(bottomSheetTemplate(widget: Column(
                                                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -371,21 +389,6 @@ class _SaleProductsState extends State<SaleProducts> {
                                                        )
                                                     ],)));
                                                   }),
-                                                SizedBox(height: 10,),
-                                                customButton(text: "Sell with cash",onClick: (){
-                                                 setState(() {
-                                                  loading = true;
-                                                 });
-                                                  Get.back();
-                                                 SaleController().addSale().then((value) {
-                                                    find.onCartProducts.value = [];
-                                                    successNotification(translatedText("Sold successfully", "Bidhaa zimiuzwa kikamilifu"));
-
-                                                    setState(() {
-                                                      loading = false;
-                                                    });
-                                                  });
-                                                })
 
                                              ],)));
                                             
@@ -445,8 +448,8 @@ class _SaleProductsState extends State<SaleProducts> {
                                         Column(
                                           crossAxisAlignment: CrossAxisAlignment.end,
                                           children: [
-                                          mutedText(text: "selling price",fontSize: 12,color: textColor.withOpacity(0.4)),
-                                          heading2(text: "${moneyFormat(product.sellingPrice)}TZS",fontSize: 13),
+                                          mutedText(text: "selling price",fontSize: 14,color: textColor.withOpacity(0.4)),
+                                          heading2(text: "${moneyFormat(product.sellingPrice)}TZS",fontSize:15),
                                         ],),
                                                     ],),
                                       ),

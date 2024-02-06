@@ -238,7 +238,7 @@ class _PickProductsToOrderState extends State<PickProductsToOrder> {
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
                                                   const SizedBox(height: 20,),                      
-                                                  heading2(text: "Product order amount",fontSize: 12,color: textColor),
+                                                  heading2(text: "Product order amount",fontSize: 14,color: textColor),
                                                   const SizedBox(height: 20,),                      
 
                                                            Row(children: [

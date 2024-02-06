@@ -35,20 +35,18 @@ class _ProductStockState extends State<ProductStock> {
       backgroundColor: backgroundColor,
       appBar: AppBar(leading: back(),backgroundColor: backgroundColor,elevation: 0.3,
       title: Row(children: [
-        ClipOval(
-          child: Padding(
-            padding: const EdgeInsets.all(0),
-            child: avatar(image:productController.selectedProduct.value.image,size: 30),
-          ),
-        ),
-        const SizedBox(width: 10,),
+        
         Expanded(child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            heading2(text: productController.selectedProduct.value.name),
-            mutedText(text: "from ${find2.selectedBusiness.value?.name}")
+            heading2(text: "${productController.selectedProduct.value.name} stocks"),
           ],
-        ))
+        )),
+        GestureDetector(
+          onTap: (){
+            Get.to(()=>AddStock());
+          },
+          child: Icon(Icons.add,size: 30,color: mutedColor,))
       ],) 
       ,),
       body: Padding(
@@ -56,28 +54,7 @@ class _ProductStockState extends State<ProductStock> {
         child: ListView(
          
           children: [
-           const SizedBox(height: 20,),
-           ClipRRect(
-                borderRadius: BorderRadius.circular(15),
-                 child: Container(
-                  color: mutedBackground,
-                  child: Padding(
-                   padding: const EdgeInsets.all(20),
-                   child: Column (
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                    headingText(text: "Manage product stocks",),
-                    const SizedBox(height: 5,),
-                    mutedText(text: "Add,edit,delete and view products here"),
-                    const SizedBox(height: 20,),
-                    customButton(text: "Add stock",onClick: (){
-                      Get.to(()=>AddStock());
-                    })
-                   ],),
-                 ),),
-               ),
-               const SizedBox(height: 20,),
-               heading2(text: "Stock history"),
+          
                const SizedBox(height: 20),
                  GetX<StockController>(
                 init: StockController(),
@@ -93,7 +70,7 @@ class _ProductStockState extends State<ProductStock> {
                           padding: const EdgeInsets.symmetric(vertical: 20,horizontal: 20),
                           child: Row(
                             children: [
-                              avatar(image:productController.selectedProduct.value.image,size: 30 ),
+                              avatar(image:productController.selectedProduct.value.image,size: 50 ),
                               const SizedBox(width: 20,),
                               Expanded(
                                 child: Column(

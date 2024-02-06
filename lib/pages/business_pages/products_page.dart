@@ -172,39 +172,39 @@ class _ProductsPageState extends State<ProductsPage> {
                                                           },elevation: 0),  
 
                                                         
-                                                          expandedItem(title:translatedText("Product features", "Sifa za bidhaa"), iconData:Icons.remove_red_eye,onClick:  (){
-                                                              find.selectedProduct.value = product;
-                                                              Get.bottomSheet(bottomSheetTemplate(widget: Container(child: Column(
-                                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                                children: [
-                                                                heading2(text: "Product features"),
-                                                                SizedBox(height: 20,),
-                                                                product.properties.length  <1 ?noData(): Column(
-                                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                                    children:product.properties.map((item) =>Padding(
-                                                                      padding: const EdgeInsets.only(bottom: 10),
-                                                                      child: ClipRRect(
-                                                                        borderRadius: BorderRadius.circular(15),
-                                                                        child: Container(
-                                                                        color: backgroundColor,
-                                                                        width: double.infinity,
-                                                                        child: Padding(
-                                                                        padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 15),
-                                                                        child: Expanded(child: paragraph(text: "${item["title"]}:  ${item["value"]}" )),
-                                                                                        )),
-                                                                      ),
-                                                                    )).toList(),),
-                                                              ],),)));
-                                                          }),
+                                                          // expandedItem(title:translatedText("Product features", "Sifa za bidhaa"), iconData:Icons.remove_red_eye,onClick:  (){
+                                                          //     find.selectedProduct.value = product;
+                                                          //     Get.bottomSheet(bottomSheetTemplate(widget: Container(child: Column(
+                                                          //       crossAxisAlignment: CrossAxisAlignment.start,
+                                                          //       children: [
+                                                          //       heading2(text: "Product features"),
+                                                          //       SizedBox(height: 20,),
+                                                          //       product.properties.length  <1 ?noData(): Column(
+                                                          //           crossAxisAlignment: CrossAxisAlignment.start,
+                                                          //           children:product.properties.map((item) =>Padding(
+                                                          //             padding: const EdgeInsets.only(bottom: 10),
+                                                          //             child: ClipRRect(
+                                                          //               borderRadius: BorderRadius.circular(15),
+                                                          //               child: Container(
+                                                          //               color: backgroundColor,
+                                                          //               width: double.infinity,
+                                                          //               child: Padding(
+                                                          //               padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 15),
+                                                          //               child: Expanded(child: paragraph(text: "${item["title"]}:  ${item["value"]}" )),
+                                                          //                               )),
+                                                          //             ),
+                                                          //           )).toList(),),
+                                                          //     ],),)));
+                                                          // }),
                                                          
-                                                          expandedItem(title:translatedText("Product settings", "Mipangilia ya bidhaa"), iconData:Icons.settings,onClick:  (){
-                                                              find.selectedProduct.value = product;
-                                                              Get.to(()=> ProductSettings());
-                                                          }),
-                                                          expandedItem(title:translatedText("Order product poster", "Agiza tangazo la bidhaa"), iconData:Icons.image,onClick:  (){
-                                                              find.selectedProduct.value = product;
-                                                              Get.to(()=> CreatePosterRequest());
-                                                          }),
+                                                          // expandedItem(title:translatedText("Product settings", "Mipangilia ya bidhaa"), iconData:Icons.settings,onClick:  (){
+                                                          //     find.selectedProduct.value = product;
+                                                          //     Get.to(()=> ProductSettings());
+                                                          // }),
+                                                          // expandedItem(title:translatedText("Order product poster", "Agiza tangazo la bidhaa"), iconData:Icons.image,onClick:  (){
+                                                          //     find.selectedProduct.value = product;
+                                                          //     Get.to(()=> CreatePosterRequest());
+                                                          // }),
                                                             expandedItem(title:translatedText("Edit product details", "Badili taarifa"), iconData:Icons.edit,onClick:  (){
                                                               find.selectedProduct.value = product;
                                                               Get.to(()=> EditProduct());

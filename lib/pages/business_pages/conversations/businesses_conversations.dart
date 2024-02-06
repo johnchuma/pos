@@ -72,7 +72,7 @@ class BusinessesConversation extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                                children: [
                                  paragraph(text: item?.messages.value.first.message,maxLines: 1),
-                                 mutedText(text: timeago.format(item!.messages.value.first.createdAt.toDate()),fontSize: 12)
+                                 mutedText(text: timeago.format(item!.messages.value.first.createdAt.toDate()),fontSize: 14)
                                ],
                              ),
                               ],

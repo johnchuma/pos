@@ -223,7 +223,7 @@ class _StaffAttendanceState extends State<StaffAttendance> {
                                             height: 25,
                                             width: 25,
                                             child: CircularProgressIndicator(color: primaryColor,)): Container(
-                                              child: heading2(text: "Check out",color: Colors.green[700],fontSize: 13)),
+                                              child: heading2(text: "Check out",color: Colors.green[700],fontSize:15)),
                                         ),
                                       ))
                                                 ],),
